@@ -405,6 +405,7 @@ class Window(pyglet.window.Window):
         vector = self.get_sight_vector()
         block = self.model.hit_test(self.position, vector)[0]
         self.block_set = self.model.check_block(block)
+        return Block
 
     def on_draw(self):
         """ Called by pyglet to draw the canvas.

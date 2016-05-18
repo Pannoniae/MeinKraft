@@ -9,9 +9,8 @@ def image_process():
     sand = Image.open(TEXTURE_PATH_SAND)
     brick = Image.open(TEXTURE_PATH_BRICK)
     stone = Image.open(TEXTURE_PATH_STONE)
-
     texture = Image.new('RGB', (256, 256))
-
+        
     texture.paste(dirt, (0, 128))
     texture.paste(sand, (64, 128))
     texture.paste(stone, (128, 128))

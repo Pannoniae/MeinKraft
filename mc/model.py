@@ -76,7 +76,8 @@ class Model(object):
                 #    if ph - h >= 1:
                 #        h = ph - 1
                 for y in xrange(-3, h):
-                    self.add_block((x, y, z), GRASS, immediate=False)
+                    self.add_block((x, y, z), DIRT, immediate=False)
+                self.add_block((x, h, z), GRASS, immediate=False)
                 #ph = h
         # generate the hills randomly
         o = n - 10
