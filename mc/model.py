@@ -181,7 +181,7 @@ class Model(object):
             if position in self.shown:
                 self.hide_block(position)
             self.check_neighbors(position)
-            
+
     def check_block(self, position):
         """ Checks if a block exists at given `position`.
         
@@ -190,6 +190,15 @@ class Model(object):
             return True
         else:
             return False
+
+    def get_block(self, position):
+        """ Returns block at given location.
+
+        """
+        if position in self.world:
+            return
+        else:
+            return None
 
     def check_neighbors(self, position):
         """ Check all blocks surrounding `position` and ensure their visual
