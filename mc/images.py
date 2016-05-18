@@ -22,5 +22,5 @@ def image_process():
     texture.paste(grass_side, import_coords(0, 3))
     texture.paste(grass_top, import_coords(1, 3))
     texture.paste(brick, import_coords(2, 3))
-    texture.transpose(PIL.Image.FLIP_TOP_BOTTOM)
+    texture.transpose(Image.FLIP_TOP_BOTTOM)
     texture.save('texture.png')
