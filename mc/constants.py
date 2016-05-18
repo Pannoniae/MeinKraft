@@ -1,5 +1,6 @@
 # config variables
 
+import os.path
 import math
 
 TICKS_PER_SEC = 60
@@ -24,10 +25,13 @@ TERMINAL_VELOCITY = 50
 
 PLAYER_HEIGHT = 2
 
-TEXTURE_PATH = 'texture.png'
-TEXTURE_PATH_DIRT = 'dirt.png'
-TEXTURE_PATH_GRASS_SIDE = 'grass_side.png'
-TEXTURE_PATH_GRASS_TOP = 'grass_top.png'
-TEXTURE_PATH_SAND = 'sand.png'
-TEXTURE_PATH_BRICK = 'brick.png'
-TEXTURE_PATH_STONE = 'stone.png'
+def fixpath(filename):
+    return os.path.join(os.path.dirname(__file__),"images", filename)
+
+TEXTURE_PATH = fixpath('texture.png')
+TEXTURE_PATH_DIRT = fixpath('dirt.png')
+TEXTURE_PATH_GRASS_SIDE = fixpath('grass_side.png')
+TEXTURE_PATH_GRASS_TOP = fixpath('grass_top.png')
+TEXTURE_PATH_SAND = fixpath('sand.png')
+TEXTURE_PATH_BRICK = fixpath('brick.png')
+TEXTURE_PATH_STONE = fixpath('stone.png')
