@@ -2,7 +2,7 @@ We're trying to implement some of Minecraft's functions. It isn't a clone, it te
 
 
 
-ORIGINAL README BY FOGLEMAN:
+# ORIGINAL README BY FOGLEMAN: #
 
 # Minecraft
 
