@@ -1,19 +1,15 @@
 # MC view
 from __future__ import absolute_import
 
-
+# third party imports
 from pyglet.gl import *
-
 from pyglet.window import key, mouse
 
-from PIL import Image
-
+# project module imports
 from .constants import *
 from .blocks import *
-
-
 from .model import Model
-from  .geometry import sectorize, normalize, cube_vertices, FACES
+from .geometry import sectorize, normalize, cube_vertices, FACES
 
 
 class Window(pyglet.window.Window):
@@ -410,7 +406,6 @@ class Window(pyglet.window.Window):
 
     def on_draw(self):
         """ Called by pyglet to draw the canvas.
-
         """
         self.clear()
         self.set_3d()

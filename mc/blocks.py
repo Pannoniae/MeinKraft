@@ -1,9 +1,13 @@
-# define MC block
+# define MC blocks
 
 from .geometry import tex_coords
 
 class Block(object):
     """"represents a block
+
+    no block id's
+    now the class itself is stored in the world storage
+
 
     TODO:  extends as needed
     """
