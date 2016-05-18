@@ -7,6 +7,9 @@ class Block(object):
 
     TODO:  extends as needed
     """
+    # save memory
+    __slots__ = ["get_block_type"]
+
     @classmethod
     def get_block_type(self):
         klassname = self.__name__
