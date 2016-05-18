@@ -11,6 +11,7 @@ from PIL import Image
 from .constants import *
 from .blocks import *
 
+
 from .model import Model
 from  .geometry import sectorize, normalize, cube_vertices, FACES
 

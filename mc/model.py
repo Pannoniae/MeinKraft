@@ -140,23 +140,24 @@ class Model(object):
                 return True
         return False
 
-    def add_block(self, position, texture, immediate=True):
+    def add_block(self, position, block, immediate=True):
         """ Add a block with the given `texture` and `position` to the world.
 
         Parameters
         ----------
         position : tuple of len 3
             The (x, y, z) position of the block to add.
-        texture : list of len 3
-            The coordinates of the texture squares. Use `tex_coords()` to
-            generate.
+        block : class derived from Block
+            has a 'texture': list of len 3. which is the coordinates of the texture squares.
+            Uses `tex_coords()` to generate.
+
         immediate : bool
             Whether or not to draw the block immediately.
 
         """
         if position in self.world:
             self.remove_block(position, immediate)
-        self.world[position] = texture
+        self.world[position] = block
         self.sectors.setdefault(sectorize(position), []).append(position)
         if immediate:
             if self.exposed(position):
@@ -221,7 +222,7 @@ class Model(object):
             Whether or not to show the block immediately.
 
         """
-        texture = self.world[position]
+        texture = self.world[position].get_texture()
         self.shown[position] = texture
         if immediate:
             self._show_block(position, texture)
