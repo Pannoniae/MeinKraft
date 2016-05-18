@@ -1,3 +1,9 @@
+We're trying to implement some of Minecraft's functions. It isn't a clone, it tends to be more realistic than Minecraft, example no more tree punching, no more diamond finding, etc.
+
+
+
+ORIGINAL README BY FOGLEMAN:
+
 # Minecraft
 
 Simple Minecraft-inspired demo written in Python and Pyglet.
