@@ -297,7 +297,7 @@ class Model(object):
         """
         before_set = set()
         after_set = set()
-        pad = 1
+        pad = 2
         for dx in xrange(-pad, pad + 1):
             for dy in [0]:  # xrange(-pad, pad + 1):
                 for dz in xrange(-pad, pad + 1):

@@ -6,7 +6,7 @@ import math
 TICKS_PER_SEC = 60
 
 # Size of sectors used to ease block loading.
-SECTOR_SIZE = 32
+SECTOR_SIZE = 16
 
 WALKING_SPEED = 5
 FLYING_SPEED = 15
