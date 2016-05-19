@@ -27,7 +27,7 @@ TERMINAL_VELOCITY = 50
 PLAYER_HEIGHT = 2
 
 def imgpath(filename):
-    return os.path.join(os.path.dirname(__file__),"blockdata", filename)
+    return os.path.join(os.path.dirname((os.path.dirname(__file__))),"blockdata", filename)
 
 TEXTURE_PATH = imgpath('texture.png')
 TEXTURE_PATH_DIRT = imgpath('dirt.png')
