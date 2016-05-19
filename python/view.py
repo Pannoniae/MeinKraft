@@ -224,7 +224,7 @@ class Window(pyglet.window.Window):
         # have to count as a collision. If 0, touching terrain at all counts as
         # a collision. If .49, you sink into the ground, as if walking through
         # tall grass. If >= .5, you'll fall through the ground.
-        pad = 0.25
+        pad = 0.0
         p = list(position)
         np = normalize(position)
         for face in FACES:  # check all surrounding blocks
