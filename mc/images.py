@@ -2,11 +2,10 @@ from PIL import Image
 
 from .constants import *
 
-BLOCK_SIZE = 64
 def import_coords(x, y):
     # Converting image_process importing values to tex_coords methods.
-    x = x * BLOCK_SIZE
-    y = y * BLOCK_SIZE
+    x = x * BLOCK_TEXTURE_SIZE
+    y = y * BLOCK_TEXTURE_SIZE
     return x, y
 
 def image_process():
@@ -26,4 +25,4 @@ def image_process():
     texture.paste(grass_top, import_coords(1, 0))
     texture.paste(brick, import_coords(2, 0))
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
-    texture.save(fixpath('texture.png'))
+    texture.save(imgpath('texture.png'))

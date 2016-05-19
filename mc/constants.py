@@ -10,6 +10,7 @@ SECTOR_SIZE = 16
 
 WALKING_SPEED = 5
 FLYING_SPEED = 15
+BLOCK_TEXTURE_SIZE = 64
 
 GRAVITY = 20.0
 MAX_JUMP_HEIGHT = 1.0 # About the height of a block.
@@ -25,13 +26,13 @@ TERMINAL_VELOCITY = 50
 
 PLAYER_HEIGHT = 2
 
-def fixpath(filename):
+def imgpath(filename):
     return os.path.join(os.path.dirname(__file__),"images", filename)
 
-TEXTURE_PATH = fixpath('texture.png')
-TEXTURE_PATH_DIRT = fixpath('dirt.png')
-TEXTURE_PATH_GRASS_SIDE = fixpath('grass_side.png')
-TEXTURE_PATH_GRASS_TOP = fixpath('grass_top.png')
-TEXTURE_PATH_SAND = fixpath('sand.png')
-TEXTURE_PATH_BRICK = fixpath('brick.png')
-TEXTURE_PATH_STONE = fixpath('stone.png')
+TEXTURE_PATH = imgpath('texture.png')
+TEXTURE_PATH_DIRT = imgpath('dirt.png')
+TEXTURE_PATH_GRASS_SIDE = imgpath('grass_side.png')
+TEXTURE_PATH_GRASS_TOP = imgpath('grass_top.png')
+TEXTURE_PATH_SAND = imgpath('sand.png')
+TEXTURE_PATH_BRICK = imgpath('brick.png')
+TEXTURE_PATH_STONE = imgpath('stone.png')
