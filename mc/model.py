@@ -1,19 +1,19 @@
 # MC world
 from __future__ import absolute_import
 
-
+# Python standard library imports
 import random
 import time
 from collections import deque
 
+# third party imports
 import pyglet
 from pyglet import image
 from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
-
+# project module imports
 from  .geometry import  cube_vertices, normalize, sectorize, FACES
-
 from .blocks import *
 from .constants import TEXTURE_PATH, TICKS_PER_SEC
 
@@ -184,7 +184,6 @@ class Model(object):
 
     def check_block(self, position):
         """ Checks if a block exists at given `position`.
-        
         """
         if position in self.world:
             return True
@@ -192,13 +191,11 @@ class Model(object):
             return False
 
     def get_block(self, position):
-        """ Returns block at given location.
-
+        """ Returns block at given location
+            None if there's no block at this location
         """
-        if position in self.world:
-            return
-        else:
-            return None
+        return self.world.get(position)
+
 
     def check_neighbors(self, position):
         """ Check all blocks surrounding `position` and ensure their visual
