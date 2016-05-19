@@ -60,7 +60,7 @@ class Window(pyglet.window.Window):
         # The current block the user can place. Hit num keys to cycle.
         self.block = self.inventory[0]
         
-        self.block_set = False
+
         
         
         # Convenience list of num keys.
@@ -404,9 +404,8 @@ class Window(pyglet.window.Window):
         
     def get_targeted_block(self):
         vector = self.get_sight_vector()
-        block = self.model.hit_test(self.position, vector)[0]
-        self.block_set = self.model.check_block(block)
-        return block
+        position = self.model.hit_test(self.position, vector)[0]
+        return self.model.get_block(position)
 
     def on_draw(self):
         """ Called by pyglet to draw the canvas.
@@ -452,7 +451,11 @@ class Window(pyglet.window.Window):
         """ Draw the debug label in the bottom left of the screen.
     
         """
-        self.label_bottom.text = 'Block: %r' % self.block_set
+        block = self.get_targeted_block()
+        if block:
+            self.label_bottom.text = '%s block' % block.get_block_type()
+        else:
+            self.label_bottom.text = 'No block in sight'
         self.label_bottom.draw()
 
     def draw_reticle(self):

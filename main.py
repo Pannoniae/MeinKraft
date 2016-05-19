@@ -1,9 +1,9 @@
 from __future__ import absolute_import
 
 import pyglet
-from python.view import Window
 
 from python.images import image_process
+from python.view import Window
 
 VERSION = "0.3"
 
