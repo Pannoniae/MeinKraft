@@ -85,7 +85,8 @@ class Window(pyglet.window.Window):
         # TICKS_PER_SEC. This is the main game event loop.
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
 
-        pyglet.clock.set_fps_limit(60)
+        self.vector = self.get_sight_vector()
+        self.target_block = self.model.hit_test(self.position, self.vector)[0]
 
 
 
@@ -403,8 +404,8 @@ class Window(pyglet.window.Window):
         glTranslatef(-x, -y, -z)
         
     def get_targeted_block(self):
-        vector = self.get_sight_vector()
-        position = self.model.hit_test(self.position, vector)[0]
+        self.vector = self.get_sight_vector()
+        position = self.model.hit_test(self.position, self.vector)[0]
         return self.model.get_block(position)
 
     def on_draw(self):
@@ -421,16 +422,22 @@ class Window(pyglet.window.Window):
         self.draw_label()
         self.draw_bottom_label()
         self.draw_reticle()
-        
+
+    def prep_focused_block(self):
+        """ Computes focused block target in game tick to speed up game.
+
+        """
+        self.vector = self.get_sight_vector()
+        self.target_block = self.model.hit_test(self.position, self.vector)[0]
     def draw_focused_block(self):
         """ Draw black edges around the block that is currently under the
         crosshairs.
 
         """
-        vector = self.get_sight_vector()
-        block = self.model.hit_test(self.position, vector)[0]
-        if block:
-            x, y, z = block
+        self_vector = self.get_sight_vector()
+        self.target_block = self.model.hit_test(self.position, self.vector)[0]
+        if self.target_block:
+            x, y, z = self.target_block
             vertex_data = cube_vertices(x, y, z, 0.51)
             glColor3d(0, 0, 0)
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)

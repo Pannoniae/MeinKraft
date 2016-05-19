@@ -63,7 +63,7 @@ class Model(object):
                     # create outer walls.
                     for dy in xrange(-2, 3):
                         self.add_block((x, y + dy, z), STONE, immediate=False)
-        c = s * 4
+        #c = s * 4
         #for x in xrange(-n, n + 1, c):
         #    for z in xrange(-n, n + 1, c):
         #        h = random.randint(4, 8)
@@ -71,7 +71,7 @@ class Model(object):
         #            self.add_block((x, y, z), DIRT, immediate=False)
         #        self.add_block((x, h, z), GRASS, immediate=False)
         # generate the hills randomly
-        o = n - 10
+        #o = n - 10
         #for _ in xrange(120):
         #    a = random.randint(-o, o)  # x position of the hill
         #    b = random.randint(-o, o)  # z position of the hill
@@ -297,7 +297,7 @@ class Model(object):
         """
         before_set = set()
         after_set = set()
-        pad = 2
+        pad = 6
         for dx in xrange(-pad, pad + 1):
             for dy in [0]:  # xrange(-pad, pad + 1):
                 for dz in xrange(-pad, pad + 1):

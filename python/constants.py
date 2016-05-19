@@ -3,7 +3,8 @@
 import os.path
 import math
 
-TICKS_PER_SEC = 60
+TICKS_PER_SEC = 40
+GAME_TICKS_PER_SEC = 10
 
 # Size of sectors used to ease block loading.
 SECTOR_SIZE = 16
