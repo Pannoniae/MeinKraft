@@ -84,6 +84,7 @@ class Window(pyglet.window.Window):
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
+        pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
 
         self.vector = self.get_sight_vector()
         self.target_block = self.model.hit_test(self.position, self.vector)[0]
@@ -419,9 +420,17 @@ class Window(pyglet.window.Window):
         self.get_targeted_block()
         self.draw_focused_block()
         self.set_2d()
+        self.label.draw()
+        self.label_bottom.draw()
+        self.draw_reticle()
+
+    def update_game(self, dt):
+        """ Update game tick which is slower than update() for performance reasons.
+
+        """
+        self.prep_focused_block()
         self.draw_label()
         self.draw_bottom_label()
-        self.draw_reticle()
 
     def prep_focused_block(self):
         """ Computes focused block target in game tick to speed up game.
@@ -434,8 +443,6 @@ class Window(pyglet.window.Window):
         crosshairs.
 
         """
-        self_vector = self.get_sight_vector()
-        self.target_block = self.model.hit_test(self.position, self.vector)[0]
         if self.target_block:
             x, y, z = self.target_block
             vertex_data = cube_vertices(x, y, z, 0.51)
@@ -452,7 +459,6 @@ class Window(pyglet.window.Window):
         self.label.text = '%02d/%02d (%.2f, %.2f, %.2f) %d / %d' % (
             pyglet.clock.get_fps(), pyglet.clock.get_fps_limit(), x, y, z,
             len(self.model._shown), len(self.model.world))
-        self.label.draw()
         
     def draw_bottom_label(self):
         """ Draw the debug label in the bottom left of the screen.
@@ -463,7 +469,6 @@ class Window(pyglet.window.Window):
             self.label_bottom.text = '%s block' % block.get_block_type()
         else:
             self.label_bottom.text = 'No block in sight'
-        self.label_bottom.draw()
 
     def draw_reticle(self):
         """ Draw the crosshairs in the center of the screen.
