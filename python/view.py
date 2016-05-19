@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 # third party imports
+import pyglet
 from pyglet.gl import *
 from pyglet.window import key, mouse
 
@@ -84,9 +85,12 @@ class Window(pyglet.window.Window):
         # TICKS_PER_SEC. This is the main game event loop.
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
 
+        pyglet.clock.set_fps_limit(60)
 
-    def logevents(self):
-        self.push_handlers(pyglet.window.event.WindowEventLogger())
+
+
+    #def logevents(self):
+    #    self.push_handlers(pyglet.window.event.WindowEventLogger())
 
     def set_exclusive_mouse(self, exclusive):
         """ If `exclusive` is True, the game will capture the mouse, if False
@@ -408,6 +412,7 @@ class Window(pyglet.window.Window):
         """ Called by pyglet to draw the canvas.
         """
         self.clear()
+        pyglet.clock.tick()
         self.set_3d()
         glColor3d(1, 1, 1)
         self.model.batch.draw()
@@ -438,8 +443,8 @@ class Window(pyglet.window.Window):
 
         """
         x, y, z = self.position
-        self.label.text = '%02d (%.2f, %.2f, %.2f) %d / %d' % (
-            pyglet.clock.get_fps(), x, y, z,
+        self.label.text = '%02d/%02d (%.2f, %.2f, %.2f) %d / %d' % (
+            pyglet.clock.get_fps(), pyglet.clock.get_fps_limit(), x, y, z,
             len(self.model._shown), len(self.model.world))
         self.label.draw()
         
