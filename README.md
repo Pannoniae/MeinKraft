@@ -2,25 +2,32 @@
 
 We're trying to implement some of features of Minecraft. 
 It's written in Python and it uses the pyglet framework and the PyOpenGL graphics library.
-We want it to be be more realistic than Minecraft in some regard, example there should be no tree punching, no diamond finding, etc.
+We want it to be be more realistic than Minecraft in some regard. 
+For example there should be no tree punching any more, no diamond finding, etc.
 
 The code is based on fogleman's code:
 
 https://github.com/fogleman/
 
 
-
-## How to Run It
+## How to run the program for the time being 
 
 * Install pyglet
     pip install pyglet
 * Install PyOpenGL
   http://pyopengl.sourceforge.net/documentation/installation.html
 
-
     git clone https://bitbucket.org/prisz/meinkraft
     cd meinkraft
     python main.py
+
+## Changes
+
+* code restructuring
+* texture map is automatically assembled from individual bitmaps
+* blocks have been changed into objects from list of numbers
+* fast graphical updates are performed only when the player is moving
+
 
 ## How to Play
 
