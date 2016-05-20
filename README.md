@@ -3,7 +3,7 @@
 
 Yes, we do know that "force" or "power" is "die Kraft" in German, so the correct form would be "MeineKraft". :) 
 
-We're trying to implement some features of Minecraft in this project. The code is written in Python and it uses the pyglet framework and the PyOpenGL graphics library. We want the ga,e to be be more realistic than Minecraft in some regard. For example, there should be no tree punching any more, no diamond finding, etc.
+We're trying to implement some features of Minecraft in this project. The code is written in Python and it uses the pyglet framework and the PyOpenGL graphics library. We want the game to be be more realistic than Minecraft in some regard. For example, there should be no tree punching any more, no diamond finding, etc.
 
 It's all based on fogleman's code:
 
