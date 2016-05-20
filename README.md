@@ -1,4 +1,5 @@
-# MeinKraft
+# MeinKraft 
+## We're aware that 'MeineKraft' is the correct form...
 
 We're trying to implement some of features of Minecraft. 
 It's written in Python and it uses the pyglet framework and the PyOpenGL graphics library.
