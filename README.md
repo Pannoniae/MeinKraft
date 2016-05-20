@@ -1,61 +1,26 @@
-We're trying to implement some of Minecraft's functions. It isn't a clone, it tends to be more realistic than Minecraft, example no more tree punching, no more diamond finding, etc.
+# MeinKraft
 
+We're trying to implement some of features of Minecraft. 
+It's written in Python and it uses the pyglet framework and the PyOpenGL graphics library.
+We want it to be be more realistic than Minecraft in some regard, example there should be no tree punching, no diamond finding, etc.
 
-
-# ORIGINAL README BY FOGLEMAN: #
-
-# Minecraft
-
-Simple Minecraft-inspired demo written in Python and Pyglet.
-Taken from
+The code is based on fogleman's code:
 
 https://github.com/fogleman/
 
-## Goals and Vision
-
-It's an educational tool. Kids love Minecraft and Python is a great first language.
-This is a good opportunity to get children excited about programming.
-
-The code should become well commented and more easily configurable. It should be easy to make some simple changes
-and see the results quickly.
 
 
-## How to Run
+## How to Run It
 
+* Install pyglet
     pip install pyglet
-    git clone https://github.com/fogleman/Minecraft.git
-    cd Minecraft
+* Install PyOpenGL
+  http://pyopengl.sourceforge.net/documentation/installation.html
+
+
+    git clone https://bitbucket.org/prisz/meinkraft
+    cd meinkraft
     python main.py
-
-### Mac
-
-On Mac OS X, you may have an issue with running Pyglet in 64-bit mode. Try running Python in 32-bit mode first:
-
-    arch -i386 python main.py
-
-If that doesn't work, set Python to run in 32-bit mode by default:
-
-    defaults write com.apple.versioner.python Prefer-32-Bit -bool yes 
-
-This assumes you are using the OS X default Python.  Works on Lion 10.7 with the default Python 2.7, and may work on other versions too.  Please raise an issue if not.
-    
-Or try Pyglet 1.2 alpha, which supports 64-bit mode:  
-
-    pip install https://pyglet.googlecode.com/files/pyglet-1.2alpha1.tar.gz 
-
-### If you don't have pip or git
-
-For pip:
-
-- Mac or Linux: install with `sudo easy_install pip` (Mac or Linux) - or (Linux) find a package called something like 'python-pip' in your package manager.
-- Windows: [install Distribute then Pip](http://stackoverflow.com/a/12476379/992887) using the linked .MSI installers.
-
-For git:
-
-- Mac: install [Homebrew](http://mxcl.github.com/homebrew/) first, then `brew install git`.
-- Windows or Linux: see [Installing Git](http://git-scm.com/book/en/Getting-Started-Installing-Git) from the _Pro Git_ book.
-
-See the [wiki](https://github.com/fogleman/Minecraft/wiki) for this project to install Python, and other tips.
 
 ## How to Play
 
