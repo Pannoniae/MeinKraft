@@ -1,7 +1,7 @@
 # config variables
 
-import os.path
 import math
+import os.path
 
 TICKS_PER_SEC = 40
 GAME_TICKS_PER_SEC = 10
@@ -27,8 +27,12 @@ TERMINAL_VELOCITY = 50
 
 PLAYER_HEIGHT = 2
 
+top_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
 def imgpath(filename):
-    return os.path.join(os.path.dirname((os.path.dirname(__file__))),"blockdata", filename)
+    '''Determine the path to a file in the data directory.
+    '''
+    return os.path.join(top_dir,"blockdata", filename)
 
 TEXTURE_PATH = imgpath('texture.png')
 TEXTURE_PATH_DIRT = imgpath('dirt.png')
