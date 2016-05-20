@@ -31,8 +31,9 @@ top_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 def imgpath(filename):
     '''Determine the path to a file in the data directory.
+
     '''
-    return os.path.join(top_dir,"blockdata", filename)
+    return os.path.join(top_dir, "blockdata", filename)
 
 TEXTURE_PATH = imgpath('texture.png')
 TEXTURE_PATH_DIRT = imgpath('dirt.png')
