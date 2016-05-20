@@ -4,9 +4,10 @@ import pyglet
 
 from python.images import image_process
 from python.view import Window
+from profilehooks import profile
 
 VERSION = "0.3"
-
+@profile
 def main():
     image_process()
     window = Window(width=800, height=600, caption='My own cute Pyglet v%s' % VERSION, resizable=True, vsync=True)
