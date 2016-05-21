@@ -26,8 +26,7 @@ https://github.com/fogleman/
 * code restructuring
 * texture map is automatically assembled from individual bitmaps
 * blocks have been changed into objects from list of numbers
-* fast graphical updates are performed only when the player is moving
-
+* fast updates are performed only for graphics
 
 ## How to Play
 
