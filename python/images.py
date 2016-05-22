@@ -23,6 +23,8 @@ def image_process():
     sand = flip_image(Image.open(TEXTURE_PATH_SAND))
     brick = flip_image(Image.open(TEXTURE_PATH_BRICK))
     stone = flip_image(Image.open(TEXTURE_PATH_STONE))
+    path_side = flip_image(Image.open(TEXTURE_PATH_PATH_SIDE))
+    path_top = flip_image(Image.open(TEXTURE_PATH_PATH_TOP))
 
     # the origo for pixel coordinates is in the upper left corner
     texture = Image.new('RGB', import_coords(4, 4))
@@ -32,6 +34,8 @@ def image_process():
     texture.paste(grass_side, import_coords(0, 0))
     texture.paste(grass_top, import_coords(1, 0))
     texture.paste(brick, import_coords(2, 0))
+    texture.paste(path_side, import_coords(0, 2))
+    texture.paste(path_top, import_coords(1, 2))
     # the origo of the texture coordinate system is at the lower left corner
     # flip the image
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)

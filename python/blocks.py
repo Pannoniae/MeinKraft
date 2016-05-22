@@ -54,5 +54,10 @@ class DIRT(Block):
     def get_texture(self):
         return tex_coords((0, 1), (0, 1), (0, 1))
 
+class PATH(Block):
+    @classmethod
+    def get_texture(self):
+        return tex_coords((1, 2), (0, 1), (0, 2))
+
 # safe for import from *
 __all__ = [v.__name__ for k,v in globals().items() if hasattr(v, "get_texture") ]
