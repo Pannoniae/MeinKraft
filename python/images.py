@@ -8,17 +8,10 @@ def import_coords(x, y):
     y = y * BLOCK_TEXTURE_SIZE
     return x, y
 
+
 def flip_image(img):
     " flip an image along the y axis"
-    new_img=Image.new("RGB",img.size)
-    img_pixels, new_pixels = img.load(), new_img.load()
-    x_size, y_size = img.size
-    for x in xrange(x_size):
-        for y in xrange(y_size):
-            flipped_y = y_size - y - 1
-            new_pixels[x, flipped_y] = img_pixels[x, y]
-
-    return new_img
+    return img.transpose(Image.FLIP_TOP_BOTTOM)
 
 
 
