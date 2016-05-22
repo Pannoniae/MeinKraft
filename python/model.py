@@ -12,7 +12,7 @@ from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
 # project module imports
-from  .geometry import  cube_vertices, normalize, sectorize, FACES, cube_vertices_transparent
+from  .geometry import normalize, sectorize, FACES
 from .blocks import *
 from .constants import TEXTURE_PATH, TICKS_PER_SEC
 
@@ -244,10 +244,8 @@ class Model(object):
 
         """
         x, y, z = position
-        vertex_data = cube_vertices(x, y, z, 0.5)
         block = self.get_block(position)
-        if block.get_block_type() == "PATH":
-            vertex_data = cube_vertices_transparent(x, y, z, 0.5)
+        vertex_data = block.get_vertices(x, y, z)
         texture_data = list(texture)
         # create vertex list
         # FIXME Maybe `add_indexed()` should be used instead

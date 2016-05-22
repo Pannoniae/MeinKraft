@@ -3,24 +3,17 @@
 from .constants import SECTOR_SIZE
 
 
-def cube_vertices(x, y, z, n):
-    """ Return the vertices of the cube at position x, y, z with size 2*n.
-
+def cube_vertices(x, y, z, n, fill=0):
     """
-    return [
-        x-n,y+n,z-n, x-n,y+n,z+n, x+n,y+n,z+n, x+n,y+n,z-n,  # top
-        x-n,y-n,z-n, x+n,y-n,z-n, x+n,y-n,z+n, x-n,y-n,z+n,  # bottom
-        x-n,y-n,z-n, x-n,y-n,z+n, x-n,y+n,z+n, x-n,y+n,z-n,  # left
-        x+n,y-n,z+n, x+n,y-n,z-n, x+n,y+n,z-n, x+n,y+n,z+n,  # right
-        x-n,y-n,z+n, x+n,y-n,z+n, x+n,y+n,z+n, x-n,y+n,z+n,  # front
-        x+n,y-n,z-n, x-n,y-n,z-n, x-n,y+n,z-n, x+n,y+n,z-n,  # back
-    ]
+        Return the vertices of the cube at position x, y, z with size 2*n.
 
-def cube_vertices_transparent(x, y, z, n):
-    """ A transparent implementation of blocks.
-
+        fill: what proportion should be the top surface be at
     """
-    qn = n - (n / 8)
+    if fill == 0:
+        qn = n
+    else:
+        qn = n - (n / fill)
+
     return [
         x-n,y+qn,z-n, x-n,y+qn,z+n, x+n,y+qn,z+n, x+n,y+qn,z-n,  # top
         x-n,y-n,z-n, x+n,y-n,z-n, x+n,y-n,z+n, x-n,y-n,z+n,  # bottom

@@ -1,6 +1,6 @@
 # define MC blocks
 
-from .geometry import tex_coords
+from .geometry import tex_coords, cube_vertices
 
 class Block(object):
     """"represents a block
@@ -12,17 +12,22 @@ class Block(object):
     TODO:  extends as needed
     """
     # save memory
-    __slots__ = ["get_block_type"]
-
-    @classmethod
-    def get_block_type(self):
-        klassname = self.__name__
-        return  klassname
+    __slots__ = ["get_texture", "block_type", "get_vertices"]
 
     @classmethod
     def get_texture(self):
         # abstract
         raise NotImplemented
+
+    @property
+    def block_type(self):
+        klassname = self.__name__
+        return  klassname
+
+    @classmethod
+    def get_vertices(self, x, y, z):
+        return cube_vertices(x, y, z, 0.5)
+
 
 class GRASS(Block):
 
@@ -58,6 +63,13 @@ class PATH(Block):
     @classmethod
     def get_texture(self):
         return tex_coords((1, 2), (0, 1), (0, 2))
+
+    @classmethod
+    def get_vertices(self, x, y, z):
+        # this is not filled completely!
+        return cube_vertices(x, y, z, 0.5, 8)
+
+
 
 # safe for import from *
 __all__ = [v.__name__ for k,v in globals().items() if hasattr(v, "get_texture") ]

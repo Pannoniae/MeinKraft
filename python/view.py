@@ -471,7 +471,7 @@ class Window(pyglet.window.Window):
         """
         block = self.get_targeted_block()
         if block:
-            self.label_bottom.text = '%s block' % block.get_block_type()
+            self.label_bottom.text = '%s block' % block.block_type
         else:
             self.label_bottom.text = 'No block in sight'
 
