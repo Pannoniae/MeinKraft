@@ -60,13 +60,14 @@ class DIRT(Block):
         return tex_coords((0, 1), (0, 1), (0, 1))
 
 class PATH(Block):
+
     @classmethod
     def get_texture(self):
         return tex_coords((1, 2), (0, 1), (0, 2))
 
     @classmethod
     def get_vertices(self, x, y, z):
-        # this is not filled completely!
+        # this is not filled completely, the upper 8th is transparent!
         return cube_vertices(x, y, z, 0.5, 8)
 
 
