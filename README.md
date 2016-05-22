@@ -27,6 +27,7 @@ https://github.com/fogleman/
 * texture map is automatically assembled from individual bitmaps
 * blocks have been changed into objects from list of numbers
 * fast updates are performed only for graphics
+* blocks may be partially filled (i.e. some upper portion will be transparent)
 
 ## How to Play
 
