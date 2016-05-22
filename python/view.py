@@ -59,14 +59,13 @@ class Window(pyglet.window.Window):
 
         # The current block the user can place. Hit num keys to cycle.
         self.block = self.inventory[0]
-        
 
-        
         
         # Convenience list of num keys.
         self.num_keys = [
             key._1, key._2, key._3, key._4, key._5,
             key._6, key._7, key._8, key._9, key._0]
+
 
         # Instance of the model that handles the world.
         self.model = Model()
@@ -81,8 +80,12 @@ class Window(pyglet.window.Window):
             x=10, y=10, anchor_x='left', anchor_y='bottom',
             color=(0, 0, 0, 255))
 
+
+
+
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
+
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
 
@@ -90,9 +93,9 @@ class Window(pyglet.window.Window):
         self.target_block = self.model.hit_test(self.position, self.vector)[0]
 
 
+    def logevents(self):
+        self.push_handlers(pyglet.window.event.WindowEventLogger())
 
-    #def logevents(self):
-    #    self.push_handlers(pyglet.window.event.WindowEventLogger())
 
     def set_exclusive_mouse(self, exclusive):
         """ If `exclusive` is True, the game will capture the mouse, if False
@@ -172,8 +175,8 @@ class Window(pyglet.window.Window):
         sector = sectorize(self.position)
         if sector != self.sector:
             self.model.change_sectors(self.sector, sector)
-            #if self.sector is None:
-            #    self.model.process_entire_queue()
+            if self.sector is None:
+                self.model.process_entire_queue()
             self.sector = sector
         m = 8
         dt = min(dt, 0.2)
@@ -318,6 +321,7 @@ class Window(pyglet.window.Window):
             Number representing any modifying keys that were pressed.
 
         """
+
         if symbol == key.W:
             self.strafe[0] -= 1
         elif symbol == key.S:
@@ -438,6 +442,7 @@ class Window(pyglet.window.Window):
         """
         self.vector = self.get_sight_vector()
         self.target_block = self.model.hit_test(self.position, self.vector)[0]
+
     def draw_focused_block(self):
         """ Draw black edges around the block that is currently under the
         crosshairs.

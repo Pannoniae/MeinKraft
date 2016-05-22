@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 
 # Python standard library imports
-import random
 import time
 from collections import deque
 
@@ -45,9 +44,9 @@ class Model(object):
         # _show_block() and _hide_block() calls
         self.queue = deque()
 
-        self._initialize()
+        self.generate_terrain()
 
-    def _initialize(self):
+    def generate_terrain(self):
         """ Initialize the world by placing all the blocks.
 
         """
