@@ -12,7 +12,7 @@ from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
 # project module imports
-from  .geometry import  cube_vertices, normalize, sectorize, FACES
+from  .geometry import  cube_vertices, normalize, sectorize, FACES, cube_vertices_transparent
 from .blocks import *
 from .constants import TEXTURE_PATH, TICKS_PER_SEC
 
@@ -39,6 +39,12 @@ class Model(object):
 
         # Mapping from sector to a list of positions inside that sector.
         self.sectors = {}
+
+        # A list of blocks the player can place. Hit num keys to cycle.
+        self.inventory = [BRICK, GRASS, SAND, PATH]
+
+        # The current block the user can place. Hit num keys to cycle.
+        self.block = self.inventory[0]
 
         # Simple function queue implementation. The queue is populated with
         # _show_block() and _hide_block() calls
@@ -239,6 +245,9 @@ class Model(object):
         """
         x, y, z = position
         vertex_data = cube_vertices(x, y, z, 0.5)
+        block = self.get_block(position)
+        if block.get_block_type() == "PATH":
+            vertex_data = cube_vertices_transparent(x, y, z, 0.5)
         texture_data = list(texture)
         # create vertex list
         # FIXME Maybe `add_indexed()` should be used instead

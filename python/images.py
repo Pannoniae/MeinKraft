@@ -27,7 +27,7 @@ def image_process():
     path_top = flip_image(Image.open(TEXTURE_PATH_PATH_TOP))
 
     # the origo for pixel coordinates is in the upper left corner
-    texture = Image.new('RGB', import_coords(4, 4))
+    texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
     texture.paste(dirt, import_coords(0, 1))
     texture.paste(sand, import_coords(1, 1))
     texture.paste(stone, import_coords(2, 1))

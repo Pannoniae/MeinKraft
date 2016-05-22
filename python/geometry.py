@@ -16,6 +16,19 @@ def cube_vertices(x, y, z, n):
         x+n,y-n,z-n, x-n,y-n,z-n, x-n,y+n,z-n, x+n,y+n,z-n,  # back
     ]
 
+def cube_vertices_transparent(x, y, z, n):
+    """ A transparent implementation of blocks.
+
+    """
+    qn = n - (n / 8)
+    return [
+        x-n,y+qn,z-n, x-n,y+qn,z+n, x+n,y+qn,z+n, x+n,y+qn,z-n,  # top
+        x-n,y-n,z-n, x+n,y-n,z-n, x+n,y-n,z+n, x-n,y-n,z+n,  # bottom
+        x-n,y-n,z-n, x-n,y-n,z+n, x-n,y+n,z+n, x-n,y+n,z-n,  # left
+        x+n,y-n,z+n, x+n,y-n,z-n, x+n,y+n,z-n, x+n,y+n,z+n,  # right
+        x-n,y-n,z+n, x+n,y-n,z+n, x+n,y+n,z+n, x-n,y+n,z+n,  # front
+        x+n,y-n,z-n, x-n,y-n,z-n, x-n,y+n,z-n, x+n,y+n,z-n,  # back
+    ]
 
 def tex_coord(x, y, n=4):
     """ Return the bounding vertices of the texture square.
