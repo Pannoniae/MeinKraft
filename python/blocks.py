@@ -12,15 +12,15 @@ class Block(object):
     TODO:  extends as needed
     """
     # save memory
-    __slots__ = ["get_texture", "block_type", "get_vertices"]
+    __slots__ = ["get_texture", "get_block_type", "get_vertices"]
 
     @classmethod
     def get_texture(self):
         # abstract
         raise NotImplemented
 
-    @property
-    def block_type(self):
+    @classmethod
+    def get_block_type(self):
         klassname = self.__name__
         return  klassname
 
