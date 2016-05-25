@@ -12,18 +12,18 @@ https://github.com/fogleman/
 
 ## How to run the program for the time being 
 
-*Install Python 2.7
-*    3.x maybe or maybe not do it
-*Install pyglet
-*    run this command from cmd: pip install pyglet
-*Install PyOpenGL
-*  http://pyopengl.sourceforge.net/documentation/installation.html
-*Install Git
-*  Just google for it :)
-*type these commands:
-*    git clone https://bitbucket.org/prisz/meinkraft
-*    cd meinkraft
-*    python main.py
+* Install Python 2.7
+    3.x maybe or maybe not do it
+* Install pyglet
+    run this command from cmd: pip install pyglet
+* Install PyOpenGL
+  http://pyopengl.sourceforge.net/documentation/installation.html
+* Install Git
+  Just google for it :)
+* type these commands:
+    git clone https://bitbucket.org/prisz/meinkraft
+    cd meinkraft
+    python main.py
 
 ## Changes
 
