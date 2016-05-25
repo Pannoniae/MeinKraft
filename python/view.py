@@ -33,6 +33,10 @@ class Window(pyglet.window.Window):
         # right, and 0 otherwise.
         self.strafe = [0, 0]
 
+
+        # When jumping
+        self.jumping = False
+
         # Current (x, y, z) position in the world, specified with floats. Note
         # that, perhaps unlike in math class, the y-axis is the vertical axis.
         self.position = (0, 0, 0)
@@ -254,7 +258,10 @@ class Window(pyglet.window.Window):
                     if face == (0, -1, 0) or face == (0, 1, 0):
                         # You are colliding with the ground or ceiling, so stop
                         # falling / rising.
-                        self.dy = 0
+                        if self.jumping:
+                            self.dy = JUMP_SPEED
+                        else:
+                            self.dy = 0
                     break
         return tuple(p)
 
@@ -331,6 +338,7 @@ class Window(pyglet.window.Window):
         elif symbol == key.D:
             self.strafe[1] += 1
         elif symbol == key.SPACE:
+            self.jumping = True
             if self.dy == 0:
                 self.dy = JUMP_SPEED
         elif symbol == key.ESCAPE:
@@ -361,6 +369,10 @@ class Window(pyglet.window.Window):
             self.strafe[1] += 1
         elif symbol == key.D:
             self.strafe[1] -= 1
+        elif symbol == key.SPACE:
+            self.jumping = False
+
+
 
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
