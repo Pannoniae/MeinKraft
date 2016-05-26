@@ -68,7 +68,7 @@ class PATH(Block):
     @classmethod
     def get_vertices(self, x, y, z):
         # this is not filled completely, the upper 8th is transparent!
-        return cube_vertices(x, y, z, 0.5, 8)
+        return cube_vertices(x, y, z, 0.5, 14)
 
 
 

@@ -3,16 +3,17 @@
 from .constants import SECTOR_SIZE
 
 
-def cube_vertices(x, y, z, n, fill=0):
+def cube_vertices(x, y, z, n, fill=16):
     """
         Return the vertices of the cube at position x, y, z with size 2*n.
 
         fill: what proportion should be the top surface be at
+        It should be noted that fill is computed at every pixel (1/16 block) but n is half a block, so we have to divide by 8.
     """
     if fill == 0:
         qn = n
     else:
-        qn = n - (n / fill)
+        qn = n / 8 * fill
 
     return [
         x-n,y+qn,z-n, x-n,y+qn,z+n, x+n,y+qn,z+n, x+n,y+qn,z-n,  # top
