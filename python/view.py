@@ -179,8 +179,8 @@ class Window(pyglet.window.Window):
         sector = sectorize(self.position)
         if sector != self.sector:
             self.model.change_sectors(self.sector, sector)
-            if self.sector is None:
-                self.model.process_entire_queue()
+            #if self.sector is None:
+            #    self.model.process_entire_queue()
             self.sector = sector
         m = 8
         dt = min(dt, 0.2)
