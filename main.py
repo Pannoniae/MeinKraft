@@ -1,3 +1,11 @@
+# Copyright © 2016 Prisznyák Zsombor <@Pannoniae>
+#This work is free. You can redistribute it and/or modify it under the
+#terms of the Do What The Fuck You Want To Public License, Version 2b,
+#as published by Sam Hocevar and modified by me. See the LICENSE file for more details.
+
+
+
+
 from __future__ import absolute_import
 
 import pyglet
