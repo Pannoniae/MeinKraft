@@ -10,6 +10,9 @@ import pyglet
 from pyglet import image
 from pyglet.graphics import TextureGroup
 from pyglet.gl import *
+from random import randint
+import numpy
+from noise import snoise2
 
 # project module imports
 from  .geometry import normalize, sectorize, FACES
@@ -68,35 +71,6 @@ class Model(object):
                     # create outer walls.
                     for dy in xrange(-2, 3):
                         self.add_block((x, y + dy, z), STONE, immediate=False)
-        #c = s * 4
-        #for x in xrange(-n, n + 1, c):
-        #    for z in xrange(-n, n + 1, c):
-        #        h = random.randint(4, 8)
-        #        for y in xrange(-2, h):
-        #            self.add_block((x, y, z), DIRT, immediate=False)
-        #        self.add_block((x, h, z), GRASS, immediate=False)
-        # generate the hills randomly
-        #o = n - 10
-        #for _ in xrange(120):
-        #    a = random.randint(-o, o)  # x position of the hill
-        #    b = random.randint(-o, o)  # z position of the hill
-        #    c = -1  # base of the hill
-        #    h = random.randint(3, 11)  # height of the hill
-        #    s = random.randint(4, 8)  # 2 * s is the side length of the hill
-        #    v = int(s)
-        #    d = 0.5  # how quickly to taper off the hills
-        #    t = random.choice([GRASS, SAND, BRICK])
-        #    for y in xrange(c, c + h):
-        #        for x in xrange(a - v, a + v + 1):
-        #            for z in xrange(b - v, b + v + 1):
-        #                if (x - a) ** 2 + (z - b) ** 2 > (v + 1) ** 2:
-        #                    continue
-        #                if (x - 0) ** 2 + (z - 0) ** 2 < 5 ** 2:
-        #                    continue
-        #                self.add_block((x, y, z), t, immediate=False)
-        #        s = s - d  # decrement side length so hills taper off
-        #        v = int(s)
-
 
     def hit_test(self, position, vector, max_distance=8):
         """ Line of sight search from current position. If a block is
