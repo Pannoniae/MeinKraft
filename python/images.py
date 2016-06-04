@@ -1,3 +1,6 @@
+import sys
+import time
+
 from PIL import Image
 
 from .constants import *
@@ -27,13 +30,13 @@ def image_process():
         while y <= 4:
             for fn in imgdir:
                 fnpath = imgpath(fn)
-                print(fn, fnpath, x, y)
                 # print(globals()[fnpath])
                 files -= 1
                 if files < 0:
                     break
-                fn = flip_image(Image.open(fnpath))
-                texture.paste(fn, import_coords(x, y))
+                fnimg = flip_image(Image.open(fnpath))
+                texture.paste(fnimg, import_coords(x, y))
+                print('pasted texture ' + fn + ' into texture.png')
                 x += 1
                 if x == 4:
                     y += 1
@@ -43,4 +46,10 @@ def image_process():
         if files < 0:
             break
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
-    texture.save(imgpath2('texture.png'))
+    try:
+        texture.save(imgpath2('texture.png'))
+        print('Successfully created texture.png')
+    except:
+        print('Failed to create texture.png! Maybe check if write-access has given?')
+        time.sleep(1)
+        sys.exit('Texture error')
