@@ -2,6 +2,7 @@ from PIL import Image
 
 from .constants import *
 
+
 def import_coords(x, y):
     # Converting image_process importing values to tex_coords methods.
     x = x * BLOCK_TEXTURE_SIZE
@@ -14,9 +15,8 @@ def flip_image(img):
     return img.transpose(Image.FLIP_TOP_BOTTOM)
 
 
-
 def image_process():
-    #Process the image files to texture.png at every program start.
+    # Process the image files to texture.png at every program start.
     imgfile = []
     texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
     imgdir = os.listdir('blockdata')
@@ -28,7 +28,7 @@ def image_process():
             for fn in imgdir:
                 fnpath = imgpath(fn)
                 print(fn, fnpath, x, y)
-                #print(globals()[fnpath])
+                # print(globals()[fnpath])
                 files -= 1
                 if files < 0:
                     break

@@ -1,7 +1,7 @@
 # config variables
 
-import os.path
 import math
+import os.path
 
 TICKS_PER_SEC = 40
 GAME_TICKS_PER_SEC = 10
@@ -14,7 +14,7 @@ FLYING_SPEED = 15
 BLOCK_TEXTURE_SIZE = 16
 
 GRAVITY = 20.0
-MAX_JUMP_HEIGHT = 1.0 # About the height of a block.
+MAX_JUMP_HEIGHT = 1.0  # About the height of a block.
 # To derive the formula for calculating jump speed, first solve
 #    v_t = v_0 + a * t
 # for the time at which you achieve maximum height, where a is the acceleration
@@ -27,10 +27,13 @@ TERMINAL_VELOCITY = 50
 
 PLAYER_HEIGHT = 2
 
+
 def imgpath(filename):
-    return os.path.join(os.path.dirname((os.path.dirname(__file__))),"blockdata", filename)
+    return os.path.join(os.path.dirname((os.path.dirname(__file__))), "blockdata", filename)
+
 
 def imgpath2(filename):
     return os.path.join(os.path.dirname(os.path.dirname(__file__)), filename)
+
 
 TEXTURE_PATH = imgpath2('texture.png')

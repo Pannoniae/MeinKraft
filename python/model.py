@@ -1,27 +1,20 @@
 # MC world
 from __future__ import absolute_import
-
 # Python standard library imports
 import time
 from collections import deque
-
 # third party imports
 import pyglet
 from pyglet import image
 from pyglet.graphics import TextureGroup
 from pyglet.gl import *
-from random import randint
-import numpy
-from noise import snoise2
-
 # project module imports
-from  .geometry import normalize, sectorize, FACES
+from .geometry import normalize, sectorize, FACES
 from .blocks import *
 from .constants import TEXTURE_PATH, TICKS_PER_SEC
 
 
 class Model(object):
-
     def __init__(self):
 
         # A Batch is a collection of vertex lists for batched rendering.
@@ -166,7 +159,6 @@ class Model(object):
         """
         return self.world.get(position)
 
-
     def check_neighbors(self, position):
         """ Check all blocks surrounding `position` and ensure their visual
         state is current. This means hiding blocks that are not exposed and
@@ -224,8 +216,8 @@ class Model(object):
         # create vertex list
         # FIXME Maybe `add_indexed()` should be used instead
         self._shown[position] = self.batch.add(24, GL_QUADS, self.group,
-            ('v3f/static', vertex_data),
-            ('t2f/static', texture_data))
+                                               ('v3f/static', vertex_data),
+                                               ('t2f/static', texture_data))
 
     def hide_block(self, position, immediate=True):
         """ Hide the block at the given `position`. Hiding does not remove the

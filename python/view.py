@@ -1,11 +1,9 @@
 # MC view
 from __future__ import absolute_import
-
 # third party imports
 import pyglet
 from pyglet.gl import *
 from pyglet.window import key, mouse
-
 # project module imports
 from .constants import *
 from .blocks import *
@@ -14,7 +12,6 @@ from .geometry import sectorize, normalize, cube_vertices, FACES
 
 
 class Window(pyglet.window.Window):
-
     def __init__(self, *args, **kwargs):
 
         super(Window, self).__init__(*args, **kwargs)
@@ -32,7 +29,6 @@ class Window(pyglet.window.Window):
         # otherwise. The second element is -1 when moving left, 1 when moving
         # right, and 0 otherwise.
         self.strafe = [0, 0]
-
 
         # When jumping
         self.jumping = False
@@ -64,28 +60,23 @@ class Window(pyglet.window.Window):
         # The current block the user can place. Hit num keys to cycle.
         self.block = self.inventory[0]
 
-        
         # Convenience list of num keys.
         self.num_keys = [
             key._1, key._2, key._3, key._4, key._5,
             key._6, key._7, key._8, key._9, key._0]
-
 
         # Instance of the model that handles the world.
         self.model = Model()
 
         # The label that is displayed in the top left of the canvas.
         self.label = pyglet.text.Label('', font_name='Arial', font_size=18,
-            x=10, y=self.height - 10, anchor_x='left', anchor_y='top',
-            color=(0, 0, 0, 255))
-            
-        #The label that is displayed in the bottom left of the canvas.
+                                       x=10, y=self.height - 10, anchor_x='left', anchor_y='top',
+                                       color=(0, 0, 0, 255))
+
+        # The label that is displayed in the bottom left of the canvas.
         self.label_bottom = pyglet.text.Label('', font_name='Arial', font_size=18,
-            x=10, y=10, anchor_x='left', anchor_y='bottom',
-            color=(0, 0, 0, 255))
-
-
-
+                                              x=10, y=10, anchor_x='left', anchor_y='bottom',
+                                              color=(0, 0, 0, 255))
 
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
@@ -96,10 +87,8 @@ class Window(pyglet.window.Window):
         self.vector = self.get_sight_vector()
         self.target_block = self.model.hit_test(self.position, self.vector)[0]
 
-
     def logevents(self):
         self.push_handlers(pyglet.window.event.WindowEventLogger())
-
 
     def set_exclusive_mouse(self, exclusive):
         """ If `exclusive` is True, the game will capture the mouse, if False
@@ -179,7 +168,7 @@ class Window(pyglet.window.Window):
         sector = sectorize(self.position)
         if sector != self.sector:
             self.model.change_sectors(self.sector, sector)
-            #if self.sector is None:
+            # if self.sector is None:
             #    self.model.process_entire_queue()
             self.sector = sector
         m = 8
@@ -199,7 +188,7 @@ class Window(pyglet.window.Window):
         """
         # walking
         speed = FLYING_SPEED if self.flying else WALKING_SPEED
-        d = dt * speed # distance covered this tick.
+        d = dt * speed  # distance covered this tick.
         dx, dy, dz = self.get_motion_vector()
         # New position in space, before accounting for gravity.
         dx, dy, dz = dx * d, dy * d, dz * d
@@ -372,8 +361,6 @@ class Window(pyglet.window.Window):
         elif symbol == key.SPACE:
             self.jumping = False
 
-
-
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
 
@@ -386,8 +373,8 @@ class Window(pyglet.window.Window):
         x, y = self.width / 2, self.height / 2
         n = 10
         self.reticle = pyglet.graphics.vertex_list(4,
-            ('v2i', (x - n, y, x + n, y, x, y - n, x, y + n))
-        )
+                                                   ('v2i', (x - n, y, x + n, y, x, y - n, x, y + n))
+                                                   )
 
     def set_2d(self):
         """ Configure OpenGL to draw in 2d.
@@ -419,7 +406,7 @@ class Window(pyglet.window.Window):
         glRotatef(-y, math.cos(math.radians(x)), 0, math.sin(math.radians(x)))
         x, y, z = self.position
         glTranslatef(-x, -y, -z)
-        
+
     def get_targeted_block(self):
         self.vector = self.get_sight_vector()
         position = self.model.hit_test(self.position, self.vector)[0]
@@ -476,7 +463,7 @@ class Window(pyglet.window.Window):
         self.label.text = '%02d/%02d (%.2f, %.2f, %.2f) %d / %d' % (
             pyglet.clock.get_fps(), pyglet.clock.get_fps_limit(), x, y, z,
             len(self.model._shown), len(self.model.world))
-        
+
     def draw_bottom_label(self):
         """ Draw the debug label in the bottom left of the screen.
     
@@ -494,8 +481,6 @@ class Window(pyglet.window.Window):
         glColor3d(0, 0, 0)
         self.reticle.draw(GL_LINES)
 
-
     def setup(self):
         from .gl_setup import setup
         setup()
-
