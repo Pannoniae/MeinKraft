@@ -34,12 +34,3 @@ def imgpath2(filename):
     return os.path.join(os.path.dirname(os.path.dirname(__file__)), filename)
 
 TEXTURE_PATH = imgpath2('texture.png')
-TEXTURE_PATH_DIRT = imgpath('dirt.png')
-TEXTURE_PATH_GRASS_SIDE = imgpath('grass_side.png')
-TEXTURE_PATH_GRASS_TOP = imgpath('grass_top.png')
-TEXTURE_PATH_SAND = imgpath('sand.png')
-TEXTURE_PATH_BRICK = imgpath('brick.png')
-TEXTURE_PATH_STONE = imgpath('stone.png')
-TEXTURE_PATH_PATH_SIDE = imgpath('path_side.png')
-TEXTURE_PATH_PATH_TOP = imgpath('path_top.png')
-TEXTURE_PATH_LOG = imgpath('log.png')

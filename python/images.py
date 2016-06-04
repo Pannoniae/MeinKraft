@@ -1,6 +1,4 @@
 from PIL import Image
-import string
-from
 
 from .constants import *
 
@@ -28,14 +26,13 @@ def image_process():
     while x <= 4:
         while y <= 4:
             for fn in imgdir:
-                fnpath = 'TEXTURE_PATH_' + string.upper(fn)
-                fnpath = fnpath.replace('.PNG', '')
+                fnpath = imgpath(fn)
                 print(fn, fnpath, x, y)
-                print(globals()[fnpath])
+                #print(globals()[fnpath])
                 files -= 1
                 if files < 0:
                     break
-                fn = flip_image(Image.open(globals()[fnpath]))
+                fn = flip_image(Image.open(fnpath))
                 texture.paste(fn, import_coords(x, y))
                 x += 1
                 if x == 4:
