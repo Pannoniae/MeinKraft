@@ -1,4 +1,6 @@
 from PIL import Image
+import string
+from
 
 from .constants import *
 
@@ -10,33 +12,38 @@ def import_coords(x, y):
 
 
 def flip_image(img):
-    " flip an image along the y axis"
+    """ flip an image along the y axis """
     return img.transpose(Image.FLIP_TOP_BOTTOM)
 
 
 
 def image_process():
     #Process the image files to texture.png at every program start.
-    dirt = flip_image(Image.open(TEXTURE_PATH_DIRT))
-    grass_side = flip_image(Image.open(TEXTURE_PATH_GRASS_SIDE))
-    grass_top = flip_image(Image.open(TEXTURE_PATH_GRASS_TOP))
-    sand = flip_image(Image.open(TEXTURE_PATH_SAND))
-    brick = flip_image(Image.open(TEXTURE_PATH_BRICK))
-    stone = flip_image(Image.open(TEXTURE_PATH_STONE))
-    path_side = flip_image(Image.open(TEXTURE_PATH_PATH_SIDE))
-    path_top = flip_image(Image.open(TEXTURE_PATH_PATH_TOP))
-
-    # the origo for pixel coordinates is in the upper left corner
+    imgfile = []
     texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
-    texture.paste(dirt, import_coords(0, 1))
-    texture.paste(sand, import_coords(1, 1))
-    texture.paste(stone, import_coords(2, 1))
-    texture.paste(grass_side, import_coords(0, 0))
-    texture.paste(grass_top, import_coords(1, 0))
-    texture.paste(brick, import_coords(2, 0))
-    texture.paste(path_side, import_coords(0, 2))
-    texture.paste(path_top, import_coords(1, 2))
-    # the origo of the texture coordinate system is at the lower left corner
-    # flip the image
+    imgdir = os.listdir('blockdata')
+    files = len(imgdir)
+    x = 0
+    y = 0
+    while x <= 4:
+        while y <= 4:
+            for fn in imgdir:
+                fnpath = 'TEXTURE_PATH_' + string.upper(fn)
+                fnpath = fnpath.replace('.PNG', '')
+                print(fn, fnpath, x, y)
+                print(globals()[fnpath])
+                files -= 1
+                if files < 0:
+                    break
+                fn = flip_image(Image.open(globals()[fnpath]))
+                texture.paste(fn, import_coords(x, y))
+                x += 1
+                if x == 4:
+                    y += 1
+                    x = 0
+            if files < 0:
+                break
+        if files < 0:
+            break
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
-    texture.save(imgpath('texture.png'))
+    texture.save(imgpath2('texture.png'))

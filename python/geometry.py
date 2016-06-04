@@ -7,7 +7,8 @@ def cube_vertices(x, y, z, n, fill=8):
     """
         Return the vertices of the cube at position x, y, z with size 2*n.
 
-        fill: Can be between -8 and 8. -8 is an empty block, 8 is a full block, 0 is half a block. Exactly, (n = n/16 proportion of the block) fill = n - 8
+        fill: Can be between -8 and 8. -8 is an empty block, 8 is a full block, 0 is half a block.
+        Exactly, (n = n/16 proportion of the block) fill = n - 8
         It should be noted that fill is computed at every pixel (1/16 block) but n is half a block, so we have to divide by 8.
     """
     qn = n / 8 * fill

@@ -22,7 +22,7 @@ class Block(object):
     @classmethod
     def get_block_type(self):
         klassname = self.__name__
-        return  klassname
+        return klassname
 
     @classmethod
     def get_vertices(self, x, y, z):
@@ -33,25 +33,25 @@ class GRASS(Block):
 
     @classmethod
     def get_texture(self):
-        return tex_coords((1, 0), (0, 1), (0, 0))
+        return tex_coords((3, 0), (1, 0), (2, 0))
 
 class SAND(Block):
 
     @classmethod
     def get_texture(self):
-        return tex_coords((1, 1), (1, 1), (1, 1))
+        return tex_coords((1, 2), (1, 2), (1, 2))
 
 class BRICK(Block):
 
     @classmethod
     def get_texture(self):
-        return tex_coords((2, 0), (2, 0), (2, 0))
+        return tex_coords((0, 0), (0, 0), (0, 0))
 
 class STONE(Block):
 
     @classmethod
     def get_texture(self):
-        return tex_coords((2, 1), (2, 1), (2, 1))
+        return tex_coords((1, 3), (1, 3), (1, 3))
 
 class DIRT(Block):
 
@@ -63,13 +63,18 @@ class PATH(Block):
 
     @classmethod
     def get_texture(self):
-        return tex_coords((1, 2), (0, 1), (0, 2))
+        return tex_coords((1, 1), (1, 0), (0, 1))
 
     @classmethod
     def get_vertices(self, x, y, z):
-        # this is not filled completely, the upper 8th is transparent!
-        return cube_vertices(x, y, z, 0.5, 14)
+        # this is not filled completely, the upper 16th is transparent!
+        return cube_vertices(x, y, z, 0.5, 7)
 
+class LOG(Block):
+
+    @classmethod
+    def get_texture(self):
+        return tex_coords((2, 0), (2, 0), (2, 0))
 
 
 # safe for import from *
