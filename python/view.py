@@ -319,6 +319,12 @@ class Window(pyglet.window.Window):
             y = max(-90, min(90, y))
             self.rotation = (x, y)
 
+    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
+        """ Called when the player scrolls the mouse. Used for zooming.
+
+        """
+        pass  # not implemented, and even not decided to implement that
+
     def on_key_press(self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
         mappings.
