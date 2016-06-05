@@ -54,7 +54,7 @@ class Model(object):
         """
         n = 80  # 1/2 width and height of world
         s = 1  # step size
-        y = 0  # initial y height
+        y = 3  # initial y height
         for x in xrange(-n, n + 1, s):
             for z in xrange(-n, n + 1, s):
                 # create a layer stone an grass everywhere.
@@ -64,6 +64,10 @@ class Model(object):
                     # create outer walls.
                     for dy in xrange(-2, 3):
                         self.add_block((x, y + dy, z), STONE, immediate=False)
+        self.add_block((20, 3, 0), BRICK, immediate=False)
+        self.add_block((20, 3, 1), BRICK, immediate=False)
+        self.add_block((20, 4, 0), BRICK, immediate=False)
+        self.add_block((20, 3, -1), BRICK, immediate=False)
 
     def hit_test(self, position, vector, max_distance=8):
         """ Line of sight search from current position. If a block is

@@ -30,12 +30,18 @@ class Window(pyglet.window.Window):
         # right, and 0 otherwise.
         self.strafe = [0, 0]
 
+        # The FOV of the camera, used when zooming. Cannot be lower than 20.
+        self.FOV = 65.0
+
+        # True when the player is zooming, False otherwise.
+        self.zoom = False
+
         # When jumping
         self.jumping = False
 
         # Current (x, y, z) position in the world, specified with floats. Note
         # that, perhaps unlike in math class, the y-axis is the vertical axis.
-        self.position = (0, 0, 0)
+        self.position = (0, 3, 0)
 
         # First element is rotation of the player in the x-z plane (ground
         # plane) measured from the z-axis down. The second is the rotation
@@ -43,7 +49,7 @@ class Window(pyglet.window.Window):
         #
         # The vertical plane rotation ranges from -90 (looking straight down) to
         # 90 (looking straight up). The horizontal rotation range is unbounded.
-        self.rotation = (0, 0)
+        self.rotation = (90, 0)
 
         # Which sector the player is currently in.
         self.sector = None
@@ -204,6 +210,12 @@ class Window(pyglet.window.Window):
         x, y, z = self.position
         x, y, z = self.collide((x + dx, y + dy, z + dz), PLAYER_HEIGHT)
         self.position = (x, y, z)
+        if self.zoom:
+            self.FOV -= 1
+        else:
+            self.FOV += 1
+        self.FOV = max(20, self.FOV)
+        self.FOV = min(65, self.FOV)
 
     def collide(self, position, height):
         """ Checks to see if the player at the given `position` and `height`
@@ -226,7 +238,7 @@ class Window(pyglet.window.Window):
         # have to count as a collision. If 0, touching terrain at all counts as
         # a collision. If .49, you sink into the ground, as if walking through
         # tall grass. If >= .5, you'll fall through the ground.
-        pad = 0.0
+        pad = 0.25
         p = list(position)
         np = normalize(position)
         for face in FACES:  # check all surrounding blocks
@@ -279,6 +291,8 @@ class Window(pyglet.window.Window):
                 # ON OSX, control + left click = right click.
                 if previous:
                     self.model.add_block(previous, self.block)
+                else:
+                    self.zoom = not self.zoom
             elif button == pyglet.window.mouse.LEFT and block:
                 texture = self.model.world[block]
                 if texture != STONE:
@@ -337,6 +351,8 @@ class Window(pyglet.window.Window):
         elif symbol in self.num_keys:
             index = (symbol - self.num_keys[0]) % len(self.inventory)
             self.block = self.inventory[index]
+        elif symbol == key.Z:
+            self.zoom = True
 
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
@@ -360,6 +376,8 @@ class Window(pyglet.window.Window):
             self.strafe[1] -= 1
         elif symbol == key.SPACE:
             self.jumping = False
+        elif symbol == key.Z:
+            self.zoom = False
 
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
@@ -398,7 +416,7 @@ class Window(pyglet.window.Window):
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(65.0, width / float(height), 0.1, 60.0)
+        gluPerspective(self.FOV, width / float(height), 0.1, 60.0)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         x, y = self.rotation
