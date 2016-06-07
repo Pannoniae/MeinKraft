@@ -31,10 +31,13 @@ class Window(pyglet.window.Window):
         self.strafe = [0, 0]
 
         # The FOV of the camera, used when zooming. Cannot be lower than 20.
-        self.FOV = 65.0
+        self.FOV = MAX_FOV
 
         # True when the player is zooming, False otherwise.
         self.zoom = False
+
+        # Variable holding the current zoom phase.
+        self.zoom_state = None
 
         # When jumping
         self.jumping = False
@@ -89,6 +92,7 @@ class Window(pyglet.window.Window):
 
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
+        pyglet.clock.schedule_interval(self.check_zoom, 1.0 / TICKS_PER_SEC)
 
         self.vector = self.get_sight_vector()
         self.target_block = self.model.hit_test(self.position, self.vector)[0]
@@ -210,12 +214,6 @@ class Window(pyglet.window.Window):
         x, y, z = self.position
         x, y, z = self.collide((x + dx, y + dy, z + dz), PLAYER_HEIGHT)
         self.position = (x, y, z)
-        if self.zoom:
-            self.FOV -= 1
-        else:
-            self.FOV += 1
-        self.FOV = max(20, self.FOV)
-        self.FOV = min(65, self.FOV)
 
     def collide(self, position, height):
         """ Checks to see if the player at the given `position` and `height`
@@ -266,6 +264,39 @@ class Window(pyglet.window.Window):
                     break
         return tuple(p)
 
+    def check_zoom(self, dt):
+        """ Runs the zooming script every tick. Used by pyglet to ensure steady tick rate and avoiding using time.sleep()
+        Also, it's a bit clunky, so an explanation:
+
+        There's a few zoom states.
+        'in' means zooming in, 'out' is zooming out. When they're completed, state switches to 'yes' or 'no', accordingly.
+        'toggle' is a special, when it's triggered, it immediately switches to an another state. This is here to prevent
+        creating a getter function.
+
+        """
+        if self.zoom_state == 'in':
+            if self.FOV != MIN_FOV:
+                self.FOV -= 5
+            if self.FOV == MIN_FOV:
+                self.zoom_state = 'yes'
+        if self.zoom_state == 'out':
+            if self.FOV != MAX_FOV:
+                self.FOV += 5
+            if self.FOV == MAX_FOV:
+                self.zoom_state = 'no'
+        if self.zoom_state == 'no':
+            self.FOV = MAX_FOV
+        if self.zoom_state == 'yes':
+            self.FOV = MIN_FOV
+        if self.zoom_state == 'toggle':
+            if self.FOV == MIN_FOV:
+                self.zoom_state = 'out'
+            if self.FOV == MAX_FOV:
+                self.zoom_state = 'in'
+            else:
+                print(
+                'Error when determining zoom state. Maybe you tried to zoom while zooming, or trying to bug the game?')
+
     def on_mouse_press(self, x, y, button, modifiers):
         """ Called when a mouse button is pressed. See pyglet docs for button
         amd modifier mappings.
@@ -292,7 +323,7 @@ class Window(pyglet.window.Window):
                 if previous:
                     self.model.add_block(previous, self.block)
                 else:
-                    self.zoom = not self.zoom
+                    self.zoom_state = 'toggle'
             elif button == pyglet.window.mouse.LEFT and block:
                 texture = self.model.world[block]
                 if texture != STONE:
@@ -323,7 +354,7 @@ class Window(pyglet.window.Window):
         """ Called when the player scrolls the mouse. Used for zooming.
 
         """
-        pass  # not implemented, and even not decided to implement that
+        self.FOV -= scroll_y
 
     def on_key_press(self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
@@ -358,7 +389,7 @@ class Window(pyglet.window.Window):
             index = (symbol - self.num_keys[0]) % len(self.inventory)
             self.block = self.inventory[index]
         elif symbol == key.Z:
-            self.zoom = True
+            self.zoom_state = 'in'
 
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
@@ -383,7 +414,7 @@ class Window(pyglet.window.Window):
         elif symbol == key.SPACE:
             self.jumping = False
         elif symbol == key.Z:
-            self.zoom = False
+            self.zoom_state = 'out'
 
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
@@ -494,9 +525,7 @@ class Window(pyglet.window.Window):
         """
         block = self.get_targeted_block()
         if block:
-            self.label_bottom.text = '%s block' % block.get_block_type()
-        else:
-            self.label_bottom.text = 'No block in sight'
+            self.label_bottom.text = '%s block, zoomtype %s' % (block.get_block_type(), self.zoom_state)
 
     def draw_reticle(self):
         """ Draw the crosshairs in the center of the screen.

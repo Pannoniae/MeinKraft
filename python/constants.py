@@ -26,6 +26,8 @@ JUMP_SPEED = math.sqrt(2 * GRAVITY * MAX_JUMP_HEIGHT)
 TERMINAL_VELOCITY = 50
 
 PLAYER_HEIGHT = 2
+MAX_FOV = 80
+MIN_FOV = 20
 
 
 def imgpath(filename):
