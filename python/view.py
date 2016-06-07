@@ -33,9 +33,6 @@ class Window(pyglet.window.Window):
         # The FOV of the camera, used when zooming. Cannot be lower than 20.
         self.FOV = MAX_FOV
 
-        # True when the player is zooming, False otherwise.
-        self.zoom = False
-
         # Variable holding the current zoom phase.
         self.zoom_state = None
 
