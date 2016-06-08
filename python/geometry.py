@@ -3,26 +3,25 @@
 from .constants import SECTOR_SIZE
 
 
-def cube_vertices(x, y, z, n, fill=16):
+def cube_vertices(x, y, z, n, fill=8):
     """
         Return the vertices of the cube at position x, y, z with size 2*n.
 
-        fill: what proportion should be the top surface be at
+        fill: Can be between -8 and 8. -8 is an empty block, 8 is a full block, 0 is half a block.
+        Exactly, (n = n/16 proportion of the block) fill = n - 8
         It should be noted that fill is computed at every pixel (1/16 block) but n is half a block, so we have to divide by 8.
     """
-    if fill == 0:
-        qn = n
-    else:
-        qn = n / 8 * fill
+    qn = n / 8 * fill
 
     return [
-        x-n,y+qn,z-n, x-n,y+qn,z+n, x+n,y+qn,z+n, x+n,y+qn,z-n,  # top
-        x-n,y-n,z-n, x+n,y-n,z-n, x+n,y-n,z+n, x-n,y-n,z+n,  # bottom
-        x-n,y-n,z-n, x-n,y-n,z+n, x-n,y+n,z+n, x-n,y+n,z-n,  # left
-        x+n,y-n,z+n, x+n,y-n,z-n, x+n,y+n,z-n, x+n,y+n,z+n,  # right
-        x-n,y-n,z+n, x+n,y-n,z+n, x+n,y+n,z+n, x-n,y+n,z+n,  # front
-        x+n,y-n,z-n, x-n,y-n,z-n, x-n,y+n,z-n, x+n,y+n,z-n,  # back
+        x - n, y + qn, z - n, x - n, y + qn, z + n, x + n, y + qn, z + n, x + n, y + qn, z - n,  # top
+        x - n, y - n, z - n, x + n, y - n, z - n, x + n, y - n, z + n, x - n, y - n, z + n,  # bottom
+        x - n, y - n, z - n, x - n, y - n, z + n, x - n, y + n, z + n, x - n, y + n, z - n,  # left
+        x + n, y - n, z + n, x + n, y - n, z - n, x + n, y + n, z - n, x + n, y + n, z + n,  # right
+        x - n, y - n, z + n, x + n, y - n, z + n, x + n, y + n, z + n, x - n, y + n, z + n,  # front
+        x + n, y - n, z - n, x - n, y - n, z - n, x - n, y + n, z - n, x + n, y + n, z - n,  # back
     ]
+
 
 def tex_coord(x, y, n=4):
     """ Return the bounding vertices of the texture square.
@@ -48,14 +47,13 @@ def tex_coords(top, bottom, side):
     return result
 
 
-
 FACES = [
-    ( 0, 1, 0),
-    ( 0,-1, 0),
+    (0, 1, 0),
+    (0, -1, 0),
     (-1, 0, 0),
-    ( 1, 0, 0),
-    ( 0, 0, 1),
-    ( 0, 0,-1),
+    (1, 0, 0),
+    (0, 0, 1),
+    (0, 0, -1),
 ]
 
 

@@ -1,24 +1,20 @@
 # MC world
 from __future__ import absolute_import
-
 # Python standard library imports
 import time
 from collections import deque
-
 # third party imports
 import pyglet
 from pyglet import image
 from pyglet.graphics import TextureGroup
 from pyglet.gl import *
-
 # project module imports
-from  .geometry import normalize, sectorize, FACES
+from .geometry import normalize, sectorize, FACES
 from .blocks import *
 from .constants import TEXTURE_PATH, TICKS_PER_SEC
 
 
 class Model(object):
-
     def __init__(self):
 
         # A Batch is a collection of vertex lists for batched rendering.
@@ -58,7 +54,7 @@ class Model(object):
         """
         n = 80  # 1/2 width and height of world
         s = 1  # step size
-        y = 0  # initial y height
+        y = 3  # initial y height
         for x in xrange(-n, n + 1, s):
             for z in xrange(-n, n + 1, s):
                 # create a layer stone an grass everywhere.
@@ -68,35 +64,10 @@ class Model(object):
                     # create outer walls.
                     for dy in xrange(-2, 3):
                         self.add_block((x, y + dy, z), STONE, immediate=False)
-        #c = s * 4
-        #for x in xrange(-n, n + 1, c):
-        #    for z in xrange(-n, n + 1, c):
-        #        h = random.randint(4, 8)
-        #        for y in xrange(-2, h):
-        #            self.add_block((x, y, z), DIRT, immediate=False)
-        #        self.add_block((x, h, z), GRASS, immediate=False)
-        # generate the hills randomly
-        #o = n - 10
-        #for _ in xrange(120):
-        #    a = random.randint(-o, o)  # x position of the hill
-        #    b = random.randint(-o, o)  # z position of the hill
-        #    c = -1  # base of the hill
-        #    h = random.randint(3, 11)  # height of the hill
-        #    s = random.randint(4, 8)  # 2 * s is the side length of the hill
-        #    v = int(s)
-        #    d = 0.5  # how quickly to taper off the hills
-        #    t = random.choice([GRASS, SAND, BRICK])
-        #    for y in xrange(c, c + h):
-        #        for x in xrange(a - v, a + v + 1):
-        #            for z in xrange(b - v, b + v + 1):
-        #                if (x - a) ** 2 + (z - b) ** 2 > (v + 1) ** 2:
-        #                    continue
-        #                if (x - 0) ** 2 + (z - 0) ** 2 < 5 ** 2:
-        #                    continue
-        #                self.add_block((x, y, z), t, immediate=False)
-        #        s = s - d  # decrement side length so hills taper off
-        #        v = int(s)
-
+        self.add_block((20, 3, 0), BRICK, immediate=False)
+        self.add_block((20, 3, 1), BRICK, immediate=False)
+        self.add_block((20, 4, 0), BRICK, immediate=False)
+        self.add_block((20, 3, -1), BRICK, immediate=False)
 
     def hit_test(self, position, vector, max_distance=8):
         """ Line of sight search from current position. If a block is
@@ -192,7 +163,6 @@ class Model(object):
         """
         return self.world.get(position)
 
-
     def check_neighbors(self, position):
         """ Check all blocks surrounding `position` and ensure their visual
         state is current. This means hiding blocks that are not exposed and
@@ -250,8 +220,8 @@ class Model(object):
         # create vertex list
         # FIXME Maybe `add_indexed()` should be used instead
         self._shown[position] = self.batch.add(24, GL_QUADS, self.group,
-            ('v3f/static', vertex_data),
-            ('t2f/static', texture_data))
+                                               ('v3f/static', vertex_data),
+                                               ('t2f/static', texture_data))
 
     def hide_block(self, position, immediate=True):
         """ Hide the block at the given `position`. Hiding does not remove the

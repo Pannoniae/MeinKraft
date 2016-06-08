@@ -1,11 +1,9 @@
 # MC view
 from __future__ import absolute_import
-
 # third party imports
 import pyglet
 from pyglet.gl import *
 from pyglet.window import key, mouse
-
 # project module imports
 from .constants import *
 from .blocks import *
@@ -14,7 +12,6 @@ from .geometry import sectorize, normalize, cube_vertices, FACES
 
 
 class Window(pyglet.window.Window):
-
     def __init__(self, *args, **kwargs):
 
         super(Window, self).__init__(*args, **kwargs)
@@ -33,13 +30,18 @@ class Window(pyglet.window.Window):
         # right, and 0 otherwise.
         self.strafe = [0, 0]
 
+        # The FOV of the camera, used when zooming. Cannot be lower than 20.
+        self.FOV = MAX_FOV
+
+        # Variable holding the current zoom phase.
+        self.zoom_state = None
 
         # When jumping
         self.jumping = False
 
         # Current (x, y, z) position in the world, specified with floats. Note
         # that, perhaps unlike in math class, the y-axis is the vertical axis.
-        self.position = (0, 0, 0)
+        self.position = (0, 3, 0)
 
         # First element is rotation of the player in the x-z plane (ground
         # plane) measured from the z-axis down. The second is the rotation
@@ -47,7 +49,7 @@ class Window(pyglet.window.Window):
         #
         # The vertical plane rotation ranges from -90 (looking straight down) to
         # 90 (looking straight up). The horizontal rotation range is unbounded.
-        self.rotation = (0, 0)
+        self.rotation = (90, 0)
 
         # Which sector the player is currently in.
         self.sector = None
@@ -64,42 +66,36 @@ class Window(pyglet.window.Window):
         # The current block the user can place. Hit num keys to cycle.
         self.block = self.inventory[0]
 
-        
         # Convenience list of num keys.
         self.num_keys = [
             key._1, key._2, key._3, key._4, key._5,
             key._6, key._7, key._8, key._9, key._0]
-
 
         # Instance of the model that handles the world.
         self.model = Model()
 
         # The label that is displayed in the top left of the canvas.
         self.label = pyglet.text.Label('', font_name='Arial', font_size=18,
-            x=10, y=self.height - 10, anchor_x='left', anchor_y='top',
-            color=(0, 0, 0, 255))
-            
-        #The label that is displayed in the bottom left of the canvas.
+                                       x=10, y=self.height - 10, anchor_x='left', anchor_y='top',
+                                       color=(0, 0, 0, 255))
+
+        # The label that is displayed in the bottom left of the canvas.
         self.label_bottom = pyglet.text.Label('', font_name='Arial', font_size=18,
-            x=10, y=10, anchor_x='left', anchor_y='bottom',
-            color=(0, 0, 0, 255))
-
-
-
+                                              x=10, y=10, anchor_x='left', anchor_y='bottom',
+                                              color=(0, 0, 0, 255))
 
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
 
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
+        pyglet.clock.schedule_interval(self.check_zoom, 1.0 / TICKS_PER_SEC)
 
         self.vector = self.get_sight_vector()
         self.target_block = self.model.hit_test(self.position, self.vector)[0]
 
-
     def logevents(self):
         self.push_handlers(pyglet.window.event.WindowEventLogger())
-
 
     def set_exclusive_mouse(self, exclusive):
         """ If `exclusive` is True, the game will capture the mouse, if False
@@ -179,8 +175,8 @@ class Window(pyglet.window.Window):
         sector = sectorize(self.position)
         if sector != self.sector:
             self.model.change_sectors(self.sector, sector)
-            if self.sector is None:
-                self.model.process_entire_queue()
+            # if self.sector is None:
+            #    self.model.process_entire_queue()
             self.sector = sector
         m = 8
         dt = min(dt, 0.2)
@@ -199,7 +195,7 @@ class Window(pyglet.window.Window):
         """
         # walking
         speed = FLYING_SPEED if self.flying else WALKING_SPEED
-        d = dt * speed # distance covered this tick.
+        d = dt * speed  # distance covered this tick.
         dx, dy, dz = self.get_motion_vector()
         # New position in space, before accounting for gravity.
         dx, dy, dz = dx * d, dy * d, dz * d
@@ -237,7 +233,7 @@ class Window(pyglet.window.Window):
         # have to count as a collision. If 0, touching terrain at all counts as
         # a collision. If .49, you sink into the ground, as if walking through
         # tall grass. If >= .5, you'll fall through the ground.
-        pad = 0.0
+        pad = 0.25
         p = list(position)
         np = normalize(position)
         for face in FACES:  # check all surrounding blocks
@@ -265,6 +261,39 @@ class Window(pyglet.window.Window):
                     break
         return tuple(p)
 
+    def check_zoom(self, dt):
+        """ Runs the zooming script every tick. Used by pyglet to ensure steady tick rate and avoiding using time.sleep()
+        Also, it's a bit clunky, so an explanation:
+
+        There's a few zoom states.
+        'in' means zooming in, 'out' is zooming out. When they're completed, state switches to 'yes' or 'no', accordingly.
+        'toggle' is a special, when it's triggered, it immediately switches to an another state. This is here to prevent
+        creating a getter function.
+
+        """
+        if self.zoom_state == 'in':
+            if self.FOV != MIN_FOV:
+                self.FOV -= 5
+            if self.FOV == MIN_FOV:
+                self.zoom_state = 'yes'
+        if self.zoom_state == 'out':
+            if self.FOV != MAX_FOV:
+                self.FOV += 5
+            if self.FOV == MAX_FOV:
+                self.zoom_state = 'no'
+        if self.zoom_state == 'no':
+            self.FOV = MAX_FOV
+        if self.zoom_state == 'yes':
+            self.FOV = MIN_FOV
+        if self.zoom_state == 'toggle':
+            if self.FOV == MIN_FOV:
+                self.zoom_state = 'out'
+            if self.FOV == MAX_FOV:
+                self.zoom_state = 'in'
+            else:
+                print(
+                'Error when determining zoom state. Maybe you tried to zoom while zooming, or trying to bug the game?')
+
     def on_mouse_press(self, x, y, button, modifiers):
         """ Called when a mouse button is pressed. See pyglet docs for button
         amd modifier mappings.
@@ -290,6 +319,8 @@ class Window(pyglet.window.Window):
                 # ON OSX, control + left click = right click.
                 if previous:
                     self.model.add_block(previous, self.block)
+                else:
+                    self.zoom_state = 'toggle'
             elif button == pyglet.window.mouse.LEFT and block:
                 texture = self.model.world[block]
                 if texture != STONE:
@@ -315,6 +346,12 @@ class Window(pyglet.window.Window):
             x, y = x + dx * m, y + dy * m
             y = max(-90, min(90, y))
             self.rotation = (x, y)
+
+    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
+        """ Called when the player scrolls the mouse. Used for zooming.
+
+        """
+        self.FOV -= scroll_y
 
     def on_key_press(self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
@@ -348,6 +385,8 @@ class Window(pyglet.window.Window):
         elif symbol in self.num_keys:
             index = (symbol - self.num_keys[0]) % len(self.inventory)
             self.block = self.inventory[index]
+        elif symbol == key.Z:
+            self.zoom_state = 'in'
 
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
@@ -371,8 +410,8 @@ class Window(pyglet.window.Window):
             self.strafe[1] -= 1
         elif symbol == key.SPACE:
             self.jumping = False
-
-
+        elif symbol == key.Z:
+            self.zoom_state = 'out'
 
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
@@ -386,8 +425,8 @@ class Window(pyglet.window.Window):
         x, y = self.width / 2, self.height / 2
         n = 10
         self.reticle = pyglet.graphics.vertex_list(4,
-            ('v2i', (x - n, y, x + n, y, x, y - n, x, y + n))
-        )
+                                                   ('v2i', (x - n, y, x + n, y, x, y - n, x, y + n))
+                                                   )
 
     def set_2d(self):
         """ Configure OpenGL to draw in 2d.
@@ -411,7 +450,7 @@ class Window(pyglet.window.Window):
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(65.0, width / float(height), 0.1, 60.0)
+        gluPerspective(self.FOV, width / float(height), 0.1, 60.0)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         x, y = self.rotation
@@ -419,7 +458,7 @@ class Window(pyglet.window.Window):
         glRotatef(-y, math.cos(math.radians(x)), 0, math.sin(math.radians(x)))
         x, y, z = self.position
         glTranslatef(-x, -y, -z)
-        
+
     def get_targeted_block(self):
         self.vector = self.get_sight_vector()
         position = self.model.hit_test(self.position, self.vector)[0]
@@ -476,16 +515,14 @@ class Window(pyglet.window.Window):
         self.label.text = '%02d/%02d (%.2f, %.2f, %.2f) %d / %d' % (
             pyglet.clock.get_fps(), pyglet.clock.get_fps_limit(), x, y, z,
             len(self.model._shown), len(self.model.world))
-        
+
     def draw_bottom_label(self):
         """ Draw the debug label in the bottom left of the screen.
     
         """
         block = self.get_targeted_block()
         if block:
-            self.label_bottom.text = '%s block' % block.get_block_type()
-        else:
-            self.label_bottom.text = 'No block in sight'
+            self.label_bottom.text = '%s block, zoomtype %s' % (block.get_block_type(), self.zoom_state)
 
     def draw_reticle(self):
         """ Draw the crosshairs in the center of the screen.
@@ -494,8 +531,6 @@ class Window(pyglet.window.Window):
         glColor3d(0, 0, 0)
         self.reticle.draw(GL_LINES)
 
-
     def setup(self):
         from .gl_setup import setup
         setup()
-

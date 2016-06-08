@@ -1,4 +1,3 @@
-
 from pyglet.gl import *
 
 
