@@ -18,10 +18,12 @@ https://github.com/fogleman/
 *    run this command from cmd: pip install pyglet
 * Install PyOpenGL
 *  http://pyopengl.sourceforge.net/documentation/installation.html
+* Install noise
+* pip install noise
 * Install Git
 *  Just google for it :)
 * type these commands:
-*    git clone https://bitbucket.org/Pannoniae/meinkraft
+*    git clone https://bitbucket.org/prisz/meinkraft
 *    cd meinkraft
 *    python main.py
 
@@ -29,9 +31,13 @@ https://github.com/fogleman/
 
 * code restructuring
 * texture map is automatically assembled from individual bitmaps
-* blocks have been changed into objects from list of numbers
+* blocks have been changed into objects
 * fast updates are performed only for graphics
-* blocks may be transparent (i.e. can have a shape)
+* blocks may be partially transparent (i.e. they can be filled in only up to some level)
+* player may zoom in and out
+* player may jump continuously
+
+
 
 ## How to Play
 

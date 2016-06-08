@@ -11,8 +11,8 @@ from pyglet.gl import *
 # project module imports
 from .geometry import normalize, sectorize, FACES
 from .blocks import *
-from .constants import TEXTURE_PATH, TICKS_PER_SEC
-
+from .constants import TICKS_PER_SEC
+from .images import TEXTURE_PATH
 
 class Model(object):
     def __init__(self):

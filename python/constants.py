@@ -1,7 +1,6 @@
 # config variables
 
 import math
-import os.path
 
 TICKS_PER_SEC = 40
 GAME_TICKS_PER_SEC = 10
@@ -29,13 +28,3 @@ PLAYER_HEIGHT = 2
 MAX_FOV = 80
 MIN_FOV = 20
 
-
-def imgpath(filename):
-    return os.path.join(os.path.dirname((os.path.dirname(__file__))), "blockdata", filename)
-
-
-def imgpath2(filename):
-    return os.path.join(os.path.dirname(os.path.dirname(__file__)), filename)
-
-
-TEXTURE_PATH = imgpath2('texture.png')

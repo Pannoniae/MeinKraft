@@ -1,10 +1,19 @@
+import os.path
 import sys
 import time
 
 from PIL import Image
 
-from .constants import *
+from .constants import BLOCK_TEXTURE_SIZE
 
+
+def imgpath(filename):
+    return os.path.join(os.path.dirname(os.path.dirname(__file__)), "blockdata", filename)
+
+def texture_path(filename):
+    return os.path.join(os.path.dirname(os.path.dirname(__file__)), filename)
+
+TEXTURE_PATH = texture_path('texture.png')
 
 def import_coords(x, y):
     # Converting image_process importing values to tex_coords methods.
@@ -22,7 +31,8 @@ def image_process():
     # Process the image files to texture.png at every program start.
     imgfile = []
     texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
-    imgdir = os.listdir('blockdata')
+    imgdir = sorted(os.listdir('blockdata'))
+    print(imgdir)
     files = len(imgdir)
     x = 0
     y = 0
@@ -47,7 +57,7 @@ def image_process():
             break
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
     try:
-        texture.save(imgpath2('texture.png'))
+        texture.save(TEXTURE_PATH)
         print('Successfully created texture.png')
     except:
         print('Failed to create texture.png! Maybe check if write-access has given?')
