@@ -10,7 +10,10 @@ from .constants import BLOCK_TEXTURE_SIZE
 def imgpath(filename):
     return os.path.join(os.path.dirname(os.path.dirname(__file__)), "blockdata", filename)
 
-TEXTURE_PATH = imgpath('texture.png')
+def texture_path(filename):
+    return os.path.join(os.path.dirname(os.path.dirname(__file__)), filename)
+
+TEXTURE_PATH = texture_path('texture.png')
 
 def import_coords(x, y):
     # Converting image_process importing values to tex_coords methods.
