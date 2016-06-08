@@ -31,7 +31,8 @@ def image_process():
     # Process the image files to texture.png at every program start.
     imgfile = []
     texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
-    imgdir = os.listdir('blockdata')
+    imgdir = sorted(os.listdir('blockdata'))
+    print(imgdir)
     files = len(imgdir)
     x = 0
     y = 0
