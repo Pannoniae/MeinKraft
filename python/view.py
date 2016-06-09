@@ -292,7 +292,7 @@ class Window(pyglet.window.Window):
                 self.zoom_state = 'in'
             else:
                 print(
-                'Error when determining zoom state. Maybe you tried to zoom while zooming, or trying to bug the game?')
+                'Error when determining zoom state. Maybe you tried to zoom while zooming, or trying to find bugs?')
 
     def on_mouse_press(self, x, y, button, modifiers):
         """ Called when a mouse button is pressed. See pyglet docs for button
@@ -424,8 +424,9 @@ class Window(pyglet.window.Window):
             self.reticle.delete()
         x, y = self.width / 2, self.height / 2
         n = 10
-        self.reticle = pyglet.graphics.vertex_list(4,
-                                                   ('v2i', (x - n, y, x + n, y, x, y - n, x, y + n))
+        s = 2.5 # a shift from the middle
+        self.reticle = pyglet.graphics.vertex_list(8,
+                                                   ('v2f', (x - n, y, x - s, y, x + s, y, x + n, y, x, y - n, x, y - s, x, y + s, x, y + n))
                                                    )
 
     def set_2d(self):
