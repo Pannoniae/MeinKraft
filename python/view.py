@@ -57,6 +57,9 @@ class Window(pyglet.window.Window):
         # The crosshairs at the center of the screen.
         self.reticle = None
 
+        # The reticle's transparency, it is transparent when scoping in.
+        self.reticle_transparency = 1.0
+
         # Velocity in the y (upward) direction.
         self.dy = 0
 
@@ -273,12 +276,14 @@ class Window(pyglet.window.Window):
         """
         if self.zoom_state == 'in':
             if self.FOV != MIN_FOV:
-                self.FOV -= 5
+                self.FOV -= 6
+                self.reticle_transparency-= 0.1
             if self.FOV == MIN_FOV:
                 self.zoom_state = 'yes'
         if self.zoom_state == 'out':
             if self.FOV != MAX_FOV:
-                self.FOV += 5
+                self.FOV += 6
+                self.reticle_transparency += 0.1
             if self.FOV == MAX_FOV:
                 self.zoom_state = 'no'
         if self.zoom_state == 'no':
@@ -529,7 +534,7 @@ class Window(pyglet.window.Window):
         """ Draw the crosshairs in the center of the screen.
 
         """
-        glColor3d(0, 0, 0)
+        glColor4d(0, 0, 0, self.reticle_transparency)
         self.reticle.draw(GL_LINES)
 
     def setup(self):
