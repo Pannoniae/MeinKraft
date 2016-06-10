@@ -8,10 +8,12 @@ from pyglet.window import key, mouse
 from .constants import *
 from .blocks import *
 from .model import Model
+from .bullet import Bullet
 from .geometry import sectorize, normalize, cube_vertices, FACES
 
 
 class Window(pyglet.window.Window):
+
     def __init__(self, *args, **kwargs):
 
         super(Window, self).__init__(*args, **kwargs)
@@ -63,6 +65,12 @@ class Window(pyglet.window.Window):
         # Velocity in the y (upward) direction.
         self.dy = 0
 
+        # Velocity in the x (forward) direction.
+        self.dx = 0
+
+        # Velocity in the z (sideways) direction.
+        self.dz = 0
+
         # A list of blocks the player can place. Hit num keys to cycle.
         self.inventory = [BRICK, GRASS, SAND, PATH]
 
@@ -77,10 +85,10 @@ class Window(pyglet.window.Window):
         # Instance of the model that handles the world.
         self.model = Model()
 
-        from .bullet import Bullet
+
 
         # Instance of the bullet physics that handles the weapons.
-        self.bullet = Bullet()
+        self.bullet = Bullet(self)
 
         # The label that is displayed in the top left of the canvas.
         self.label = pyglet.text.Label('', font_name='Arial', font_size=18,
@@ -143,10 +151,12 @@ class Window(pyglet.window.Window):
 
         """
         if any(self.strafe):
+
             x, y = self.rotation
             strafe = math.degrees(math.atan2(*self.strafe))
             y_angle = math.radians(y)
             x_angle = math.radians(x + strafe)
+
             if self.flying:
                 m = math.cos(y_angle)
                 dy = math.sin(y_angle)

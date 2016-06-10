@@ -29,10 +29,8 @@ def flip_image(img):
 
 def image_process():
     # Process the image files to texture.png at every program start.
-    imgfile = []
     texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
     imgdir = sorted(os.listdir('blockdata'))
-    print(imgdir)
     files = len(imgdir)
     x = 0
     y = 0
@@ -40,13 +38,12 @@ def image_process():
         while y <= 4:
             for fn in imgdir:
                 fnpath = imgpath(fn)
-                # print(globals()[fnpath])
                 files -= 1
                 if files < 0:
                     break
                 fnimg = flip_image(Image.open(fnpath))
                 texture.paste(fnimg, import_coords(x, y))
-                print('Pasted texture ' + fn + ' into textures' + ' with coords ' + str(x) + ', ' + str(y))
+                print('Pasted texture {filename}  into textures with coords {x}, {y}'.format(filename=fn, x=x, y=y))
                 x += 1
                 if x == 4:
                     y += 1
