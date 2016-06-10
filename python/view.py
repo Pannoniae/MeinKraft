@@ -508,7 +508,7 @@ class Window(pyglet.window.Window):
         if self.target_block:
             x, y, z = self.target_block
             glPushAttrib(GL_ENABLE_BIT)
-            glLineStipple(1, 0x00FF)
+            glLineStipple(1, 0x17AF)
             glEnable(GL_LINE_STIPPLE)
             vertex_data = cube_vertices(x, y, z, 0.51)
             glColor3d(0, 0, 0)
