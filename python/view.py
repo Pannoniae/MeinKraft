@@ -11,7 +11,7 @@ from .model import Model
 from .player import Player
 
 from .bullet import Bullet
-from .geometry import sectorize, cube_vertices
+from .geometry import cube_vertices
 
 
 
@@ -383,7 +383,8 @@ class Window(pyglet.window.Window):
         """
         block = self.get_targeted_block()
         if block:
-            self.label_bottom.text = '%s block, zoomtype %s' % (block.get_block_type(), self.zoom_state)
+            self.label_bottom.text = '%s block, zoom %s, flying=%s' % (block.get_block_type(),
+                                                                       self.zoom_state, self.player.flying)
 
     def draw_reticle(self):
         """ Draw the crosshairs in the center of the screen.

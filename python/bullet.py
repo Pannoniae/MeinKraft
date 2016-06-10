@@ -20,5 +20,5 @@ class Bullet(object):
 
     def test(self):
 
-        print("parent ", self.game.position)
+        print("parent ", self.game.player.position)
         print("me ", self.position)
