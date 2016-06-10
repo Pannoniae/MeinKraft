@@ -277,7 +277,7 @@ class Window(pyglet.window.Window):
         if self.zoom_state == 'in':
             if self.FOV != MIN_FOV:
                 self.FOV -= 6
-                self.reticle_transparency-= 0.1
+                self.reticle_transparency -= 0.1
             if self.FOV == MIN_FOV:
                 self.zoom_state = 'yes'
         if self.zoom_state == 'out':
@@ -507,11 +507,15 @@ class Window(pyglet.window.Window):
         """
         if self.target_block:
             x, y, z = self.target_block
+            glPushAttrib(GL_ENABLE_BIT)
+            glLineStipple(1, 0x00FF)
+            glEnable(GL_LINE_STIPPLE)
             vertex_data = cube_vertices(x, y, z, 0.51)
             glColor3d(0, 0, 0)
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
             pyglet.graphics.draw(24, GL_QUADS, ('v3f/static', vertex_data))
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+            glPopAttrib()
 
     def draw_label(self):
         """ Draw the label in the top left of the screen.
