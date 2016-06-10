@@ -77,6 +77,11 @@ class Window(pyglet.window.Window):
         # Instance of the model that handles the world.
         self.model = Model()
 
+        from .bullet import Bullet
+
+        # Instance of the bullet physics that handles the weapons.
+        self.bullet = Bullet()
+
         # The label that is displayed in the top left of the canvas.
         self.label = pyglet.text.Label('', font_name='Arial', font_size=18,
                                        x=10, y=self.height - 10, anchor_x='left', anchor_y='top',
@@ -93,6 +98,8 @@ class Window(pyglet.window.Window):
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.check_zoom, 1.0 / TICKS_PER_SEC)
+
+        self.bullet.test()
 
         self.vector = self.get_sight_vector()
         self.target_block = self.model.hit_test(self.position, self.vector)[0]
