@@ -1,9 +1,9 @@
 from __future__ import absolute_import
 
 class Bullet(object):
-    def __init__(self, parentwindow):
+    def __init__(self, game):
 
-        self.parentwindow = parentwindow
+        self.game = game
 
         # The velocity of the bullet in the x, y, z directions.
         self.velocity = (0, 0, 0)
@@ -20,5 +20,5 @@ class Bullet(object):
 
     def test(self):
 
-        print("parent ", self.parentwindow.position)
+        print("parent ", self.game.position)
         print("me ", self.position)
