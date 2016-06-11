@@ -72,7 +72,42 @@ class ZoomController(object):
                 'Error when determining zoom state. Did you try to zoom in zoom mode or are you debugging the code?')
 
 
+    def on_key_press(self, symbol, modifiers):
+        """ Called when the player presses a key. See pyglet docs for key
+        mappings.
 
+        Parameters
+        ----------
+        symbol : int
+            Number representing the key that was pressed.
+        modifiers : int
+            Number representing any modifying keys that were pressed.
+
+        """
+        if symbol == key.Z:
+            self.zoom_state = 'in'
+
+
+    def on_key_release(self, symbol, modifiers):
+        """ Called when the player releases a key. See pyglet docs for key
+        mappings.
+
+        Parameters
+        ----------
+        symbol : int
+            Number representing the key that was pressed.
+        modifiers : int
+            Number representing any modifying keys that were pressed.
+
+        """
+        if symbol == key.Z:
+            self.zoom_state = 'out'
+
+
+    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
+        """ Called when the player scrolls the mouse. Used for zooming.
+        """
+        self.zoom_in_out(scroll_y)
 
 
 
@@ -213,11 +248,6 @@ class GameController(ZoomController, pyglet.window.Window):
             self.player.move(x,y, dx, dy)
 
 
-    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
-        """ Called when the player scrolls the mouse. Used for zooming.
-        """
-
-        self.zoom_in_out(scroll_y)
 
     def on_key_press(self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
@@ -247,8 +277,8 @@ class GameController(ZoomController, pyglet.window.Window):
             self.player.toggle_flying()
         elif symbol in self.num_keys:
             self.change_player_block(symbol)
-        elif symbol == key.Z:
-            self.zoom_state = 'in'
+
+        ZoomController.on_key_press(self, symbol, modifiers)
 
 
     def change_player_block(self, key_symbol):
@@ -277,8 +307,8 @@ class GameController(ZoomController, pyglet.window.Window):
             self.player.move_left()
         elif symbol == key.SPACE:
             self.player.jumping = False
-        elif symbol == key.Z:
-            self.zoom_state = 'out'
+
+        ZoomController.on_key_release(self, symbol, modifiers)
 
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
