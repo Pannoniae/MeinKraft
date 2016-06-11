@@ -189,9 +189,6 @@ class Player(object):
         # walking
         speed = FLYING_SPEED if self.flying else WALKING_SPEED
         d = dt * speed  # distance covered this tick.
-        print ("speed ", speed)
-        print ("distance ", d)
-        print ("dt ", dt)
         dx, dy, dz = self.get_motion_vector()
         # New position in space, before accounting for gravity.
         dx, dy, dz = dx * d, dy * d, dz * d

@@ -1,3 +1,4 @@
+import hashlib
 import os.path
 import sys
 import time
@@ -53,6 +54,16 @@ def image_process():
         if files < 0:
             break
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
+    # Checksum computation
+    if os.path.exists (TEXTURE_PATH):
+        oldpng = open ('texture.png', 'rb')
+        md5hash = oldpng.read ()
+        hasher = hashlib.md5 ()
+        hasher.update (md5hash)
+        oldhash = hasher.hexdigest ()
+        print('texture.png found! Checksum is: ', oldhash)
+    else:
+        print('texture.png haven''t found! Creating a new one...')
     try:
         texture.save(TEXTURE_PATH)
         print('Successfully created texture.png')
@@ -60,3 +71,14 @@ def image_process():
         print('Failed to create texture.png! Maybe check if write-access has given?')
         time.sleep(1)
         sys.exit('Texture error')
+    if os.path.exists (TEXTURE_PATH):
+        newpng = open ('texture.png', 'rb')
+        md5hash = newpng.read ()
+        hasher = hashlib.md5 ()
+        hasher.update (md5hash)
+        newhash = hasher.hexdigest ()
+        print('Checksum for new texture.png is: ', newhash)
+    if oldhash == newhash:
+        print('Checksums matched! Continuing program...')
+    else:
+        print('Checksum mismatch! Generating new texture file...')
