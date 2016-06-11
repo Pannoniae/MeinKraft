@@ -1,9 +1,12 @@
-# MC view
+# controller classes
+
 from __future__ import absolute_import
+
 # third party imports
 import pyglet
 from pyglet.gl import *
 from pyglet.window import key, mouse
+
 # project module imports
 from .constants import *
 from .blocks import STONE
@@ -16,108 +19,17 @@ from .bullet import Bullet
 from .geometry import cube_vertices
 
 
-class ZoomController(object):
+
+class GameController(pyglet.window.Window):
+
     """
-    control functionality specific to zooming
+     input and output handler, game controller class
     """
 
-    def __init__(self, *args, **kwargs):
-
-        super(ZoomController, self).__init__(*args, **kwargs)
-        # The FOV of the camera, used when zooming. Cannot be lower than 20.
-        self.FOV = MAX_FOV
-
-        # Variable holding the current zoom phase.
-        self.zoom_state = None
-
-        pyglet.clock.schedule_interval(self.check_zoom, 1.0 / TICKS_PER_SEC)
-
-
-    def zoom_in_out(self, zoom):
-        self.FOV -= zoom
-
-    def check_zoom(self, dt):
-        """ Runs the zooming script every tick. Used by pyglet to ensure steady tick rate and avoiding using time.sleep()
-        Also, it's a bit clunky, so an explanation:
-
-        There's a few zoom states.
-        'in' means zooming in, 'out' is zooming out. When they're completed, state switches to 'yes' or 'no', accordingly.
-        'toggle' is a special, when it's triggered, it immediately switches to an another state. This is here to prevent
-        creating a getter function.
-
-        """
-        if self.zoom_state == 'in':
-            if self.FOV != MIN_FOV:
-                self.FOV -= 6
-                self.reticle.transparency -= 0.1
-            if self.FOV == MIN_FOV:
-                self.zoom_state = 'yes'
-        if self.zoom_state == 'out':
-            if self.FOV != MAX_FOV:
-                self.FOV += 6
-                self.reticle.transparency += 0.1
-            if self.FOV == MAX_FOV:
-                self.zoom_state = 'no'
-        if self.zoom_state == 'no':
-            self.FOV = MAX_FOV
-        if self.zoom_state == 'yes':
-            self.FOV = MIN_FOV
-        if self.zoom_state == 'toggle':
-            if self.FOV == MIN_FOV:
-                self.zoom_state = 'out'
-            if self.FOV == MAX_FOV:
-                self.zoom_state = 'in'
-            else:
-                print(
-                'Error when determining zoom state. Did you try to zoom in zoom mode or are you debugging the code?')
-
-
-    def on_key_press(self, symbol, modifiers):
-        """ Called when the player presses a key. See pyglet docs for key
-        mappings.
-
-        Parameters
-        ----------
-        symbol : int
-            Number representing the key that was pressed.
-        modifiers : int
-            Number representing any modifying keys that were pressed.
-
-        """
-        if symbol == key.Z:
-            self.zoom_state = 'in'
-
-
-    def on_key_release(self, symbol, modifiers):
-        """ Called when the player releases a key. See pyglet docs for key
-        mappings.
-
-        Parameters
-        ----------
-        symbol : int
-            Number representing the key that was pressed.
-        modifiers : int
-            Number representing any modifying keys that were pressed.
-
-        """
-        if symbol == key.Z:
-            self.zoom_state = 'out'
-
-
-    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
-        """ Called when the player scrolls the mouse. Used for zooming.
-        """
-        self.zoom_in_out(scroll_y)
-
-
-
-class GameController(ZoomController, pyglet.window.Window):
-
-    # Convenience list of num keys.
+    # Convenience list of num keys
     num_keys = [
-            key._1, key._2, key._3, key._4, key._5,
-            key._6, key._7, key._8, key._9, key._0]
-
+        key._1, key._2, key._3, key._4, key._5,
+        key._6, key._7, key._8, key._9, key._0]
 
     def __init__(self, *args, **kwargs):
 
@@ -128,7 +40,6 @@ class GameController(ZoomController, pyglet.window.Window):
 
         # The crosshairs at the center of the screen.
         self.reticle = Reticle(1.0)
-
 
         # Instance of the model that handles the world.
         self.model = Model()
@@ -146,7 +57,6 @@ class GameController(ZoomController, pyglet.window.Window):
         # The label that is displayed in the bottom left of the canvas.
         self.label_bottom = Label("", x=10, y=10, anchor_y='bottom')
 
-
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
 
@@ -157,7 +67,6 @@ class GameController(ZoomController, pyglet.window.Window):
 
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
-
 
     def world_changed(self):
         """
@@ -182,7 +91,6 @@ class GameController(ZoomController, pyglet.window.Window):
         super(GameController, self).set_exclusive_mouse(exclusive)
         self.exclusive = exclusive
 
-
     def update(self, dt):
         """ This method is scheduled to be called repeatedly by the pyglet
         clock.
@@ -197,8 +105,6 @@ class GameController(ZoomController, pyglet.window.Window):
 
         self.player.update(dt)
         self.player_changed_world()
-
-
 
     def on_mouse_press(self, x, y, button, modifiers):
         """ Called when a mouse button is pressed. See pyglet docs for button
@@ -245,9 +151,7 @@ class GameController(ZoomController, pyglet.window.Window):
 
         """
         if self.exclusive:
-            self.player.move(x,y, dx, dy)
-
-
+            self.player.move(x, y, dx, dy)
 
     def on_key_press(self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
@@ -278,8 +182,6 @@ class GameController(ZoomController, pyglet.window.Window):
         elif symbol in self.num_keys:
             self.change_player_block(symbol)
 
-        ZoomController.on_key_press(self, symbol, modifiers)
-
 
     def change_player_block(self, key_symbol):
         index = (key_symbol - self.num_keys[0]) % len(self.player.inventory)
@@ -308,7 +210,7 @@ class GameController(ZoomController, pyglet.window.Window):
         elif symbol == key.SPACE:
             self.player.jumping = False
 
-        ZoomController.on_key_release(self, symbol, modifiers)
+
 
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
@@ -319,7 +221,6 @@ class GameController(ZoomController, pyglet.window.Window):
         x, y = self.width / 2, self.height / 2
         # construct reticle
         self.reticle.create(x, y)
-
 
     def set_2d(self):
         """ Configure OpenGL to draw in 2d.
@@ -424,7 +325,6 @@ class GameController(ZoomController, pyglet.window.Window):
         else:
             self.zoom_state = 'toggle'
 
-
     def draw_label(self):
         """ Draw the label in the top left of the screen.
         """
@@ -443,7 +343,102 @@ class GameController(ZoomController, pyglet.window.Window):
             msg = '%s block, zoom %s, flying=%s' % (block.get_block_type(), self.zoom_state, self.player.flying)
             self.label_bottom.set_text(msg)
 
-
     def setup(self):
         from .gl_setup import setup
         setup()
+
+
+
+class ZoomGameController(GameController):
+    """
+    game controller which also allows zooming
+    """
+
+    def __init__(self, *args, **kwargs):
+
+        super(ZoomGameController, self).__init__(*args, **kwargs)
+
+        # The FOV of the camera, used when zooming. It cannot be lower than 20.
+        self.FOV = MAX_FOV
+        # Variable holding the current zoom phase.
+        self.zoom_state = None
+        # schedule zoom checking
+        pyglet.clock.schedule_interval(self.check_zoom, 1.0 / TICKS_PER_SEC)
+
+    def zoom_in_out(self, zoom):
+        self.FOV -= zoom
+
+    def check_zoom(self, dt):
+        """ Runs the zooming script every tick. Used by pyglet to ensure steady tick rate and avoiding using time.sleep()
+        Also, it's a bit clunky, so an explanation:
+
+        There's a few zoom states.
+        'in' means zooming in, 'out' is zooming out. When they're completed, state switches to 'yes' or 'no', accordingly.
+        'toggle' is a special, when it's triggered, it immediately switches to an another state. This is here to prevent
+        creating a getter function.
+
+        """
+        if self.zoom_state == 'in':
+            if self.FOV != MIN_FOV:
+                self.FOV -= 6
+                self.reticle.transparency -= 0.1
+            if self.FOV == MIN_FOV:
+                self.zoom_state = 'yes'
+        if self.zoom_state == 'out':
+            if self.FOV != MAX_FOV:
+                self.FOV += 6
+                self.reticle.transparency += 0.1
+            if self.FOV == MAX_FOV:
+                self.zoom_state = 'no'
+        if self.zoom_state == 'no':
+            self.FOV = MAX_FOV
+        if self.zoom_state == 'yes':
+            self.FOV = MIN_FOV
+        if self.zoom_state == 'toggle':
+            if self.FOV == MIN_FOV:
+                self.zoom_state = 'out'
+            if self.FOV == MAX_FOV:
+                self.zoom_state = 'in'
+            else:
+                print(
+                    'Error when determining zoom state. Did you try to zoom in zoom mode or are you debugging the code?')
+
+    def on_key_press(self, symbol, modifiers):
+        """ Called when the player presses a key. See pyglet docs for key
+        mappings.
+
+        Parameters
+        ----------
+        symbol : int
+            Number representing the key that was pressed.
+        modifiers : int
+            Number representing any modifying keys that were pressed.
+
+        """
+        super(ZoomGameController, self).on_key_press(symbol, modifiers)
+
+        if symbol == key.Z:
+            self.zoom_state = 'in'
+
+    def on_key_release(self, symbol, modifiers):
+        """ Called when the player releases a key. See pyglet docs for key
+        mappings.
+
+        Parameters
+        ----------
+        symbol : int
+            Number representing the key that was pressed.
+        modifiers : int
+            Number representing any modifying keys that were pressed.
+
+        """
+        super(ZoomGameController, self).on_key_release(symbol, modifiers)
+
+        if symbol == key.Z:
+            self.zoom_state = 'out'
+
+    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
+        """ Called when the player scrolls the mouse. Used for zooming.
+        """
+        self.zoom_in_out(scroll_y)
+
