@@ -12,10 +12,13 @@ class Reticle(object):
         self.transparency = transparency
         self.vertexlist = None
 
+        #How much it is shifted from the center.
+        self.shift = 2.5
+
 
     def create(self, x, y):
         n = 10
-        s = 2.5 # a shift from the middle
+        s = self.shift # a shift from the middle
         if self.vertexlist:
             self.vertexlist.delete()
         self.vertexlist = pyglet.graphics.vertex_list(8,

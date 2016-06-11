@@ -4,7 +4,7 @@ from .geometry import tex_coords, cube_vertices
 
 
 class Block(object):
-    """"represents a block
+    """represents a block
 
     no block id's
     now the class itself is stored in the world storage
