@@ -1,8 +1,6 @@
 import math
 
-
 from .blocks import *
-from .geometry import normalize, FACES, sectorize
 from .constants import (
     FLYING_SPEED,
     WALKING_SPEED,
@@ -11,6 +9,7 @@ from .constants import (
     PLAYER_HEIGHT,
     JUMP_SPEED,
 )
+from .geometry import normalize, FACES, sectorize
 
 class Player(object):
     """
@@ -172,10 +171,11 @@ class Player(object):
         """
         self.update_sector()
 
-        m = 8
+        MOVEMENTS = 8
         dt = min(dt, 0.2)
-        for _ in xrange(m):
-            self._update(dt / m)
+        for _ in xrange(MOVEMENTS):
+            sub_dt = dt / MOVEMENTS # smooth movements
+            self._update(sub_dt)
 
     def _update(self, dt):
         """ Private implementation of the `update()` method. This is where most
@@ -185,11 +185,13 @@ class Player(object):
         ----------
         dt : float
             The change in time since the last call.
-
         """
         # walking
         speed = FLYING_SPEED if self.flying else WALKING_SPEED
         d = dt * speed  # distance covered this tick.
+        print ("speed ", speed)
+        print ("distance ", d)
+        print ("dt ", dt)
         dx, dy, dz = self.get_motion_vector()
         # New position in space, before accounting for gravity.
         dx, dy, dz = dx * d, dy * d, dz * d
