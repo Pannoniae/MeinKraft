@@ -64,7 +64,7 @@ def image_process():
         hasher = hashlib.md5()
         hasher.update(md5hash)
         oldhash = hasher.hexdigest()
-        print('texture.png found! Checksum is: ', oldhash)
+        print('texture.png found! Checksum is: ' + oldhash)
     else:
         print('texture.png haven''t found! Creating a new one...')
     try:
@@ -80,7 +80,7 @@ def image_process():
         hasher = hashlib.md5()
         hasher.update(md5hash)
         newhash = hasher.hexdigest()
-        print('Checksum for new texture.png is: ', newhash)
+        print('Checksum for new texture.png is: ' + newhash)
     if oldhash == newhash:
         print('Checksums matched! Continuing program...')
     else:
