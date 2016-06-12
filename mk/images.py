@@ -11,10 +11,13 @@ from .constants import BLOCK_TEXTURE_SIZE
 def imgpath(filename):
     return os.path.join(os.path.dirname(os.path.dirname(__file__)), "blockdata", filename)
 
+
 def texture_path(filename):
     return os.path.join(os.path.dirname(os.path.dirname(__file__)), filename)
 
+
 TEXTURE_PATH = texture_path('texture.png')
+
 
 def import_coords(x, y):
     # Converting image_process importing values to tex_coords methods.
@@ -44,7 +47,7 @@ def image_process():
                     break
                 fnimg = flip_image(Image.open(fnpath))
                 texture.paste(fnimg, import_coords(x, y))
-                print('Pasted texture ' + fn +  " into textures with coords " + str(x) + " " + str(y))
+                print('Pasted texture ' + fn + " into textures with coords " + str(x) + " " + str(y))
                 x += 1
                 if x == 4:
                     y += 1
@@ -55,12 +58,12 @@ def image_process():
             break
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
     # Checksum computation
-    if os.path.exists (TEXTURE_PATH):
-        oldpng = open ('texture.png', 'rb')
-        md5hash = oldpng.read ()
-        hasher = hashlib.md5 ()
-        hasher.update (md5hash)
-        oldhash = hasher.hexdigest ()
+    if os.path.exists(TEXTURE_PATH):
+        oldpng = open('texture.png', 'rb')
+        md5hash = oldpng.read()
+        hasher = hashlib.md5()
+        hasher.update(md5hash)
+        oldhash = hasher.hexdigest()
         print('texture.png found! Checksum is: ', oldhash)
     else:
         print('texture.png haven''t found! Creating a new one...')
@@ -71,11 +74,11 @@ def image_process():
         print('Failed to create texture.png! Maybe check if write-access has given?')
         time.sleep(1)
         sys.exit('Texture error')
-    if os.path.exists (TEXTURE_PATH):
-        newpng = open ('texture.png', 'rb')
+    if os.path.exists(TEXTURE_PATH):
+        newpng = open('texture.png', 'rb')
         md5hash = newpng.read()
         hasher = hashlib.md5()
-        hasher.update (md5hash)
+        hasher.update(md5hash)
         newhash = hasher.hexdigest()
         print('Checksum for new texture.png is: ', newhash)
     if oldhash == newhash:
