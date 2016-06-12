@@ -73,10 +73,10 @@ def image_process():
         sys.exit('Texture error')
     if os.path.exists (TEXTURE_PATH):
         newpng = open ('texture.png', 'rb')
-        md5hash = newpng.read ()
-        hasher = hashlib.md5 ()
+        md5hash = newpng.read()
+        hasher = hashlib.md5()
         hasher.update (md5hash)
-        newhash = hasher.hexdigest ()
+        newhash = hasher.hexdigest()
         print('Checksum for new texture.png is: ', newhash)
     if oldhash == newhash:
         print('Checksums matched! Continuing program...')
