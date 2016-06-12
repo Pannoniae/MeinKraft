@@ -378,16 +378,17 @@ class ZoomGameController(GameController):
         creating a getter function.
 
         """
+        diff = MAX_FOV - MIN_FOV
         if self.zoom_state == 'in':
             if self.FOV != MIN_FOV:
-                self.FOV -= 6
-                self.reticle.transparency -= 0.1
+                self.FOV -= diff / ZOOM_STATES
+                self.reticle.transparency -= 1.0 / ZOOM_STATES
             if self.FOV == MIN_FOV:
                 self.zoom_state = 'yes'
         if self.zoom_state == 'out':
             if self.FOV != MAX_FOV:
-                self.FOV += 6
-                self.reticle.transparency += 0.1
+                self.FOV += diff / ZOOM_STATES
+                self.reticle.transparency += 1.0 / ZOOM_STATES
             if self.FOV == MAX_FOV:
                 self.zoom_state = 'no'
         if self.zoom_state == 'no':
