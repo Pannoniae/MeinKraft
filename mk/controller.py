@@ -63,8 +63,6 @@ class GameController(pyglet.window.Window):
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
 
-        self.bullet.test()
-
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
 
@@ -129,7 +127,11 @@ class GameController(pyglet.window.Window):
             if (button == mouse.RIGHT) or \
                     ((button == mouse.LEFT) and (modifiers & key.MOD_CTRL)):
                 # ON OSX, control + left click = right click.
-                self.build_block(previous)
+                if previous:
+                    self.build_block(previous)
+                else:
+                    self.bullet.fire(self.player.position)
+
             elif button == pyglet.window.mouse.LEFT and block:
                 self.mine_block(block)
         else:

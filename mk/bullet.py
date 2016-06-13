@@ -17,8 +17,30 @@ class Bullet(object):
         # If is has landed, it deals damage.
         self.landed = False
 
+    def fire(self, position):
+        """
+        Parameters
+        ----------
+        position: tuple of len 3, position of the firing player.
+        """
+        self.position = position
+        print(self.position)
+    def update(self):
+        """ Updates the bullet state.
 
-    def test(self):
-
-        print("parent ", self.game.player.position)
-        print("me ", self.position)
+        """
+        dx, dy, dz = self.game.player.get_motion_vector()
+        if dx < 0:
+            dx -= 1
+        else:
+            dx += 1
+        if dy < 0:
+            dy -= 1
+        else:
+            dy += 1
+        if dz < 0:
+            dz -= 1
+        else:
+            dz += 1
+        x, y, z = self.game.player.position
+        self.position = x + dx, y + dy, z + dz
