@@ -107,8 +107,22 @@ class Model(object):
                 return True
         return False
 
+    def get_position_and_block_below(self, position):
+        """
+        return the block below this position
+
+        :param position:
+        :return: block or None
+        """
+        x, y, z = position
+        position_below = x, y - 1, z
+        return position_below, self.get_block(position_below)
+
+
     def add_block(self, position, block, immediate=True):
         """ Add a block with the given `texture` and `position` to the world.
+
+        If you place grass on grass then the block below changes into dirt.
 
         Parameters
         ----------
@@ -124,12 +138,14 @@ class Model(object):
         """
         if position in self.world:
             self.remove_block(position, immediate)
-        x, y, z = position
-        posbelow = x, y - 1, z
-        blockbelow = self.get_block(posbelow)
-        # print(blockbelow.get_block_type())
-        if posbelow in self.world and blockbelow.get_block_type() == GRASS:
-            self.add_block(posbelow, DIRT)
+
+        # grass logic
+        position_below, block_below = self.get_position_and_block_below(position)
+        if block_below is not None and block_below.get_block_type() == "GRASS":
+            # recursive method calling!
+            # it's fine because eventually there's stone underneath everything, that is we won't get an infinite loop
+            self.add_block(position_below, DIRT, immediate)
+
         self.world[position] = block
         self.sectors.setdefault(sectorize(position), []).append(position)
         if immediate:

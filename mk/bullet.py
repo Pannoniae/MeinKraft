@@ -25,6 +25,7 @@ class Bullet(object):
         """
         self.position = position
         print(self.position)
+
     def update(self):
         """ Updates the bullet state.
 

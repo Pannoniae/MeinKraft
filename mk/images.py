@@ -57,6 +57,7 @@ def image_process():
         if files < 0:
             break
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
+
     # Checksum computation
     if os.path.exists(TEXTURE_PATH):
         oldpng = open('texture.png', 'rb')
@@ -81,7 +82,12 @@ def image_process():
         hasher.update(md5hash)
         newhash = hasher.hexdigest()
         print('Checksum for new texture.png is: ' + newhash)
-    if oldhash == newhash:
-        print('Checksums matched! Continuing program...')
-    else:
-        print('Checksum mismatch! Generating new texture file...')
+    #if oldhash == newhash:
+    #    print('Checksums matched! Continuing program...')
+    #else:
+    #    print('Checksum mismatch! Generating new texture file...')
+        # XXX Zsombor: ez a logika hibas. Itt semmi nem fogja ujra generalni a fajlt,
+
+        # Ki kellene szamolni az ellenorzoosszeget, ezt eltarolni egy kulon fajlban, majd az abban levo ertekkel
+        # kellene osszehasonlitani a kovetkezo programfutaskor a program altal talalt texture.png ellenorzoosszeget.
+        # Ha nem egyeznek, akkor lekell generalni a texture.png-t, ha egyeznek, akkor meg nyilvan nem.
