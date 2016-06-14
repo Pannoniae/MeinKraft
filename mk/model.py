@@ -83,6 +83,8 @@ class Model(object):
         max_distance : int
             How many blocks away to search for a hit.
 
+        @:returns
+
         """
         m = 8
         x, y, z = position
@@ -111,8 +113,8 @@ class Model(object):
         """
         return the block below this position
 
-        :param position:
-        :return: block or None
+        :param position:3-tuple of x,y,z coordinates
+        :return: position_below and block (None if there's no block there)
         """
         x, y, z = position
         position_below = x, y - 1, z
@@ -138,13 +140,6 @@ class Model(object):
         """
         if position in self.world:
             self.remove_block(position, immediate)
-
-        # grass logic
-        position_below, block_below = self.get_position_and_block_below(position)
-        if block_below is not None and block_below.get_block_type() == "GRASS":
-            # recursive method calling!
-            # it's fine because eventually there's stone underneath everything, that is we won't get an infinite loop
-            self.add_block(position_below, DIRT, immediate)
 
         self.world[position] = block
         self.sectors.setdefault(sectorize(position), []).append(position)

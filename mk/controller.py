@@ -9,7 +9,7 @@ from pyglet.window import key, mouse
 
 # project module imports
 from .constants import *
-from .blocks import STONE
+from .blocks import STONE, DIRT
 from .model import Model
 from .player import Player
 from .reticle import Reticle
@@ -316,14 +316,21 @@ class GameController(pyglet.window.Window):
         if texture != STONE:
             self.model.remove_block(block)
 
-    def build_block(self, block):
+    def build_block(self, block_position):
         """
-        add new block
-        :param block:
+        Add a new block at this position. Use the current block in the player's inventory.
+        :param block_position:  3-tupple of coordinates
         :return:
         """
-        if block:
-            self.model.add_block(block, self.player.block)
+        if block_position:
+            self.model.add_block(block_position, self.player.block)
+            # grass logic
+            position_below, block_below = self.model.get_position_and_block_below(block_position)
+            if block_below is not None and block_below.get_block_type() == "GRASS":
+                self.model.add_block(position_below, DIRT)
+
+
+
         else:
             self.zoom_state = 'toggle'
 
