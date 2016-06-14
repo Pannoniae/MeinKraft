@@ -113,8 +113,13 @@ class Model(object):
         """
         return the block below this position
 
-        :param position:3-tuple of x,y,z coordinates
-        :return: position_below and block (None if there's no block there)
+        Parameters
+        ----------
+        position : 3-tuple of integers
+            represents block position
+
+        returns: tuple of 3-tuple of integers and block
+            coordinates for position below and the block there (None if empty)
         """
         x, y, z = position
         position_below = x, y - 1, z

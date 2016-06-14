@@ -307,19 +307,19 @@ class GameController(pyglet.window.Window):
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
             glPopAttrib()
 
-    def mine_block(self, block):
+    def mine_block(self, block_position):
         """
         mine targeted block
         :return:
         """
-        texture = self.model.world[block]
+        texture = self.model.world[block_position]
         if texture != STONE:
-            self.model.remove_block(block)
+            self.model.remove_block(block_position)
 
     def build_block(self, block_position):
         """
         Add a new block at this position. Use the current block in the player's inventory.
-        :param block_position:  3-tupple of coordinates
+        :param block_position:  3-tuple of coordinates
         :return:
         """
         if block_position:
