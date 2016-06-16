@@ -328,9 +328,6 @@ class GameController(pyglet.window.Window):
             position_below, block_below = self.model.get_position_and_block_below(block_position)
             if block_below is not None and block_below.get_block_type() == "GRASS":
                 self.model.add_block(position_below, DIRT)
-
-
-
         else:
             self.zoom_state = 'toggle'
 

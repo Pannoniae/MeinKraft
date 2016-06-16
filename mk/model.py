@@ -118,7 +118,7 @@ class Model(object):
         position : 3-tuple of integers
             represents block position
 
-        returns: tuple of 3-tuple of integers and block
+        returns tuple of 3-tuple of integers and block
             coordinates for position below and the block there (None if empty)
         """
         x, y, z = position
@@ -145,7 +145,6 @@ class Model(object):
         """
         if position in self.world:
             self.remove_block(position, immediate)
-
         self.world[position] = block
         self.sectors.setdefault(sectorize(position), []).append(position)
         if immediate:
