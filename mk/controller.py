@@ -2,6 +2,8 @@
 
 from __future__ import absolute_import
 
+import math
+
 # third party imports
 import pyglet
 from pyglet.gl import *
@@ -49,7 +51,7 @@ class GameController(pyglet.window.Window):
         self.world_changed()
 
         # Instance of the bullet physics that handles the weapons.
-        self.bullet = Bullet(self)
+        self.bullet = Bullet()
 
         # The label that is displayed in the top left of the canvas.
         self.label = Label("", x=10, y=self.height - 10)
@@ -103,6 +105,7 @@ class GameController(pyglet.window.Window):
 
         self.player.update(dt)
         self.player_changed_world()
+        self.bullet.update(self.player)
 
     def on_mouse_press(self, x, y, button, modifiers):
         """ Called when a mouse button is pressed. See pyglet docs for button

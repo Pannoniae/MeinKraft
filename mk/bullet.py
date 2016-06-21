@@ -1,9 +1,8 @@
 from __future__ import absolute_import
 
 class Bullet(object):
-    def __init__(self, game):
+    def __init__(self):
 
-        self.game = game
 
         # The velocity of the bullet in the x, y, z directions.
         self.velocity = (0, 0, 0)
@@ -19,6 +18,8 @@ class Bullet(object):
 
     def fire(self, position):
         """
+        XXX: do something
+
         Parameters
         ----------
         position: tuple of len 3, position of the firing player.
@@ -26,11 +27,11 @@ class Bullet(object):
         self.position = position
         print(self.position)
 
-    def update(self):
-        """ Updates the bullet state.
+    def update(self, player):
+        """ Updates the bullet state with the player object.
 
         """
-        dx, dy, dz = self.game.player.get_motion_vector()
+        dx, dy, dz = player.get_motion_vector()
         if dx < 0:
             dx -= 1
         else:
@@ -43,5 +44,6 @@ class Bullet(object):
             dz -= 1
         else:
             dz += 1
-        x, y, z = self.game.player.position
+        x, y, z = player.position
+
         self.position = x + dx, y + dy, z + dz
