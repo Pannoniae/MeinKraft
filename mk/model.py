@@ -83,6 +83,8 @@ class Model(object):
         max_distance : int
             How many blocks away to search for a hit.
 
+        @:returns
+
         """
         m = 8
         x, y, z = position
@@ -107,8 +109,27 @@ class Model(object):
                 return True
         return False
 
+    def get_position_and_block_below(self, position):
+        """
+        return the block below this position
+
+        Parameters
+        ----------
+        position : 3-tuple of integers
+            represents block position
+
+        returns tuple of 3-tuple of integers and block
+            coordinates for position below and the block there (None if empty)
+        """
+        x, y, z = position
+        position_below = x, y - 1, z
+        return position_below, self.get_block(position_below)
+
+
     def add_block(self, position, block, immediate=True):
         """ Add a block with the given `texture` and `position` to the world.
+
+        If you place grass on grass then the block below changes into dirt.
 
         Parameters
         ----------

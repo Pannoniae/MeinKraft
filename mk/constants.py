@@ -5,6 +5,9 @@ import math
 TICKS_PER_SEC = 40
 GAME_TICKS_PER_SEC = 10
 
+# How many updates are called before fully switching zoom states.
+ZOOM_STATES = 10
+
 # Size of sectors used to ease block loading.
 SECTOR_SIZE = 16
 
