@@ -12,7 +12,7 @@ class Block(object):
 
     TODO:  extends as needed
     """
-    # save memory
+    # save memory, not needed
     #__slots__ = ["get_texture", "get_block_type", "get_vertices"]
 
     @classmethod

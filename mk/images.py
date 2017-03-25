@@ -5,18 +5,14 @@ import time
 
 from PIL import Image
 
-from .constants import BLOCK_TEXTURE_SIZE
+from .config import BLOCK_TEXTURE_SIZE, TEXTURE_PATH
+from .utils import *
 
 
-def imgpath(filename):
-    return os.path.join(os.path.dirname(os.path.dirname(__file__)), "blockdata", filename)
 
 
-def texture_path(filename):
-    return os.path.join(os.path.dirname(os.path.dirname(__file__)), filename)
 
 
-TEXTURE_PATH = texture_path('texture.png')
 
 
 def import_coords(x, y):
@@ -34,7 +30,7 @@ def flip_image(img):
 def image_process():
     # Process the image files to texture.png at every program start.
     texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
-    imgdir = sorted(os.listdir('blockdata'))
+    imgdir = sorted(os.listdir('blockdata'), key=get_block_id)
     files = len(imgdir)
     x = 0
     y = 0
@@ -58,30 +54,29 @@ def image_process():
             break
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
 
-    # Checksum computation
-    if os.path.exists(TEXTURE_PATH):
-        oldpng = open('texture.png', 'rb')
-        md5hash = oldpng.read()
-        hasher = hashlib.md5()
-        hasher.update(md5hash)
-        oldhash = hasher.hexdigest()
-        print('texture.png found! Checksum is: ' + oldhash)
-    else:
+    # Opening file
+
+    try:
+        hash = md5(texture)
+    except:
         print('texture.png haven''t found! Creating a new one...')
+    else:
+        print('texture.png found! Checksum is: ' + hash)
+
+    # Saving file
+
     try:
         texture.save(TEXTURE_PATH)
-        print('Successfully created texture.png')
     except:
         print('Failed to create texture.png! Maybe check if write-access has given?')
+        # Delay because it won't exit properly.
         time.sleep(1)
         sys.exit('Texture error')
-    if os.path.exists(TEXTURE_PATH):
-        newpng = open('texture.png', 'rb')
-        md5hash = newpng.read()
-        hasher = hashlib.md5()
-        hasher.update(md5hash)
-        newhash = hasher.hexdigest()
-        print('Checksum for new texture.png is: ' + newhash)
+    else:
+        print('Successfully created texture.png')
+
+    newhash = md5_file('texture.png')
+    print('Checksum for new texture.png is: ' + newhash)
     #if oldhash == newhash:
     #    print('Checksums matched! Continuing program...')
     #else:

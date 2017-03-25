@@ -1,7 +1,7 @@
 import math
 
 from .blocks import *
-from .constants import (
+from .config import (
     FLYING_SPEED,
     WALKING_SPEED,
     GRAVITY,

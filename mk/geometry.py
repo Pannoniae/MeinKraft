@@ -1,6 +1,6 @@
 # geometry utility stuff
 
-from .constants import SECTOR_SIZE
+from .config import SECTOR_SIZE
 
 
 def cube_vertices(x, y, z, n, fill=8):

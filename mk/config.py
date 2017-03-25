@@ -1,6 +1,7 @@
 # config variables
 
 import math
+from .utils import base_path
 
 TICKS_PER_SEC = 40
 GAME_TICKS_PER_SEC = 10
@@ -14,6 +15,8 @@ SECTOR_SIZE = 16
 WALKING_SPEED = 5
 FLYING_SPEED = 15
 BLOCK_TEXTURE_SIZE = 16
+BLOCKDATA_FOLDER = "blockdata"
+TEXTURE_PATH = base_path('texture.png')
 
 GRAVITY = 20.0
 MAX_JUMP_HEIGHT = 1.0  # About the height of a block.

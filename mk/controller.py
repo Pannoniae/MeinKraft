@@ -10,7 +10,7 @@ from pyglet.gl import *
 from pyglet.window import key, mouse
 
 # project module imports
-from .constants import *
+from .config import *
 from .blocks import STONE, DIRT
 from .model import Model
 from .player import Player
