@@ -1,13 +1,16 @@
 # MC world
 from __future__ import absolute_import
+
 # Python standard library imports
 import time
 from collections import deque
+
 # third party imports
 import pyglet
 from pyglet import image
 from pyglet.graphics import TextureGroup
 from pyglet.gl import *
+
 # project module imports
 from .geometry import normalize, sectorize, FACES
 from .blocks import *
@@ -55,14 +58,14 @@ class Model(object):
         n = 80  # 1/2 width and height of world
         s = 1  # step size
         y = 3  # initial y height
-        for x in xrange(-n, n + 1, s):
-            for z in xrange(-n, n + 1, s):
+        for x in range(-n, n + 1, s):
+            for z in range(-n, n + 1, s):
                 # create a layer stone an grass everywhere.
                 self.add_block((x, y - 2, z), GRASS, immediate=False)
                 self.add_block((x, y - 3, z), STONE, immediate=False)
                 if x in (-n, n) or z in (-n, n):
                     # create outer walls.
-                    for dy in xrange(-2, 3):
+                    for dy in range(-2, 3):
                         self.add_block((x, y + dy, z), STONE, immediate=False)
         self.add_block((20, 3, 0), BRICK, immediate=False)
         self.add_block((20, 3, 1), BRICK, immediate=False)
@@ -90,7 +93,7 @@ class Model(object):
         x, y, z = position
         dx, dy, dz = vector
         previous = None
-        for _ in xrange(max_distance * m):
+        for _ in range(max_distance * m):
             key = normalize((x, y, z))
             if key != previous and key in self.world:
                 return key, previous
@@ -295,9 +298,9 @@ class Model(object):
         before_set = set()
         after_set = set()
         pad = 6
-        for dx in xrange(-pad, pad + 1):
+        for dx in range(-pad, pad + 1):
             for dy in [0]:  # xrange(-pad, pad + 1):
-                for dz in xrange(-pad, pad + 1):
+                for dz in range(-pad, pad + 1):
                     if dx ** 2 + dy ** 2 + dz ** 2 > (pad + 1) ** 2:
                         continue
                     if before:

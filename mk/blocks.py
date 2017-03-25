@@ -13,7 +13,7 @@ class Block(object):
     TODO:  extends as needed
     """
     # save memory
-    __slots__ = ["get_texture", "get_block_type", "get_vertices"]
+    #__slots__ = ["get_texture", "get_block_type", "get_vertices"]
 
     @classmethod
     def get_texture(self):
