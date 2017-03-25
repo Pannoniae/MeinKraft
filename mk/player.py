@@ -86,8 +86,8 @@ class Player(object):
 
             # XXX Zsombor
             # this is what causes the long delay at startup
-            #if self.sector is None:
-            #    self.model.process_entire_queue()
+            if self.sector is None:
+                self.model.process_entire_queue()
 
             self.sector = sector
 
