@@ -8,16 +8,16 @@ from pyglet.gl import *
 from pyglet.window import key
 
 # project module imports
-from .input import InputHandler
-from .zoomer import Zoomer
+from .inputhandler import InputHandler
+from .render.zoomer import Zoomer
 from .config import *
 from .blocks import *
 from .model import Model
 from .player import Player
-from .reticle import Reticle
+from .render.reticle import Reticle
 from .label import Label
 from .bullet import Bullet
-from .geometry import cube_vertices
+from .render.geometry import cube_vertices
 
 
 
