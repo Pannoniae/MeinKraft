@@ -181,8 +181,6 @@ class GameController(pyglet.window.Window):
         self.get_targeted_block()
         self.draw_focused_block()
         self.set_2d()
-        self.draw_label()
-        self.draw_bottom_label()
         self.reticle.draw()
 
     def update_game(self, dt):
@@ -190,8 +188,8 @@ class GameController(pyglet.window.Window):
 
         """
         self.prep_focused_block()
-        self.draw_label()
-        self.draw_bottom_label()
+        #self.draw_label()
+        #self.draw_bottom_label()
 
     def prep_focused_block(self):
         """ Computes focused block target in game tick to speed up game.
