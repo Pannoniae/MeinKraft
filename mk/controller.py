@@ -2,21 +2,20 @@
 
 from __future__ import absolute_import
 
-import math
-
 # third party imports
 import pyglet
 from pyglet.gl import *
-from pyglet.window import key, mouse
+from pyglet.window import key
 
 # project module imports
+from .input import InputHandler
+from .zoomer import Zoomer
 from .config import *
-from .blocks import STONE, DIRT
+from .blocks import *
 from .model import Model
 from .player import Player
 from .reticle import Reticle
 from .label import Label
-
 from .bullet import Bullet
 from .geometry import cube_vertices
 
@@ -113,23 +112,10 @@ class GameController(pyglet.window.Window):
         self.bullet.update(self.player)
 
 
-
-
-
     def change_player_block(self, key_symbol):
         index = (key_symbol - self.num_keys[0]) % len(self.player.inventory)
         self.player.change_active_block(index)
 
-
-    def on_resize(self, width, height):
-        """ Called when the window is resized to a new `width` and `height`.
-
-        """
-        # label
-        self.label.y = height - 10
-        x, y = self.width / 2, self.height / 2
-        # construct reticle
-        self.reticle.create(x, y)
 
     # Bindings for input in input class. When keyboard or mouse is pressed, this section gives the InputHandler class the handling.
 
@@ -144,6 +130,9 @@ class GameController(pyglet.window.Window):
 
     def on_mouse_press(self, x, y, button, modifiers):
         self.input.on_mouse_press(x, y, button, modifiers)
+
+    def on_resize(self, width, height):
+        self.input.on_resize(width, height)
 
     def set_2d(self):
         """ Configure OpenGL to draw in 2d.
@@ -273,171 +262,6 @@ class GameController(pyglet.window.Window):
     def setup(self):
         from .gl_setup import setup
         setup()
-
-
-class InputHandler(object):
-
-    def __init__(self, master):
-        self.master = master
-
-    def on_key_press(self, symbol, modifiers):
-        """ Called when the player presses a key. See pyglet docs for key
-            mappings.
-
-            Parameters
-            ----------
-            symbol : int
-                Number representing the key that was pressed.
-            modifiers : int
-                Number representing any modifying keys that were pressed.
-
-            """
-        if symbol == key.W:
-            self.master.player.move_forward()
-        elif symbol == key.S:
-            self.master.player.move_backward()
-        elif symbol == key.A:
-            self.master.player.move_left()
-        elif symbol == key.D:
-            self.master.player.move_right()
-        elif symbol == key.SPACE:
-            self.master.player.jump()
-        elif symbol == key.ESCAPE:
-            self.master.set_exclusive_mouse(False)
-        elif symbol == key.TAB:
-            self.master.player.toggle_flying()
-        elif symbol in self.master.num_keys:
-            self.master.change_player_block(symbol)
-        elif symbol == key.Z:
-            self.master.zoom_state = 'in'
-
-    def on_key_release(self, symbol, modifiers):
-        """ Called when the player releases a key. See pyglet docs for key
-            mappings.
-
-            Parameters
-            ----------
-            symbol : int
-                Number representing the key that was pressed.
-            modifiers : int
-                Number representing any modifying keys that were pressed.
-
-            """
-        if symbol == key.W:
-            self.master.player.move_backward()
-        elif symbol == key.S:
-            self.master.player.move_forward()
-        elif symbol == key.A:
-            self.master.player.move_right()
-        elif symbol == key.D:
-            self.master.player.move_left()
-        elif symbol == key.SPACE:
-            self.master.player.jumping = False
-        elif symbol == key.Z:
-            self.zoom_state = 'out'
-
-    def on_mouse_press(self, x, y, button, modifiers):
-        """ Called when a mouse button is pressed. See pyglet docs for button
-        amd modifier mappings.
-
-        Parameters
-        ----------
-        x, y : int
-            The coordinates of the mouse click. Always center of the screen if
-            the mouse is captured.
-        button : int
-            Number representing mouse button that was clicked. 1 = left button,
-            4 = right button.
-        modifiers : int
-            Number representing any modifying keys that were pressed when the
-            mouse button was clicked.
-
-        """
-        if self.master.exclusive:
-            vector = self.master.player.get_sight_vector()
-            block, previous = self.master.model.hit_test(self.master.player.position, vector)
-            if (button == mouse.RIGHT) or \
-                    ((button == mouse.LEFT) and (modifiers & key.MOD_CTRL)):
-                # ON OSX, control + left click = right click.
-                if previous:
-                    self.master.build_block(previous)
-                else:
-                    self.master.bullet.fire(self.master.player.position)
-
-            elif button == pyglet.window.mouse.LEFT and block:
-                self.master.mine_block(block)
-        else:
-            self.master.set_exclusive_mouse(True)
-
-        # the world has changed for the player
-        self.master.world_changed()
-
-    def on_mouse_motion(self, x, y, dx, dy):
-        """ Called when the player moves the mouse.
-
-        Parameters
-        ----------
-        x, y : int
-            The coordinates of the mouse click. Always center of the screen if
-            the mouse is captured.
-        dx, dy : float
-            The movement of the mouse.
-
-        """
-        if self.master.exclusive:
-            self.master.player.move(x, y, dx, dy)
-
-
-class Zoomer(object):
-    """
-    game controller which also allows zooming
-    """
-
-    def __init__(self, controller):
-
-        # The FOV of the camera, used when zooming. It cannot be lower than 20.
-        self.FOV = MAX_FOV
-        # Variable holding the current zoom phase.
-        self.zoom_state = None
-        self.master = controller
-        # schedule zoom checking
-        pyglet.clock.schedule_interval(self.check_zoom, 1.0 / TICKS_PER_SEC)
-
-    def zoom_in_out(self, zoom):
-        self.FOV -= zoom
-
-    def check_zoom(self, dt):
-        """ Runs the zooming script every tick. Used by pyglet to ensure steady tick rate and avoiding using time.sleep()
-        Also, it's a bit clunky, so an explanation:
-
-        There's a few zoom states.
-        'in' means zooming in, 'out' is zooming out. When they're completed, state switches to 'yes' or 'no', accordingly.
-        'toggle' is a special, when it's triggered, it immediately switches to an another state. This is here to prevent
-        creating a getter function.
-
-        """
-        diff = MAX_FOV - MIN_FOV
-        if self.zoom_state == 'in':
-            if self.FOV != MIN_FOV:
-                self.FOV -= diff / ZOOM_STATES
-                self.master.reticle.transparency -= 1.0 / ZOOM_STATES
-            if self.FOV == MIN_FOV:
-                self.zoom_state = 'yes'
-        if self.zoom_state == 'out':
-            if self.FOV != MAX_FOV:
-                self.FOV += diff / ZOOM_STATES
-                self.master.reticle.transparency += 1.0 / ZOOM_STATES
-            if self.FOV == MAX_FOV:
-                self.zoom_state = 'no'
-        if self.zoom_state == 'no':
-            self.FOV = MAX_FOV
-        if self.zoom_state == 'yes':
-            self.FOV = MIN_FOV
-        if self.zoom_state == 'toggle':
-            if self.FOV == MIN_FOV:
-                self.zoom_state = 'out'
-            if self.FOV == MAX_FOV:
-                self.zoom_state = 'in'
 
 
 
