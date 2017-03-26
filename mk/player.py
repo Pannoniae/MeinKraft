@@ -1,5 +1,6 @@
 import math
 
+from mk.render.geometry import normalize, FACES, sectorize
 from .blocks import *
 from .config import (
     FLYING_SPEED,
@@ -9,7 +10,6 @@ from .config import (
     PLAYER_HEIGHT,
     JUMP_SPEED,
 )
-from .geometry import normalize, FACES, sectorize
 
 class Player(object):
     """

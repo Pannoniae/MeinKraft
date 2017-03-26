@@ -1,6 +1,6 @@
 # define MC blocks
 
-from .geometry import tex_coords, cube_vertices
+from mk.render.geometry import tex_coords, cube_vertices
 
 
 class Block(object):

@@ -9,15 +9,15 @@ from pyglet.window import key
 
 # project module imports
 from .input import InputHandler
-from .zoomer import Zoomer
+from mk.render.zoomer import Zoomer
 from .config import *
 from .blocks import *
 from .model import Model
 from .player import Player
-from .reticle import Reticle
+from mk.render.reticle import Reticle
 from .label import Label
 from .bullet import Bullet
-from .geometry import cube_vertices
+from mk.render.geometry import cube_vertices
 
 
 
@@ -258,7 +258,7 @@ class GameController(pyglet.window.Window):
             self.label_bottom.set_text(msg)
 
     def setup(self):
-        from .gl_setup import setup
+        from mk.render.gl_setup import setup
         setup()
 
 
