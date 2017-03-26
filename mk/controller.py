@@ -59,6 +59,10 @@ class GameController(pyglet.window.Window):
         # The label that is displayed in the bottom left of the canvas.
         self.label_bottom = Label("", x=10, y=10, anchor_y='bottom')
 
+        self.FOV = MAX_FOV
+
+        self.zoomer = Zoomer()
+
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
 
@@ -249,7 +253,7 @@ class GameController(pyglet.window.Window):
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(self.FOV, width / float(height), 0.1, 60.0)
+        gluPerspective(self.zoomer.FOV, width / float(height), 0.1, 60.0)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         x, y = self.player.rotation
@@ -332,7 +336,7 @@ class GameController(pyglet.window.Window):
             if block_below is not None and block_below.get_block_type() == "GRASS":
                 self.model.add_block(position_below, DIRT)
         else:
-            self.zoom_state = 'toggle'
+            self.zoomer.zoom_state = 'toggle'
 
     def draw_label(self):
         """ Draw the label in the top left of the screen.
@@ -349,7 +353,7 @@ class GameController(pyglet.window.Window):
         """
         block = self.get_targeted_block()
         if block:
-            msg = '%s block, zoom %s, flying=%s' % (block.get_block_type(), self.zoom_state, self.player.flying)
+            msg = '%s block, zoom %s, flying=%s' % (block.get_block_type(), self.zoomer.zoom_state, self.player.flying)
             self.label_bottom.set_text(msg)
 
     def setup(self):
@@ -358,19 +362,18 @@ class GameController(pyglet.window.Window):
 
 
 
-class ZoomGameController(GameController):
+class Zoomer(object):
     """
     game controller which also allows zooming
     """
 
-    def __init__(self, *args, **kwargs):
-
-        super(ZoomGameController, self).__init__(*args, **kwargs)
+    def __init__(self, controller):
 
         # The FOV of the camera, used when zooming. It cannot be lower than 20.
         self.FOV = MAX_FOV
         # Variable holding the current zoom phase.
         self.zoom_state = None
+        self.master = controller
         # schedule zoom checking
         pyglet.clock.schedule_interval(self.check_zoom, 1.0 / TICKS_PER_SEC)
 
@@ -409,9 +412,6 @@ class ZoomGameController(GameController):
                 self.zoom_state = 'out'
             if self.FOV == MAX_FOV:
                 self.zoom_state = 'in'
-            else:
-                print(
-                    'Error when determining zoom state. Did you try to zoom in zoom mode or are you debugging the code?')
 
     def on_key_press(self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
@@ -425,7 +425,7 @@ class ZoomGameController(GameController):
             Number representing any modifying keys that were pressed.
 
         """
-        super(ZoomGameController, self).on_key_press(symbol, modifiers)
+        self.master.on_key_press(symbol, modifiers)
 
         if symbol == key.Z:
             self.zoom_state = 'in'
@@ -442,13 +442,8 @@ class ZoomGameController(GameController):
             Number representing any modifying keys that were pressed.
 
         """
-        super(ZoomGameController, self).on_key_release(symbol, modifiers)
+        self.master.on_key_release(symbol, modifiers)
 
         if symbol == key.Z:
             self.zoom_state = 'out'
-
-    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
-        """ Called when the player scrolls the mouse. Used for zooming.
-        """
-        self.zoom_in_out(scroll_y)
 

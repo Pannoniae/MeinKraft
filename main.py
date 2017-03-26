@@ -1,6 +1,6 @@
 import pyglet
 
-from mk.controller import ZoomGameController
+from mk.controller import GameController
 from mk.images import image_process
 
 VERSION = "0.5.1"
@@ -8,7 +8,7 @@ VERSION = "0.5.1"
 
 def main():
     image_process()
-    ctrl = ZoomGameController(width=800, height=600, caption='My own cute Pyglet v%s' % VERSION,
+    ctrl = GameController(width=800, height=600, caption='My own cute Pyglet v%s' % VERSION,
                           resizable=True, vsync=False)
     # ctrl.logevents()
     # Hide the mouse cursor and prevent the mouse from leaving the window.
