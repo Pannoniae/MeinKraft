@@ -38,7 +38,7 @@ class Player(object):
 
         # Current (x, y, z) position in the world, specified with floats. Note
         # that, perhaps unlike in math class, the y-axis is the vertical axis.
-        self.position = (0, 3, 0)
+        self.position = (0, 5, 0)
 
         # First element is rotation of the player in the x-z plane (ground
         # plane) measured from the z-axis down. The second is the rotation
@@ -86,8 +86,8 @@ class Player(object):
 
             # XXX Zsombor
             # this is what causes the long delay at startup
-            if self.sector is None:
-                self.model.process_entire_queue()
+            #if self.sector is None:
+            #    self.model.process_entire_queue()
 
             self.sector = sector
 
@@ -170,12 +170,8 @@ class Player(object):
         :return:
         """
         self.update_sector()
-
-        MOVEMENTS = 8
         dt = min(dt, 0.2)
-        for _ in range(MOVEMENTS):
-            sub_dt = dt / MOVEMENTS # smooth movements
-            self._update(sub_dt)
+        self._update(dt)
 
     def _update(self, dt):
         """ Private implementation of the `update()` method. This is where most

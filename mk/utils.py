@@ -1,13 +1,11 @@
 import os.path
 import hashlib
 
-from .config import BLOCKDATA_FOLDER
-
 
 def imgpath(filename):
 
     """ Returns the path for that image. """
-
+    from .config import BLOCKDATA_FOLDER
     return os.path.join(os.path.dirname(os.path.dirname(__file__)), BLOCKDATA_FOLDER, filename)
 
 
@@ -21,7 +19,7 @@ def get_block_id(filename):
 
     """ Returns the number from the end of filename. """
 
-    return filename.split('_')[-1]
+    return filename.split('_')[-1].split('.')[0]
 
 def md5_file(file):
 
@@ -32,10 +30,11 @@ def md5_file(file):
     try:
         file = open(file, 'rb')
         stream = file.read()
+        file.close()
         return md5(stream)
 
     except IOError:
-        return 0
+        raise IOError("Opening file failed")
 
 def md5(data):
 

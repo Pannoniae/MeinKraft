@@ -24,6 +24,8 @@ def setup():
     """ Basic OpenGL configuration.
 
     """
+    pyglet.options['debug_gl'] = False
+    pyglet.options['debug_gl_trace'] = False
     # Set the color of "clear", i.e. the sky, in rgba.
     glClearColor(0.5, 0.69, 1.0, 1)
     # Enable culling (not rendering) of back-facing facets -- facets that aren't

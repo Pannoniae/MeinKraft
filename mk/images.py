@@ -1,4 +1,3 @@
-import hashlib
 import os.path
 import sys
 import time
@@ -7,12 +6,6 @@ from PIL import Image
 
 from .config import BLOCK_TEXTURE_SIZE, TEXTURE_PATH
 from .utils import *
-
-
-
-
-
-
 
 
 def import_coords(x, y):
@@ -54,29 +47,48 @@ def image_process():
             break
     texture = texture.transpose(Image.FLIP_TOP_BOTTOM)
 
-    # Opening file
+    # Save texture internally
 
     try:
-        hash = md5(texture)
-    except:
-        print('texture.png haven''t found! Creating a new one...')
+        texture.save(base_path('_texture.png'))
+    except IOError:
+        print("Couldn't save temponary texture file. Check write-access?")
     else:
-        print('texture.png found! Checksum is: ' + hash)
+        print("Saved temponary texture file from memory, checking md5 checksum...")
 
-    # Saving file
+    # Compute hash texture in memory (that we created above)
 
     try:
-        texture.save(TEXTURE_PATH)
+        hash = md5_file(base_path('_texture.png'))
     except:
-        print('Failed to create texture.png! Maybe check if write-access has given?')
-        # Delay because it won't exit properly.
-        time.sleep(1)
-        sys.exit('Texture error')
+        print("Couldn't hash texture. md5 not installed?")
     else:
-        print('Successfully created texture.png')
+        print("Succesfully hashed texture in memory. Checksum is: " + hash)
 
-    newhash = md5_file('texture.png')
-    print('Checksum for new texture.png is: ' + newhash)
+    # Compute hash for old texture.png, if it exists
+
+    try:
+        newhash = md5_file('texture.png')
+    except IOError:
+        print("Couldn't open texture.png, check if it is properly saved, or maybe it isn't exists now?")
+    else:
+        print("Checksum for texture.png is: " + newhash)
+
+    # Saving texture.png from memory
+    if hash != newhash:
+        try:
+            texture.save(TEXTURE_PATH)
+        except:
+            print('Failed to create texture.png! Maybe check if write-access has given?')
+            raise IOError("Failed to create texture map.")
+        else:
+            print("Successfully created texture.png, maybe it didn't exist or corrupted")
+    else:
+        print("All okay, cached textures will do the job, no need to resave.")
+
+
+
+
     #if oldhash == newhash:
     #    print('Checksums matched! Continuing program...')
     #else:

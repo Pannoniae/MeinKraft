@@ -3,7 +3,9 @@
 import math
 from .utils import base_path
 
-TICKS_PER_SEC = 40
+# Limit FPS to this number
+TICKS_PER_SEC = 60
+# updates for various game logic
 GAME_TICKS_PER_SEC = 10
 
 # How many updates are called before fully switching zoom states.
