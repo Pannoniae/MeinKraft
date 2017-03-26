@@ -1,8 +1,7 @@
 import os.path
 import hashlib
 
-from .config import BLOCKDATA_FOLDER
-
+BLOCKDATA_FOLDER = "blockdata"
 
 def imgpath(filename):
 
