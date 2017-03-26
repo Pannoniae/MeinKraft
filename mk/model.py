@@ -18,6 +18,7 @@ from .config import TICKS_PER_SEC
 from .images import TEXTURE_PATH
 
 class Model(object):
+
     def __init__(self):
 
         # A Batch is a collection of vertex lists for batched rendering.
