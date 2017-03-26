@@ -8,6 +8,9 @@ TICKS_PER_SEC = 60
 # updates for various game logic
 GAME_TICKS_PER_SEC = 10
 
+# info update ticks
+INFO_TICKS_PER_SEC = 2
+
 # How many updates are called before fully switching zoom states.
 ZOOM_STATES = 10
 

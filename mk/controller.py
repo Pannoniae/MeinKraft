@@ -9,15 +9,15 @@ from pyglet.window import key
 
 # project module imports
 from .input import InputHandler
-from mk.render.zoomer import Zoomer
+from .zoomer import Zoomer
 from .config import *
 from .blocks import *
 from .model import Model
 from .player import Player
-from mk.render.reticle import Reticle
+from .reticle import Reticle
 from .label import Label
 from .bullet import Bullet
-from mk.render.geometry import cube_vertices
+from .geometry import cube_vertices
 
 
 
@@ -68,6 +68,7 @@ class GameController(pyglet.window.Window):
 
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
+        pyglet.clock.schedule_interval(self.update_info, 1.0 / INFO_TICKS_PER_SEC)
 
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
@@ -96,8 +97,7 @@ class GameController(pyglet.window.Window):
         self.exclusive = exclusive
 
     def update(self, dt):
-        """ This method is scheduled to be called repeatedly by the pyglet
-        clock.
+        """ This method is scheduled to be called repeatedly by the pyglet clock.
 
         Parameters
         ----------
@@ -110,6 +110,37 @@ class GameController(pyglet.window.Window):
         self.player.update(dt)
         self.player_changed_world()
         self.bullet.update(self.player)
+
+
+    def update_game(self, dt):
+        """
+        This method is scheduled to be called repeatedly by the pyglet clock.
+
+        Parameters
+        ----------
+        dt : float
+            The change in time since the last call.
+
+        Update game tick which is slower than update() for performance reasons.
+        """
+        self.prep_focused_block()
+
+    def update_info(self, dt):
+        """
+        This method is scheduled to be called repeatedly by the pyglet clock.
+
+        Parameters
+        ----------
+        dt : float
+            The change in time since the last call.
+
+        Update info tick
+            improve performance by displaying info less frequently
+        """
+        self.draw_label()
+        self.draw_bottom_label()
+
+
 
 
     def change_player_block(self, key_symbol):
@@ -181,15 +212,10 @@ class GameController(pyglet.window.Window):
         self.get_targeted_block()
         self.draw_focused_block()
         self.set_2d()
+        self.draw_label()
+        self.draw_bottom_label()
         self.reticle.draw()
 
-    def update_game(self, dt):
-        """ Update game tick which is slower than update() for performance reasons.
-
-        """
-        self.prep_focused_block()
-        #self.draw_label()
-        #self.draw_bottom_label()
 
     def prep_focused_block(self):
         """ Computes focused block target in game tick to speed up game.

@@ -3,7 +3,7 @@ import pyglet
 from mk.controller import GameController
 from mk.images import image_process
 
-VERSION = "0.5.1"
+VERSION = "0.5.2"
 
 
 def main():
