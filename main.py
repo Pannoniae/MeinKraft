@@ -1,11 +1,9 @@
-from __future__ import absolute_import
-
 import pyglet
 
 from mk.controller import ZoomGameController
 from mk.images import image_process
 
-VERSION = "0.5"
+VERSION = "0.5.1"
 
 
 def main():
