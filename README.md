@@ -3,17 +3,16 @@
 
 Yes, I do know that "force" or "power" is "die Kraft" in German, so the correct form would be "MeineKraft". :) 
 
-I'm trying to implement some features of Minecraft in this project. The code is written in Python and it uses the pyglet framework and the PyOpenGL graphics library. I want the game to be be more realistic than Minecraft in some regards. For example, there should be no tree punching any more, no diamond finding, etc.
+I'm trying to implement some features of Minecraft in this project. The code is written in Python and it uses the pyglet framework and the PyOpenGL graphics library. I want the game to be be more mod-friendly, realistic and  than Minecraft in some regards. For example, there should be no tree punching any more, no diamond finding, etc.
 
 It's based on fogleman's code: (also check out Konstructs, another game by him, forked by others)
 
 https://github.com/fogleman/
 
 
-## How to run the program for the time being 
+## How to run the program for the time being (in the future, there will be an installer containing all things.)
 
-* Install Python 2.7
-*    3.x maybe or maybe not do it
+* Install Python 3, Python 2 won't do it
 * Install pyglet
 *    run this command from cmd: pip install pyglet
 * Install PyOpenGL
@@ -27,39 +26,14 @@ https://github.com/fogleman/
 *    cd meinkraft
 *    python main.py
 
-## Changes
+## Changes from the original
 
-* code restructuring
-* texture map is automatically assembled from individual bitmaps
-* blocks have been changed into objects
-* fast updates are performed only for graphics
-* blocks may be partially transparent (i.e. they can be filled in only up to some level)
-* player may zoom in and out
-* player may jump continuously
-
+I realized that this project became a lot more than a fork of the original 500-line code. So basically this is a Minecraft pre-alpha.
 
 
 ## How to Play
 
-### Moving
-
-- W: forward
-- S: back
-- A: strafe left
-- D: strafe right
-- Mouse: look around
-- Space: jump
-- Tab: toggle flying mode
-
-### Building
-
-- Selecting type of block to create:
-    - 1: brick
-    - 2: grass
-    - 3: sand
-    - 4: path
-- Mouse left-click: remove block
-- Mouse right-click: create block
+Standard Minecraft controls.
 
 ### Quitting
 
