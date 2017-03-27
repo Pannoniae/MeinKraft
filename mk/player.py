@@ -1,15 +1,8 @@
 import math
 
-from mk.render.geometry import normalize, FACES, sectorize
+from .render.geometry import normalize, FACES, sectorize
 from .blocks import *
-from .config import (
-    FLYING_SPEED,
-    WALKING_SPEED,
-    GRAVITY,
-    TERMINAL_VELOCITY,
-    PLAYER_HEIGHT,
-    JUMP_SPEED,
-)
+from .config import *
 
 class Player(object):
     """
@@ -72,6 +65,10 @@ class Player(object):
 
     def move_right(self):
         self.strafe[1] += 1
+
+    def halt(self):
+        self.strafe[0] = 0
+        self.strafe[1] = 0
 
     def world_changed(self, model):
         self.model = model

@@ -12,7 +12,7 @@ from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
 # project module imports
-from mk.render.geometry import normalize, sectorize, FACES
+from .render.geometry import normalize, sectorize, FACES
 from .blocks import *
 from .config import TICKS_PER_SEC
 from .images import TEXTURE_PATH

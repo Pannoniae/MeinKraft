@@ -4,9 +4,9 @@ import pyglet
 class Label(pyglet.text.Label):
     " display some info on screen"
 
-    def __init__(self, msg, x, y, font_name="Arial", font_size=18, anchor_x="left", anchor_y="top", color=(0,0,0,255)):
+    def __init__(self, msg, x=0, y=0, font_name="Arial", font_size=18, anchor_x="left", anchor_y="top", color=(0,0,0,255)):
 
-        super(Label, self).__init__(msg, font_name=font_name, font_size=font_size,
+        super().__init__(msg, font_name=font_name, font_size=font_size,
                                        x=x, y=y, anchor_x=anchor_x, anchor_y=anchor_y,
                                        color=color)
 

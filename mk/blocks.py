@@ -1,6 +1,6 @@
 # define MC blocks
 
-from mk.render.geometry import tex_coords, cube_vertices
+from .render.geometry import tex_coords, cube_vertices
 
 
 class Block(object):
@@ -10,7 +10,7 @@ class Block(object):
     now the class itself is stored in the world storage
 
 
-    TODO:  extends as needed
+    TODO:  extend as needed
     """
     # save memory, not needed
     #__slots__ = ["get_texture", "get_block_type", "get_vertices"]
@@ -18,7 +18,7 @@ class Block(object):
     @classmethod
     def get_texture(self):
         # abstract
-        raise NotImplemented
+        return NotImplemented
 
     @classmethod
     def get_block_type(self):

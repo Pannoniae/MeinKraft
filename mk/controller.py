@@ -8,7 +8,9 @@ from pyglet.gl import *
 from pyglet.window import key
 
 # project module imports
-from .inputhandler import InputHandler
+from .lang.executer import CommandExecuter
+from .io.console import Console
+from .io.inputhandler import InputHandler
 from .render.zoomer import Zoomer
 from .config import *
 from .blocks import *
@@ -58,10 +60,18 @@ class GameController(pyglet.window.Window):
         # The label that is displayed in the bottom left of the canvas.
         self.label_bottom = Label("", x=10, y=10, anchor_y='bottom')
 
+        # The command console where you can input things.
+        self.console = Console(self, "", 100, 100, anchor_x='left', anchor_y='top')
+
+        # Whether you are typing in the console, or not.
+        self.is_typing = False
+
         self.FOV = MAX_FOV
 
         self.zoomer = Zoomer(self)
         self.input = InputHandler(self)
+        self.executer = CommandExecuter(self)
+
 
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
@@ -139,6 +149,7 @@ class GameController(pyglet.window.Window):
         """
         self.draw_label()
         self.draw_bottom_label()
+        self.draw_console()
 
 
 
@@ -164,6 +175,9 @@ class GameController(pyglet.window.Window):
 
     def on_resize(self, width, height):
         self.input.on_resize(width, height)
+
+    def on_text(self, text):
+        self.input.on_text(text)
 
     def set_2d(self):
         """ Configure OpenGL to draw in 2d.
@@ -214,6 +228,7 @@ class GameController(pyglet.window.Window):
         self.set_2d()
         self.draw_label()
         self.draw_bottom_label()
+        self.draw_console()
         self.reticle.draw()
 
 
@@ -267,6 +282,7 @@ class GameController(pyglet.window.Window):
 
     def draw_label(self):
         """ Draw the label in the top left of the screen.
+
         """
         x, y, z = self.player.position
         msg = '%02d/%02d (%.2f, %.2f, %.2f) %d / %d' % (
@@ -282,6 +298,15 @@ class GameController(pyglet.window.Window):
         if block:
             msg = '%s block, zoom %s, flying=%s' % (block.get_block_type(), self.zoomer.zoom_state, self.player.flying)
             self.label_bottom.set_text(msg)
+
+    def draw_console(self):
+        """ Draws the command console onto the screen.
+
+        """
+        msg = ''.join(self.console.content)
+        print(self.console.split())
+        self.console.set_text(msg)
+
 
     def setup(self):
         from mk.render.gl_setup import setup

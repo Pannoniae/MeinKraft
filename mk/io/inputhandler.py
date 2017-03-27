@@ -19,24 +19,46 @@ class InputHandler(object):
                 Number representing any modifying keys that were pressed.
 
             """
-        if symbol == key.W:
-            self.master.player.move_forward()
-        elif symbol == key.S:
-            self.master.player.move_backward()
-        elif symbol == key.A:
-            self.master.player.move_left()
-        elif symbol == key.D:
-            self.master.player.move_right()
-        elif symbol == key.SPACE:
-            self.master.player.jump()
-        elif symbol == key.ESCAPE:
+        if symbol == key.ESCAPE:
             self.master.set_exclusive_mouse(False)
-        elif symbol == key.TAB:
-            self.master.player.toggle_flying()
-        elif symbol in self.master.num_keys:
-            self.master.change_player_block(symbol)
-        elif symbol == key.Z:
-            self.master.zoom_state = 'in'
+        if not self.master.is_typing:
+            if symbol == key.W:
+                self.master.player.move_forward()
+            elif symbol == key.S:
+                self.master.player.move_backward()
+            elif symbol == key.A:
+                self.master.player.move_left()
+            elif symbol == key.D:
+                self.master.player.move_right()
+            elif symbol == key.SPACE:
+                self.master.player.jump()
+            elif symbol == key.TAB:
+                self.master.player.toggle_flying()
+            elif symbol in self.master.num_keys:
+                self.master.change_player_block(symbol)
+            elif symbol == key.Z:
+                self.master.zoom_state = 'in'
+
+
+        elif symbol == key.BACKSPACE:
+            self.master.console.del_char(1)
+        elif symbol == key.ENTER:
+            self.master.console.execute()
+
+
+    def on_text(self, text):
+        """ Called when the player types into the console.
+
+        """
+        print(text, ord(text))
+        if self.master.is_typing:
+            if text != 'T':
+                self.master.console.add_char(text)
+            else:
+                self.master.is_typing = False
+        elif text == 't':
+            self.master.player.halt()
+            self.master.is_typing = True
 
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
@@ -50,18 +72,19 @@ class InputHandler(object):
                 Number representing any modifying keys that were pressed.
 
             """
-        if symbol == key.W:
-            self.master.player.move_backward()
-        elif symbol == key.S:
-            self.master.player.move_forward()
-        elif symbol == key.A:
-            self.master.player.move_right()
-        elif symbol == key.D:
-            self.master.player.move_left()
-        elif symbol == key.SPACE:
-            self.master.player.jumping = False
-        elif symbol == key.Z:
-            self.zoom_state = 'out'
+        if not self.master.is_typing:
+            if symbol == key.W:
+                self.master.player.move_backward()
+            elif symbol == key.S:
+                self.master.player.move_forward()
+            elif symbol == key.A:
+                self.master.player.move_right()
+            elif symbol == key.D:
+                self.master.player.move_left()
+            elif symbol == key.SPACE:
+                self.master.player.jumping = False
+            elif symbol == key.Z:
+                self.master.zoom_state = 'out'
 
     def on_mouse_press(self, x, y, button, modifiers):
         """ Called when a mouse button is pressed. See pyglet docs for button
