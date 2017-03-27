@@ -9,20 +9,15 @@ It's based on fogleman's code: (also check out Konstructs, another game by him, 
 
 https://github.com/fogleman/
 
+## How to run the program for the time being (there will be an installer in the future)
 
-## How to run the program for the time being (in the future, there will be an installer containing all things.)
-
-* Install Python 3, Python 2 won't do it
+* Install Python 3, Python 2 won't do 
 * Install pyglet
-*    run this command from cmd: pip install pyglet
-* Install PyOpenGL
-*  http://pyopengl.sourceforge.net/documentation/installation.html
-* Install noise
-* pip install noise
+*    run this command from the command line: pip install pyglet
 * Install Git
 *  Just google for it :)
 * type these commands:
-*    git clone https://bitbucket.org/prisz/meinkraft
+*    git clone https://bitbucket.org/Pannoniae/meinkraft
 *    cd meinkraft
 *    python main.py
 
