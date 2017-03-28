@@ -1,5 +1,5 @@
-from mk.label import Label
-from pyglet.window import key
+from ..controller import GameController
+from ..label import Label
 
 
 class Console(Label):
@@ -9,8 +9,18 @@ class Console(Label):
 
         super().__init__(msg, x, y, font_name=font_name, font_size=font_size, anchor_x=anchor_x, anchor_y=anchor_y,
                             color=color)
+        assert isinstance(master, GameController)
         self.master = master
         self.content = []
+
+    def show(self):
+        """
+        Draws the command console onto the screen.
+
+        """
+        msg = ''.join(self.content)
+        # print(self.split())
+        self.set_text(msg)
 
     def add_char(self, char):
         self.content.append(char)
@@ -21,12 +31,16 @@ class Console(Label):
                 del self.content[-1]
 
     def clear(self):
+        """
+        Clears console buffer.
+
+        """
         self.content = []
 
     def split(self):
         """ Split the command, and the arguments.
 
-        Returns a tuple of the command, and another for args."""
+        Returns a tuple of the command, and another for args. """
 
         # if empty, return False, instead of crashing
         if not self.content:

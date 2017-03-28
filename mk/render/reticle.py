@@ -3,11 +3,16 @@
 import pyglet
 from pyglet.gl import *
 
+from ..controller import GameController
+
+
 class Reticle(object):
     " The crosshairs at the center of the screen. "
 
-    def __init__(self, transparency):
+    def __init__(self, master, transparency):
 
+        assert isinstance(master, GameController)
+        self.master = master
         # The reticle's transparency, it is transparent when scoping in.
         self.transparency = transparency
         self.vertexlist = None
@@ -28,7 +33,7 @@ class Reticle(object):
                                                        )
                                                       )
 
-    def draw(self):
+    def show(self):
         """ Draw the crosshairs in the center of the screen."""
         glColor4d(0, 0, 0, self.transparency)
         self.vertexlist.draw(GL_LINES)

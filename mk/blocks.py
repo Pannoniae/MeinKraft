@@ -56,7 +56,14 @@ class BRICK(Block):
     # brick, stone
     texture_states = [((0, 0), (0, 0), (0, 0)), ((1, 0), (1, 0), (1, 0))]
 
+class BRICK_SLAB(Block):
 
+    #
+    texture_states = [((0, 0), (0, 0), (1, 2))]
+
+    @classmethod
+    def get_vertices(cls, x, y, z):
+        return cube_vertices(x, y, z, 0.5, 0)
 
 
 class DIRT(Block):

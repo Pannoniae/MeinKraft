@@ -1,5 +1,6 @@
 import math
 
+from .controller import GameController
 from .render.geometry import normalize, FACES, sectorize
 from .blocks import *
 from .config import *
@@ -9,8 +10,10 @@ class Player(object):
     information related to the player
 
     """
-    def __init__(self):
+    def __init__(self, master):
 
+        assert isinstance(master, GameController)
+        self.master = master
 
         # the world around us
         self.model = None
@@ -45,7 +48,7 @@ class Player(object):
         self.sector = None
 
         # A list of blocks the player can place. Hit num keys to cycle.
-        self.inventory = [BRICK, GRASS, SAND, PATH]
+        self.inventory = [BRICK, GRASS, SAND, PATH, BRICK_SLAB]
 
         # The current block the user can place. Hit num keys to cycle.
         self.block = self.inventory[0]

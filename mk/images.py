@@ -1,6 +1,4 @@
 import os.path
-import sys
-import time
 
 from PIL import Image
 

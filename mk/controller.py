@@ -42,13 +42,13 @@ class GameController(pyglet.window.Window):
         self.exclusive = False
 
         # The crosshairs at the center of the screen.
-        self.reticle = Reticle(1.0)
+        self.reticle = Reticle(self, 1.0)
 
         # Instance of the model that handles the world.
-        self.model = Model()
+        self.model = Model(self)
 
         # Instance of Player object
-        self.player = Player()
+        self.player = Player(self)
         self.world_changed()
 
         # Instance of the bullet physics that handles the weapons.
@@ -152,7 +152,7 @@ class GameController(pyglet.window.Window):
         """
         self.draw_label()
         self.draw_bottom_label()
-        self.draw_console()
+        self.console.draw()
 
 
     def change_player_block(self, key_symbol):
@@ -183,7 +183,7 @@ class GameController(pyglet.window.Window):
     # Drawing.
 
     def set_2d(self):
-        """ Configure OpenGL to draw in 2d.
+        """ Configure OpenGL to show in 2d.
 
         """
         width, height = self.get_size()
@@ -196,7 +196,7 @@ class GameController(pyglet.window.Window):
         glLoadIdentity()
 
     def set_3d(self):
-        """ Configure OpenGL to draw in 3d.
+        """ Configure OpenGL to show in 3d.
 
         """
         width, height = self.get_size()
@@ -219,7 +219,7 @@ class GameController(pyglet.window.Window):
         return self.model.get_block(position)
 
     def on_draw(self):
-        """ Called by pyglet to draw the canvas.
+        """ Called by pyglet to show the canvas.
         """
         self.clear()
         pyglet.clock.tick()
@@ -231,8 +231,8 @@ class GameController(pyglet.window.Window):
         self.set_2d()
         self.draw_label()
         self.draw_bottom_label()
-        self.draw_console()
-        self.reticle.draw()
+        self.console.show()
+        self.reticle.show()
 
 
     def prep_focused_block(self):
@@ -274,14 +274,7 @@ class GameController(pyglet.window.Window):
         :param block_position:  3-tuple of coordinates
         :return:
         """
-        if block_position:
-            self.model.add_block(block_position, self.player.block)
-            # grass logic
-            position_below, block_below = self.model.get_position_and_block_below(block_position)
-            if block_below is not None and block_below.get_block_type() == "GRASS":
-                self.model.add_block(position_below, DIRT)
-        else:
-            self.zoomer.zoom_state = 'toggle'
+        self.model.add_block(block_position, self.player.block)
 
     def draw_label(self):
         """ Draw the label in the top left of the screen.
@@ -302,13 +295,6 @@ class GameController(pyglet.window.Window):
             msg = '%s block, zoom %s, flying=%s' % (block.get_block_type(), self.zoomer.zoom_state, self.player.flying)
             self.label_bottom.set_text(msg)
 
-    def draw_console(self):
-        """ Draws the command console onto the screen.
-
-        """
-        msg = ''.join(self.console.content)
-        #print(self.console.split())
-        self.console.set_text(msg)
 
 
     def setup(self):

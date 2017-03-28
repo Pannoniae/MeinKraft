@@ -19,7 +19,7 @@ def get_block_id(filename):
 
     """ Returns the number from the end of filename. """
 
-    return filename.split('_')[-1].split('.')[0]
+    return int(filename.split('_')[-1].split('.')[0])
 
 def md5_file(file):
 

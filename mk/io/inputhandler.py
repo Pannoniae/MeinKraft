@@ -1,10 +1,13 @@
 import pyglet
 from pyglet.window import key, mouse
 
+from ..controller import GameController
+
 
 class InputHandler(object):
 
     def __init__(self, master):
+        assert isinstance(master, GameController)
         self.master = master
 
     def on_key_press(self, symbol, modifiers):
@@ -110,7 +113,7 @@ class InputHandler(object):
                     ((button == mouse.LEFT) and (modifiers & key.MOD_CTRL)):
                 # ON OSX, control + left click = right click.
                 if previous:
-                    self.master.build_block(previous)
+                    self.master.model.add_block(previous, self.master.player.inventory)
                 else:
                     self.master.bullet.fire(self.master.player.position)
 
@@ -121,6 +124,9 @@ class InputHandler(object):
 
         # the world has changed for the player
         self.master.world_changed()
+
+        self.master
+
 
     def on_mouse_motion(self, x, y, dx, dy):
         """ Called when the player moves the mouse.

@@ -1,5 +1,5 @@
-
 import pyglet
+
 
 class Label(pyglet.text.Label):
     " display some info on screen"

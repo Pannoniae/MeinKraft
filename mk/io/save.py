@@ -1,9 +1,10 @@
-
+from ..controller import GameController
 
 
 class GameSaver(object):
 
     def __init__(self, master):
+        assert isinstance(master, GameController)
         self.master = master
 
     def save_game(self):

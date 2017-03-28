@@ -13,6 +13,7 @@ from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
 # project module imports
+from .controller import GameController
 from .render.geometry import normalize, sectorize, FACES
 from .blocks import *
 from .config import TICKS_PER_SEC
@@ -20,7 +21,11 @@ from .images import TEXTURE_PATH
 
 class Model(object):
 
-    def __init__(self):
+    def __init__(self, master):
+
+        assert isinstance(master, GameController)
+        self.master = master
+
 
         # A Batch is a collection of vertex lists for batched rendering.
         self.batch = pyglet.graphics.Batch()
@@ -144,7 +149,7 @@ class Model(object):
             Uses `tex_coords()` to generate.
 
         immediate : bool
-            Whether or not to draw the block immediately.
+            Whether or not to show the block immediately.
 
         random_textures : bool
             Whether use random textures, or not.
@@ -152,6 +157,9 @@ class Model(object):
         """
 
         # storing the block instance, not the class!
+        position_below, block_below = self.get_position_and_block_below(position)
+        if block_below is not None and block_below.get_block_type() == "GRASS":
+            self.add_block(position_below, DIRT)
         block_instance = block()
         if randomized_textures and block_instance.random_textures > 1:
             idx = random.randint(1, block_instance.random_textures)
