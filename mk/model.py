@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 # Python standard library imports
+import random
 import time
 from collections import deque
 
@@ -129,8 +130,7 @@ class Model(object):
         position_below = x, y - 1, z
         return position_below, self.get_block(position_below)
 
-
-    def add_block(self, position, block, immediate=True):
+    def add_block(self, position, block, immediate=True, randomized_textures=True):
         """ Add a block with the given `texture` and `position` to the world.
 
         If you place grass on grass then the block below changes into dirt.
@@ -146,10 +146,21 @@ class Model(object):
         immediate : bool
             Whether or not to draw the block immediately.
 
+        random_textures : bool
+            Whether use random textures, or not.
+
         """
+
+        # storing the block instance, not the class!
+        block_instance = block()
+        if randomized_textures and block_instance.random_textures > 1:
+            idx = random.randint(1, block_instance.random_textures)
+        else:
+            idx = 1
+        block_instance.set_random_texture(idx)
         if position in self.world:
             self.remove_block(position, immediate)
-        self.world[position] = block
+        self.world[position] = block_instance
         self.sectors.setdefault(sectorize(position), []).append(position)
         if immediate:
             if self.exposed(position):

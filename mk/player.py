@@ -96,7 +96,6 @@ class Player(object):
     def toggle_flying(self):
         self.flying = not self.flying
 
-
     def change_active_block(self, index):
         self.block = self.inventory[index]
 
@@ -235,7 +234,7 @@ class Player(object):
                     op = list(np)
                     op[1] -= dy
                     op[i] += face[i]
-                    if tuple(op) not in self.model.world:
+                    if (tuple(op) not in self.model.world) or (self.model.get_block(tuple(op)).collision is False):
                         continue
                     p[i] -= (d - pad) * face[i]
                     if face == (0, -1, 0):

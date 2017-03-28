@@ -69,7 +69,9 @@ class GameController(pyglet.window.Window):
         self.FOV = MAX_FOV
 
         self.zoomer = Zoomer(self)
+
         self.input = InputHandler(self)
+
         self.executer = CommandExecuter(self)
 
 
@@ -79,6 +81,7 @@ class GameController(pyglet.window.Window):
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_info, 1.0 / INFO_TICKS_PER_SEC)
+
 
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
@@ -152,8 +155,6 @@ class GameController(pyglet.window.Window):
         self.draw_console()
 
 
-
-
     def change_player_block(self, key_symbol):
         index = (key_symbol - self.num_keys[0]) % len(self.player.inventory)
         self.player.change_active_block(index)
@@ -178,6 +179,8 @@ class GameController(pyglet.window.Window):
 
     def on_text(self, text):
         self.input.on_text(text)
+
+    # Drawing.
 
     def set_2d(self):
         """ Configure OpenGL to draw in 2d.
@@ -247,8 +250,8 @@ class GameController(pyglet.window.Window):
         if self.target_block:
             x, y, z = self.target_block
             glPushAttrib(GL_ENABLE_BIT)
-            glLineStipple(1, 0x17AF)
-            glEnable(GL_LINE_STIPPLE)
+            #glLineStipple(1, 0x17AF)
+            #glEnable(GL_LINE_STIPPLE)
             vertex_data = cube_vertices(x, y, z, 0.51)
             glColor3d(0, 0, 0)
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
