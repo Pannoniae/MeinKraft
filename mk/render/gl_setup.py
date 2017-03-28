@@ -31,8 +31,14 @@ def setup():
     # Enable culling (not rendering) of back-facing facets -- facets that aren't
     # visible to you.
     glEnable(GL_CULL_FACE)
-    glEnable(GL_BLEND)
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    #glEnable(GL_BLEND)
+    #glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR)
+
+    # Since our objects are either fully transparent or fully opaque, we can render objects behind them.
+    # This thing has cost me several days of thinking...
+
+    glEnable(GL_ALPHA_TEST)
+    glAlphaFunc(GL_GREATER, 0.0)
     # Set the texture minification/magnification function to GL_NEAREST (nearest
     # in Manhattan distance) to the specified texture coordinates. GL_NEAREST
     # "is generally faster than GL_LINEAR, but it can produce textured images

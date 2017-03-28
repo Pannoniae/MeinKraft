@@ -304,7 +304,7 @@ class GameController(pyglet.window.Window):
 
         """
         msg = ''.join(self.console.content)
-        print(self.console.split())
+        #print(self.console.split())
         self.console.set_text(msg)
 
 
