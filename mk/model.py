@@ -13,7 +13,6 @@ from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
 # project module imports
-from .controller import GameController
 from .render.geometry import normalize, sectorize, FACES
 from .blocks import *
 from .config import TICKS_PER_SEC
@@ -21,11 +20,7 @@ from .images import TEXTURE_PATH
 
 class Model(object):
 
-    def __init__(self, master):
-
-        assert isinstance(master, GameController)
-        self.master = master
-
+    def __init__(self):
 
         # A Batch is a collection of vertex lists for batched rendering.
         self.batch = pyglet.graphics.Batch()

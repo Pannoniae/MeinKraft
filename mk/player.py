@@ -1,6 +1,3 @@
-import math
-
-from .controller import GameController
 from .render.geometry import normalize, FACES, sectorize
 from .blocks import *
 from .config import *
@@ -10,10 +7,7 @@ class Player(object):
     information related to the player
 
     """
-    def __init__(self, master):
-
-        assert isinstance(master, GameController)
-        self.master = master
+    def __init__(self):
 
         # the world around us
         self.model = None

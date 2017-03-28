@@ -1,4 +1,3 @@
-from ..controller import GameController
 from ..label import Label
 
 
@@ -9,9 +8,10 @@ class Console(Label):
 
         super().__init__(msg, x, y, font_name=font_name, font_size=font_size, anchor_x=anchor_x, anchor_y=anchor_y,
                             color=color)
+        self.content = []
+        from ..controller import GameController
         assert isinstance(master, GameController)
         self.master = master
-        self.content = []
 
     def show(self):
         """

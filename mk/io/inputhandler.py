@@ -1,12 +1,13 @@
 import pyglet
 from pyglet.window import key, mouse
 
-from ..controller import GameController
+
 
 
 class InputHandler(object):
 
     def __init__(self, master):
+        from ..controller import GameController
         assert isinstance(master, GameController)
         self.master = master
 
@@ -113,7 +114,7 @@ class InputHandler(object):
                     ((button == mouse.LEFT) and (modifiers & key.MOD_CTRL)):
                 # ON OSX, control + left click = right click.
                 if previous:
-                    self.master.model.add_block(previous, self.master.player.inventory)
+                    self.master.model.add_block(previous, self.master.player.block)
                 else:
                     self.master.bullet.fire(self.master.player.position)
 

@@ -1,9 +1,7 @@
-from ..controller import GameController
-
-
 class CommandExecuter(object):
 
     def __init__(self, master):
+        from ..controller import GameController
         assert isinstance(master, GameController)
         self.master = master
 

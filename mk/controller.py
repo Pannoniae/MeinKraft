@@ -42,13 +42,13 @@ class GameController(pyglet.window.Window):
         self.exclusive = False
 
         # The crosshairs at the center of the screen.
-        self.reticle = Reticle(self, 1.0)
+        self.reticle = Reticle(1.0)
 
         # Instance of the model that handles the world.
-        self.model = Model(self)
+        self.model = Model()
 
         # Instance of Player object
-        self.player = Player(self)
+        self.player = Player()
         self.world_changed()
 
         # Instance of the bullet physics that handles the weapons.
