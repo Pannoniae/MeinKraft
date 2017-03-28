@@ -238,19 +238,22 @@ class Player(object):
                     if tuple(op) not in self.model.world:
                         continue
                     p[i] -= (d - pad) * face[i]
-                    if face == (0, -1, 0) or face == (0, 1, 0):
-                        # You are colliding with the ground or ceiling, so stop
-                        # falling / rising.
+                    if face == (0, -1, 0):
+                        # You are colliding with the ground, so stop falling.
                         if self.jumping:
                             self.dy = JUMP_SPEED
                         else:
                             self.dy = 0
+                    if face == (0, 1, 0):
+                        # You are colliding with the ceiling, so stop rising.
+                        if self.jumping:
+                            self.dy = -1
                     break
         return tuple(p)
 
 
     def move(self, x, y, dx, dy):
-        m = 0.15
+        m = SENSIVITY
         x, y = self.rotation
         x, y = x + dx * m, y + dy * m
         y = max(-90, min(90, y))
