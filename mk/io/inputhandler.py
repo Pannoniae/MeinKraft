@@ -126,7 +126,6 @@ class InputHandler(object):
         # the world has changed for the player
         self.master.world_changed()
 
-        self.master
 
 
     def on_mouse_motion(self, x, y, dx, dy):

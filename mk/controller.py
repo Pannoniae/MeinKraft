@@ -1,6 +1,6 @@
 # controller classes
 
-from __future__ import absolute_import
+import logging
 
 # third party imports
 import pyglet
@@ -8,7 +8,6 @@ from pyglet.gl import *
 from pyglet.window import key
 
 # project module imports
-from .lang.executer import CommandExecuter
 from .io.console import Console
 from .io.inputhandler import InputHandler
 from .render.zoomer import Zoomer
@@ -37,6 +36,9 @@ class GameController(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
 
         super(GameController, self).__init__(*args, **kwargs)
+
+        # initialize logging
+        self.init_logger()
 
         # Whether or not the window exclusively captures the mouse.
         self.exclusive = False
@@ -72,19 +74,30 @@ class GameController(pyglet.window.Window):
 
         self.input = InputHandler(self)
 
-        self.executer = CommandExecuter(self)
-
-
-        # This call schedules the `update()` method to be called
-        # TICKS_PER_SEC. This is the main game event loop.
-
-        pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
-        pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
-        pyglet.clock.schedule_interval(self.update_info, 1.0 / INFO_TICKS_PER_SEC)
-
+        self.schedule_updates()
 
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
+
+
+    def init_logger(self):
+        self.log = logging.getLogger("meinkraft")
+        self.log.setLevel(logging.DEBUG)
+        out_hdlr = logging.StreamHandler() # stdout
+        out_hdlr.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
+        out_hdlr.setLevel(logging.DEBUG)
+        self.log.addHandler(out_hdlr)
+
+    def debug(self, msg, *args):
+        self.log.debug(msg, *args)
+
+
+    def schedule_updates(self):
+        # This call schedules the `update()` method to be called
+        # TICKS_PER_SEC. This is the main game event loop.
+        pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
+        pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
+        pyglet.clock.schedule_interval(self.update_info, 1.0 / INFO_TICKS_PER_SEC)
 
     def world_changed(self):
         """
@@ -152,7 +165,7 @@ class GameController(pyglet.window.Window):
         """
         self.draw_label()
         self.draw_bottom_label()
-        self.console.draw()
+        self.console.show()
 
 
     def change_player_block(self, key_symbol):
@@ -231,7 +244,6 @@ class GameController(pyglet.window.Window):
         self.set_2d()
         self.draw_label()
         self.draw_bottom_label()
-        self.console.show()
         self.reticle.show()
 
 
@@ -294,7 +306,6 @@ class GameController(pyglet.window.Window):
         if block:
             msg = '%s block, zoom %s, flying=%s' % (block.get_block_type(), self.zoomer.zoom_state, self.player.flying)
             self.label_bottom.set_text(msg)
-
 
 
     def setup(self):

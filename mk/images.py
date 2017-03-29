@@ -83,16 +83,3 @@ def image_process():
             print("Successfully created texture.png, maybe it didn't exist or corrupted")
     else:
         print("All okay, cached textures will do the job, no need to resave.")
-
-
-
-
-    #if oldhash == newhash:
-    #    print('Checksums matched! Continuing program...')
-    #else:
-    #    print('Checksum mismatch! Generating new texture file...')
-        # XXX Zsombor: ez a logika hibas. Itt semmi nem fogja ujra generalni a fajlt,
-
-        # Ki kellene szamolni az ellenorzoosszeget, ezt eltarolni egy kulon fajlban, majd az abban levo ertekkel
-        # kellene osszehasonlitani a kovetkezo programfutaskor a program altal talalt texture.png ellenorzoosszeget.
-        # Ha nem egyeznek, akkor lekell generalni a texture.png-t, ha egyeznek, akkor meg nyilvan nem.

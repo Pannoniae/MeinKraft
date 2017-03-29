@@ -1,5 +1,5 @@
 from ..label import Label
-
+from ..lang.commandexecutor import  CommandExecutor
 
 class Console(Label):
 
@@ -12,14 +12,14 @@ class Console(Label):
         from ..controller import GameController
         assert isinstance(master, GameController)
         self.master = master
+        self.command_executor = CommandExecutor(self.master)
 
     def show(self):
         """
-        Draws the command console onto the screen.
-
+        Show the content of the command console on the screen.
         """
         msg = ''.join(self.content)
-        # print(self.split())
+        #self.master.debug("console:  " + msg)
         self.set_text(msg)
 
     def add_char(self, char):
@@ -37,7 +37,7 @@ class Console(Label):
         """
         self.content = []
 
-    def split(self):
+    def parse(self):
         """ Split the command, and the arguments.
 
         Returns a tuple of the command, and another for args. """
@@ -52,12 +52,10 @@ class Console(Label):
 
     def execute(self):
         #execute command by the language parser
-        print(self.split())
-        self.master.executer.execute_command(self.split()[0], self.split()[1])
+        print(self.parse())
+        command, command_args = self.parse()
+        self.command_executor.execute_command(command, command_args)
         # clear buffer
         self.clear()
         # unset typing
         self.master.is_typing = False
-
-
-

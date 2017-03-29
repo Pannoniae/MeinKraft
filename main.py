@@ -3,7 +3,7 @@ import pyglet
 from mk.controller import GameController
 from mk.images import image_process
 
-VERSION = "0.5.2"
+VERSION = "0.5.3"
 
 
 def main():
@@ -14,7 +14,9 @@ def main():
     # Hide the mouse cursor and prevent the mouse from leaving the window.
     ctrl.set_exclusive_mouse(True)
     ctrl.setup()
+    ctrl.debug("App started ")
     pyglet.app.run()
+    ctrl.debug("App stopped ")
 
 
 if __name__ == '__main__':
