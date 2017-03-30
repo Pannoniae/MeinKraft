@@ -14,13 +14,18 @@ class Console(Label):
         self.master = master
         self.command_executor = CommandExecutor(self.master)
 
+    def read(self):
+        """
+        read out content of console
+        non-destructive
+        """
+        return ''.join(self.content)
+
     def show(self):
         """
         Show the content of the command console on the screen.
         """
-        msg = ''.join(self.content)
-        #self.master.debug("console:  " + msg)
-        self.set_text(msg)
+        self.set_text(self.read())
 
     def add_char(self, char):
         self.content.append(char)

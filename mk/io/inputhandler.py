@@ -52,17 +52,19 @@ class InputHandler(object):
 
     def on_text(self, text):
         """ Called when the player types into the console.
-
         """
-        print(text, ord(text))
         if self.master.is_typing:
             if text != 'T':
                 self.master.console.add_char(text)
+                self.master.debug("console content: %s" % self.master.console.read())
             else:
+                self.master.debug("console mode ended")
                 self.master.is_typing = False
         elif text == 't':
+            self.master.debug("console mode entered")
             self.master.player.halt()
             self.master.is_typing = True
+        self.master.console.show()
 
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key

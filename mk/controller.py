@@ -63,7 +63,7 @@ class GameController(pyglet.window.Window):
         self.label_bottom = Label("", x=10, y=10, anchor_y='bottom')
 
         # The command console where you can input things.
-        self.console = Console(self, "", 100, 100, anchor_x='left', anchor_y='top')
+        self.console = Console(self, "", 10, 9, anchor_x='left', anchor_y='top')
 
         # Whether you are typing in the console, or not.
         self.is_typing = False
