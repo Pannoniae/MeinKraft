@@ -3,6 +3,9 @@ import pyglet
 from mk.controller import GameController
 from mk.images import image_process
 
+from mk.io.save import GameSaver
+from mk.io.load import GameLoader
+
 VERSION = "0.5.3"
 
 
@@ -15,8 +18,10 @@ def main():
     ctrl.set_exclusive_mouse(True)
     ctrl.setup()
     ctrl.debug("App started ")
+    GameLoader(ctrl).load_game()
     pyglet.app.run()
     ctrl.debug("App stopped ")
+    GameSaver(ctrl).save_game()
 
 
 if __name__ == '__main__':
