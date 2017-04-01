@@ -25,7 +25,7 @@ class GameLoader(object):
         except KeyError:
             print("first launch, or save is corrupted?")
             raise
-        print("world loaded")
+        print("world loaded") w
 
     def load_player(self):
 
