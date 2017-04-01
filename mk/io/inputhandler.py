@@ -56,12 +56,12 @@ class InputHandler(object):
         if self.master.is_typing:
             if text != 'T':
                 self.master.console.add_char(text)
-                self.master.debug("console content: %s" % self.master.console.read())
+                print("console content: %s" % self.master.console.read())
             else:
-                self.master.debug("console mode ended")
+                print("console mode ended")
                 self.master.is_typing = False
         elif text == 't':
-            self.master.debug("console mode entered")
+            print("console mode entered")
             self.master.player.halt()
             self.master.is_typing = True
         self.master.console.show()

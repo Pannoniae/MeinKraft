@@ -35,7 +35,7 @@ class Model(object):
         # Same mapping as `world` but only contains blocks that are shown.
         self.shown = {}
 
-        # Mapping from position to a pyglet `VertextList` for all shown blocks.
+        # Mapping from position to a pyglet `VertexList` for all shown blocks.
         self._shown = {}
 
         # Mapping from sector to a list of positions inside that sector.
@@ -91,7 +91,8 @@ class Model(object):
         @:returns
 
         """
-        m = 8
+        # what is m?? I don't get it. please explain.
+        m = 1
         x, y, z = position
         dx, dy, dz = vector
         previous = None

@@ -11,14 +11,15 @@ class GameLoader(object):
         self.master = master
 
     def load_game(self):
-        self.load_world()
-        self.load_player()
+        #self.load_world()
+        #self.load_player()
+        pass
 
     def load_world(self):
         model = self.master.model
         with shelve.open(DATASTORE) as db:
             model.world = db['world']
-        self.master.debug("world loaded")
+        print("world loaded")
 
     def load_player(self):
 
@@ -34,7 +35,7 @@ class GameLoader(object):
         player.sector = status["sector"]
         player.block = status["block"]
         player.dy = status["dy"]
-        self.master.debug("last player status loaded")
+        print("last player status loaded")
 
 
 if __name__ == "__main__":

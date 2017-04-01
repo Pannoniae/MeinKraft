@@ -19,7 +19,9 @@ def flip_image(img):
 
 
 def image_process():
-    # Process the image files to texture.png at every program start.
+    """ Process the image files to texture.png at every program start.
+    Yes, I know that this is a very ugly and slow loop, but no need to optimize, as it is called only once. """
+
     texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
     imgdir = sorted(os.listdir('blockdata'), key=get_block_id)
     files = len(imgdir)

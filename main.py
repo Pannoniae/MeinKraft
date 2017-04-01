@@ -16,11 +16,11 @@ def main():
     # ctrl.logevents()
     # Hide the mouse cursor and prevent the mouse from leaving the window.
     ctrl.set_exclusive_mouse(True)
-    ctrl.setup()
-    ctrl.debug("App started ")
+    ctrl.renderer.setup()
+    print("App started.")
     GameLoader(ctrl).load_game()
     pyglet.app.run()
-    ctrl.debug("App stopped ")
+    print("App stopped.")
     GameSaver(ctrl).save_game()
 
 

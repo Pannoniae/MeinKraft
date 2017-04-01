@@ -19,7 +19,7 @@ class GameSaver(object):
         model = self.master.model
         with shelve.open(DATASTORE) as db:
             db['world'] = model.world
-        self.master.debug("world saved")
+        print("world saved")
 
     def save_player(self):
         player = self.master.player
@@ -33,7 +33,7 @@ class GameSaver(object):
                       dy=player.dy)
         with shelve.open(DATASTORE) as db:
             db['player'] = status
-        self.master.debug("player saved")
+        print("player saved")
 
 
 if __name__ == "__main__":

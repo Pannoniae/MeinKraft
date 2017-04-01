@@ -1,5 +1,5 @@
 from ..label import Label
-from ..lang.commandexecutor import  CommandExecutor
+from ..lang.executer import  Executer
 
 class Console(Label):
 
@@ -12,7 +12,7 @@ class Console(Label):
         from ..controller import GameController
         assert isinstance(master, GameController)
         self.master = master
-        self.command_executor = CommandExecutor(self.master)
+        self.command_executor = Executer(self.master)
 
     def read(self):
         """
