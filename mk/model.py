@@ -28,7 +28,7 @@ class Model(object):
         # A TextureGroup manages an OpenGL texture.
         self.group = TextureGroup(image.load(TEXTURE_PATH).get_texture())
 
-        # A mapping from position to the texture of the block at that position.
+        # A mapping from position to the instance of the block at that position.
         # This defines all the blocks that are currently in the world.
         self.world = {}
 
@@ -111,7 +111,7 @@ class Model(object):
         """
         x, y, z = position
         for dx, dy, dz in FACES:
-            if (x + dx, y + dy, z + dz) not in self.world:
+            if (x + dx, y + dy, z + dz) not in self.world or self.world[(x + dx, y + dy, z + dz)].collision is False:
                 return True
         return False
 
@@ -140,7 +140,7 @@ class Model(object):
         ----------
         position : tuple of len 3
             The (x, y, z) position of the block to add.
-        block : class derived from Block
+        block : class instance derived from Block
             has a 'texture': list of len 3. which is the coordinates of the texture squares.
             Uses `tex_coords()` to generate.
 
@@ -154,7 +154,7 @@ class Model(object):
 
         # storing the block instance, not the class!
         position_below, block_below = self.get_position_and_block_below(position)
-        if block_below is not None and block_below.get_block_type() == "GRASS":
+        if block_below is not None and block_below.get_block_type() == "GRASS" and block.collision is True:
             self.add_block(position_below, DIRT)
         block_instance = block()
         if randomized_textures and block_instance.random_textures > 1:
@@ -232,16 +232,16 @@ class Model(object):
             The (x, y, z) position of the block to show.
         immediate : bool
             Whether or not to show the block immediately.
-
         """
+        simple = False
         texture = self.world[position].get_texture()
         self.shown[position] = texture
         if immediate:
-            self._show_block(position, texture)
+            self._show_block(position, texture, simple)
         else:
-            self._enqueue(self._show_block, position, texture)
+            self._enqueue(self._show_block, position, texture, simple)
 
-    def _show_block(self, position, texture):
+    def _show_block(self, position, texture, simple=False):
         """ Private implementation of the `show_block()` method.
 
         Parameters
@@ -251,6 +251,8 @@ class Model(object):
         texture : list of len 3
             The coordinates of the texture squares. Use `tex_coords()` to
             generate.
+        simple :
+            Whether to use simple, 2-texture rendering.
 
         """
         x, y, z = position
@@ -259,9 +261,14 @@ class Model(object):
         texture_data = list(texture)
         # create vertex list
         # FIXME Maybe `add_indexed()` should be used instead
-        self._shown[position] = self.batch.add(24, GL_QUADS, self.group,
-                                               ('v3f/static', vertex_data),
-                                               ('t2f/static', texture_data))
+        if not simple:
+            self._shown[position] = self.batch.add(24, GL_QUADS, self.group,
+                                                    ('v3f/static', vertex_data),
+                                                    ('t2f/static', texture_data))
+        else:
+            self._shown[position] = self.batch.add(16, GL_QUADS, self.group,
+                                                    ('v3f/static', vertex_data),
+                                                    ('t2f/static', texture_data))
 
     def hide_block(self, position, immediate=True):
         """ Hide the block at the given `position`. Hiding does not remove the
