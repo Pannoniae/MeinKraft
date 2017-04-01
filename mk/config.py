@@ -18,7 +18,7 @@ ZOOM_STATES = 10
 SECTOR_SIZE = 16
 
 WALKING_SPEED = 5
-FLYING_SPEED = 15
+FLYING_SPEED = 5
 BLOCK_TEXTURE_SIZE = 16
 TEXTURE_PATH = base_path('texture.png')
 BLOCKDATA_FOLDER = 'blockdata'
@@ -42,3 +42,5 @@ PLAYER_HEIGHT = 2
 MAX_FOV = 80
 MIN_FOV = 20
 
+# The database to connect to.
+DATASTORE = "laststate"

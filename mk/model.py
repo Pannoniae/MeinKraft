@@ -332,6 +332,11 @@ class Model(object):
         for sector in hide:
             self.hide_sector(sector)
 
+
+    def show_all_sectors(self):
+        for sector in self.sectors.keys():
+            self.show_sector(sector)
+
     def _enqueue(self, func, *args):
         """ Add `func` to the internal queue.
 
