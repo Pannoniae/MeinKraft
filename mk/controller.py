@@ -130,7 +130,7 @@ class GameController(pyglet.window.Window):
             The change in time since the last call.
 
         """
-        self.model.process_queue()
+
 
         self.player.update(dt)
         self.player_changed_world()
@@ -149,6 +149,8 @@ class GameController(pyglet.window.Window):
         Update game tick which is slower than update() for performance reasons.
         """
         self.prep_focused_block()
+
+        self.model.process_queue()
 
 
     def change_player_block(self, key_symbol):
