@@ -1,6 +1,5 @@
 import shelve
 
-from ..render.geometry import sectorize
 from ..controller import GameController
 
 DATASTORE = "laststate"
@@ -24,11 +23,9 @@ class GameLoader(object):
                 self.master.model.change_sectors(None, self.master.player.sector)
         except KeyError:
             print("first launch, or save is corrupted?")
-            raise
-        print("world loaded") w
+        print("world loaded")
 
     def load_player(self):
-
         try:
             with shelve.open(DATASTORE) as db:
                 status = db['player']
