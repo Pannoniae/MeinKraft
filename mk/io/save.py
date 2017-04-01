@@ -18,6 +18,7 @@ class GameSaver(object):
         with shelve.open(DATASTORE) as db:
             db['world'] = self.master.model.world
             db['sectors'] = self.master.model.sectors
+            db['sector'] = self.master.player.sector
         print("world saved")
 
     def save_player(self):
@@ -28,7 +29,6 @@ class GameSaver(object):
                         position=player.position,
                         strafe=player.strafe,
                         rotation=player.rotation,
-                        sector=player.sector,
                         block=player.block,
                         dy=player.dy)
         with shelve.open(DATASTORE) as db:
