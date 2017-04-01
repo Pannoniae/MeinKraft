@@ -10,7 +10,6 @@ class GameSaver(object):
         assert isinstance(master, GameController)
         self.master = master
 
-
     def save_game(self):
         self.save_world()
         self.save_player()
@@ -35,9 +34,3 @@ class GameSaver(object):
         with shelve.open(DATASTORE) as db:
             db['player'] = status
         print("player saved")
-
-
-if __name__ == "__main__":
-    ctrl = GameController(width=800, height=600, caption='Test', resizable=True, vsync=True)
-    gamesaver = GameSaver(ctrl)
-    gamesaver.save_game()

@@ -1,7 +1,6 @@
 import shelve
 
 from ..controller import GameController
-from ..render.geometry import sectorize
 
 DATASTORE = "laststate"
 
@@ -24,7 +23,6 @@ class GameLoader(object):
         except KeyError:
             print("first launch, or save is corrupted?")
         print("world loaded")
-        print(self.master.model.sectors.keys())
 
     def load_player(self):
 
@@ -46,9 +44,3 @@ class GameLoader(object):
             self.master.model.show_sector(player.sector)
             self.master.player.update_sector()
             print("last player status loaded")
-
-
-if __name__ == "__main__":
-    ctrl = GameController(width=800, height=600, caption='Test', resizable=True, vsync=True)
-    gameloader = GameLoader(ctrl)
-    gameloader.load_game()
