@@ -66,6 +66,7 @@ class Renderer(object):
         self.draw_label()
         self.draw_bottom_label()
         self.master.reticle.show()
+        self.master.console.show()
 
     def set_2d(self):
         """ Configure OpenGL to show in 2d.

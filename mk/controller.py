@@ -97,7 +97,6 @@ class GameController(pyglet.window.Window):
         # TICKS_PER_SEC. This is the main game event loop.
         pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
-        pyglet.clock.schedule_interval(self.update_info, 1.0 / INFO_TICKS_PER_SEC)
 
     def world_changed(self):
         """
@@ -150,22 +149,6 @@ class GameController(pyglet.window.Window):
         Update game tick which is slower than update() for performance reasons.
         """
         self.prep_focused_block()
-
-    def update_info(self, dt):
-        """
-        This method is scheduled to be called repeatedly by the pyglet clock.
-
-        Parameters
-        ----------
-        dt : float
-            The change in time since the last call.
-
-        Update info tick
-            improve performance by displaying info less frequently
-        """
-        self.renderer.draw_label()
-        self.renderer.draw_bottom_label()
-        self.console.show()
 
 
     def change_player_block(self, key_symbol):
