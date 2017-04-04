@@ -1,5 +1,5 @@
-from ..label import Label
-from ..lang.executer import  Executer
+from ..gui.label import Label
+from ..lang.executer import Executer
 
 class Console(Label):
 
@@ -59,7 +59,11 @@ class Console(Label):
         #execute command by the language parser
         print(self.parse())
         command, command_args = self.parse()
-        self.command_executor.execute_command(command, command_args)
+        try:
+            cmd = self.command_executor.find_command(command)
+            cmd.exec(command_args)
+        except KeyError:
+            print("command wasn't found")
         # clear buffer
         self.clear()
         # unset typing

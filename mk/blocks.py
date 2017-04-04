@@ -22,7 +22,6 @@ class Block(object):
         # this is the length of list holds the textures used by the block
         self.state = 1
 
-
     texture_states = []
 
     def set_random_texture(self, idx):
@@ -33,8 +32,9 @@ class Block(object):
 
     @classmethod
     def get_block_type(self):
-        klassname = self.__name__
-        return klassname
+        classname = self.__name__
+        return classname
+
 
     @classmethod
     def get_vertices(self, x, y, z):

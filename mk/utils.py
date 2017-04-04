@@ -1,6 +1,10 @@
 import os.path
 import hashlib
 
+def str2cls(module, string):
+    """ Returns a class object from a class name. """
+    return getattr(module, string)
+
 
 def imgpath(filename):
 
@@ -28,11 +32,9 @@ def md5_file(file):
         Takes a file argument, outputs a string. """
 
     try:
-        file = open(file, 'rb')
-        stream = file.read()
-        file.close()
+        with open(file, 'rb') as file:
+            stream = file.read()
         return md5(stream)
-
     except IOError:
         raise IOError("Opening file failed")
 

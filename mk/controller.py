@@ -9,7 +9,6 @@ from pyglet.window import key
 
 # project module imports
 from .render.renderer import Renderer
-from .lang.executer import Executer
 from .io.console import Console
 from .io.inputhandler import InputHandler
 from .render.zoomer import Zoomer
@@ -18,7 +17,7 @@ from .blocks import *
 from .model import Model
 from .player import Player
 from .render.reticle import Reticle
-from .label import Label
+from .gui.label import Label
 from .bullet import Bullet
 
 
@@ -58,10 +57,10 @@ class GameController(pyglet.window.Window):
         self.label = Label("", x=10, y=self.height - 10)
 
         # The label that is displayed in the bottom left of the canvas.
-        self.label_bottom = Label("", x=10, y=10, anchor_y='bottom')
+        self.label_bottom = Label("", x=10, y=10)
 
         # The command console where you can input things.
-        self.console = Console(self, "", 10, 9, anchor_x='left', anchor_y='top')
+        self.console = Console(self, "", 100, 100)
 
         # Whether you are typing in the console, or not.
         self.is_typing = False
@@ -188,6 +187,11 @@ class GameController(pyglet.window.Window):
         self.vector = self.player.get_sight_vector()
         position = self.model.hit_test(self.player.position, self.vector)[0]
         return self.model.get_block(position)
+
+    def get_targeted_pos(self):
+        self.vector = self.player.get_sight_vector()
+        position = self.model.hit_test(self.player.position, self.vector)[0]
+        return position
 
 
     def prep_focused_block(self):
