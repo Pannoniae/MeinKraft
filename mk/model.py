@@ -92,7 +92,7 @@ class Model(object):
 
         """
         # what is m?? I don't get it. please explain.
-        m = 1
+        m = 4
         x, y, z = position
         dx, dy, dz = vector
         previous = None
@@ -111,7 +111,7 @@ class Model(object):
         """
         x, y, z = position
         for dx, dy, dz in FACES:
-            if (x + dx, y + dy, z + dz) not in self.world or self.world[(x + dx, y + dy, z + dz)].collision is False:
+            if (x + dx, y + dy, z + dz) not in self.world or self.world[(x + dx, y + dy, z + dz)].is_transparent():
                 return True
         return False
 
@@ -153,7 +153,9 @@ class Model(object):
         """
 
         # storing the block instance, not the class!
-        position_below, block_below = self.get_position_and_block_below(position)
+        position_below, block_below = (position[0], position[1] - 1, position[2]), self.get_block((position[0],
+                                                                                                  position[1] - 1,
+                                                                                                  position[2]))
         if block_below is not None and block_below.get_block_type() == "GRASS" and block.collision is True:
             self.add_block(position_below, DIRT)
         block_instance = block()

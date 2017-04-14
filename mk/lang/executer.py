@@ -28,24 +28,21 @@ class Command(object):
 class BlockRemoverCommand(Command):
 
 
-    def __init__(self, master):
-        super().__init__(master)
-        from ..controller import GameController
-        assert isinstance(master, GameController)
-
     def exec(self, args):
         target_block = self.master.get_targeted_block()
         from ..blocks import Block
         assert isinstance(target_block, Block)
         self.master.model.remove_block(self.master.get_targeted_pos())
 
-
-    version = 1
     author = "Pannoniae"
-    api_version = 1
 
 class BlockSetterCommand(Command):
-    pass
+    def exec(self, args):
+        print(args)
+        target_block = self.master.get_targeted_block()
+        from ..blocks import Block
+        assert isinstance(target_block, Block)
+        self.master.model.add_block(self.master.get_targeted_pos(), args[0])
 
 
 class ZoomerCommand(Command):

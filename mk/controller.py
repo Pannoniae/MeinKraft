@@ -54,10 +54,10 @@ class GameController(pyglet.window.Window):
         self.bullet = Bullet()
 
         # The label that is displayed in the top left of the canvas.
-        self.label = Label("", x=10, y=self.height - 10)
+        self.label = Label("", x=20, y=self.height - 20)
 
         # The label that is displayed in the bottom left of the canvas.
-        self.label_bottom = Label("", x=10, y=10)
+        self.label_bottom = Label("", x=20, y=20)
 
         # The command console where you can input things.
         self.console = Console(self, "", 100, 100)
@@ -77,18 +77,6 @@ class GameController(pyglet.window.Window):
 
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
-
-
-    # def init_logger(self):
-    #     self.log = logging.getLogger("meinkraft")
-    #     self.log.setLevel(logging.DEBUG)
-    #     out_hdlr = logging.StreamHandler() # stdout
-    #     out_hdlr.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
-    #     out_hdlr.setLevel(logging.DEBUG)
-    #     self.log.addHandler(out_hdlr)
-
-    def debug(self, msg, *args):
-        print(msg, *args)
 
 
     def schedule_updates(self):

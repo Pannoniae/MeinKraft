@@ -24,6 +24,21 @@ class Block(object):
 
     texture_states = []
 
+    collision = True
+
+
+    """
+    Transparency works in a quite awkward way yet. If you define this variable to true, the block will be transparent.
+    Else if the block doesn't collide, it will be transparent.
+    """
+    _transparent = False
+
+
+    # Sadly I cannot make this a property, it don't work. But, to conserve memory, it is called on the class, not the instance.
+    @classmethod
+    def is_transparent(cls):
+        return (True if cls.collision is False or cls._transparent else False)
+
     def set_random_texture(self, idx):
         self.state = idx
 
@@ -79,6 +94,9 @@ class STONE(Block):
 class PATH(Block):
 
     texture_states = [((2, 1), (2, 0), (1, 1))]
+
+    # It is transparent in some regard.
+    _transparent = True
 
     @classmethod
     def get_vertices(cls, x, y, z):
