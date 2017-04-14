@@ -76,6 +76,8 @@ class BRICK_SLAB(Block):
     #
     texture_states = [((0, 0), (0, 0), (1, 2))]
 
+    _transparent = True
+
     @classmethod
     def get_vertices(cls, x, y, z):
         return cube_vertices(x, y, z, 0.5, 0)
