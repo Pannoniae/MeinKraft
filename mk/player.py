@@ -43,7 +43,7 @@ class Player(object):
         self.sector = None
 
         # A list of blocks the player can place. Hit num keys to cycle.
-        self.inventory = [BRICK, GRASS, SAND, PATH, BRICK_SLAB]
+        self.inventory = [BRICK, GRASS, SAND, PATH, BRICK_SLAB, TALL_GRASS]
 
         # The current block the user can place. Hit num keys to cycle.
         self.block = self.inventory[0]

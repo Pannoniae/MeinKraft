@@ -3,7 +3,7 @@
 from mk.config import SECTOR_SIZE
 
 
-def cube_vertices(x, y, z, n, fill=8):
+def cube_vertices(x, y, z, n, fill=8, mode="block"):
     """
         Return the vertices of the cube at position x, y, z with size 2*n.
 
@@ -11,16 +11,24 @@ def cube_vertices(x, y, z, n, fill=8):
         Exactly, (n = n/16 proportion of the block) fill = n - 8
         It should be noted that fill is computed at every pixel (1/16 block) but n is half a block, so we have to divide by 8.
     """
-    qn = n / 8 * fill
+    if mode == "block":
+        qn = n / 8 * fill
 
-    return [
-        x - n, y + qn, z - n, x - n, y + qn, z + n, x + n, y + qn, z + n, x + n, y + qn, z - n,  # top
-        x - n, y - n, z - n, x + n, y - n, z - n, x + n, y - n, z + n, x - n, y - n, z + n,  # bottom
-        x - n, y - n, z - n, x - n, y - n, z + n, x - n, y + n, z + n, x - n, y + n, z - n,  # left
-        x + n, y - n, z + n, x + n, y - n, z - n, x + n, y + n, z - n, x + n, y + n, z + n,  # right
-        x - n, y - n, z + n, x + n, y - n, z + n, x + n, y + n, z + n, x - n, y + n, z + n,  # front
-        x + n, y - n, z - n, x - n, y - n, z - n, x - n, y + n, z - n, x + n, y + n, z - n,  # back
-    ]
+        return [
+            x - n, y + qn, z - n, x - n, y + qn, z + n, x + n, y + qn, z + n, x + n, y + qn, z - n,  # top
+            x - n, y - n, z - n, x + n, y - n, z - n, x + n, y - n, z + n, x - n, y - n, z + n,  # bottom
+            x - n, y - n, z - n, x - n, y - n, z + n, x - n, y + n, z + n, x - n, y + n, z - n,  # left
+            x + n, y - n, z + n, x + n, y - n, z - n, x + n, y + n, z - n, x + n, y + n, z + n,  # right
+            x - n, y - n, z + n, x + n, y - n, z + n, x + n, y + n, z + n, x - n, y + n, z + n,  # front
+            x + n, y - n, z - n, x - n, y - n, z - n, x - n, y + n, z - n, x + n, y + n, z - n,  # back
+        ]
+    elif mode == "x":
+        return [
+            x, y - n, z - n, x, y - n, z + n, x, y + n, z + n, x, y + n, z - n,
+            x, y - n, z + n, x, y - n, z - n, x, y + n, z - n, x, y + n, z + n,
+            x - n, y - n, z, x + n, y - n, z, x + n, y + n, z, x - n, y + n, z,
+            x + n, y - n, z, x - n, y - n, z, x - n, y + n, z, x + n, y + n, z,
+        ]
 
 
 def tex_coord(x, y, n=4):
@@ -44,6 +52,13 @@ def tex_coords(top, bottom, side):
     result.extend(top)
     result.extend(bottom)
     result.extend(side * 4)
+    return result
+
+
+def tex_coords_single(top):
+    single = tex_coord(*top)
+    result = []
+    result.extend(single * 4)
     return result
 
 
@@ -72,7 +87,7 @@ def normalize(position):
     """
     x, y, z = position
     x, y, z = (int(round(x)), int(round(y)), int(round(z)))
-    return (x, y, z)
+    return x, y, z
 
 
 def sectorize(position):
@@ -89,4 +104,4 @@ def sectorize(position):
     """
     x, y, z = normalize(position)
     x, y, z = x // SECTOR_SIZE, y // SECTOR_SIZE, z // SECTOR_SIZE
-    return (x, 0, z)
+    return x, 0, z

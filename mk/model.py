@@ -13,6 +13,7 @@ from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
 # project module imports
+from mk.render.geometry import tex_coords_single
 from mk.render.geometry import normalize, sectorize, FACES
 from mk.data.blocks import *
 from mk.config import TICKS_PER_SEC
@@ -115,22 +116,6 @@ class Model(object):
                 return True
         return False
 
-    def get_position_and_block_below(self, position):
-        """
-        return the block below this position
-
-        Parameters
-        ----------
-        position : 3-tuple of integers
-            represents block position
-
-        returns tuple of 3-tuple of integers and block
-            coordinates for position below and the block there (None if empty)
-        """
-        x, y, z = position
-        position_below = x, y - 1, z
-        return position_below, self.get_block(position_below)
-
     def add_block(self, position, block, immediate=True, randomized_textures=True):
         """ Add a block with the given `texture` and `position` to the world.
 
@@ -156,7 +141,7 @@ class Model(object):
         position_below, block_below = (position[0], position[1] - 1, position[2]), self.get_block((position[0],
                                                                                                   position[1] - 1,
                                                                                                   position[2]))
-        if block_below is not None and block_below.get_block_type() == "GRASS" and block.collision is True:
+        if block_below and block_below.get_block_type() == "GRASS" and block.is_transparent():
             self.add_block(position_below, DIRT)
         block_instance = block()
         if randomized_textures and block_instance.random_textures > 1:
@@ -235,7 +220,10 @@ class Model(object):
         immediate : bool
             Whether or not to show the block immediately.
         """
-        simple = False
+        if self.world[position].get_block_type() == "TALL_GRASS":
+            simple = True
+        else:
+            simple = False
         texture = self.world[position].get_texture()
         self.shown[position] = texture
         if immediate:
@@ -267,7 +255,9 @@ class Model(object):
             self._shown[position] = self.batch.add(24, GL_QUADS, self.group,
                                                     ('v3f/static', vertex_data),
                                                     ('t2f/static', texture_data))
-        else:
+        if simple:
+            print(texture, block.get_texture(), tex_coords_single(block.texture_states[0]))
+            print("simple", texture_data, "\n", block.get_texture())
             self._shown[position] = self.batch.add(16, GL_QUADS, self.group,
                                                     ('v3f/static', vertex_data),
                                                     ('t2f/static', texture_data))
