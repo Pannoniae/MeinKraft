@@ -1,6 +1,6 @@
 import pyglet
 
-from ..config import MAX_FOV, TICKS_PER_SEC, MIN_FOV, ZOOM_STATES
+from mk.config import MAX_FOV, TICKS_PER_SEC, MIN_FOV, ZOOM_STATES
 
 
 class Zoomer(object):

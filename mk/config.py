@@ -1,6 +1,7 @@
 # config variables
 
 import math
+
 from .utils import base_path
 
 # Limit FPS to this number
@@ -21,7 +22,7 @@ WALKING_SPEED = 5
 FLYING_SPEED = 5
 BLOCK_TEXTURE_SIZE = 16
 TEXTURE_PATH = base_path('texture.png')
-BLOCKDATA_FOLDER = 'blockdata'
+BLOCKDATA_FOLDER = 'textures'
 
 GRAVITY = 20.0
 MAX_JUMP_HEIGHT = 1.0  # About the height of a block.

@@ -1,6 +1,6 @@
 # geometry utility stuff
 
-from ..config import SECTOR_SIZE
+from mk.config import SECTOR_SIZE
 
 
 def cube_vertices(x, y, z, n, fill=8):

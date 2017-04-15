@@ -1,6 +1,7 @@
-from .render.geometry import normalize, FACES, sectorize
-from .blocks import *
-from .config import *
+from mk.data.blocks import *
+from mk.config import *
+from mk.render.geometry import normalize, FACES, sectorize
+
 
 class Player(object):
     """

@@ -1,6 +1,6 @@
 # define MC blocks
 
-from .render.geometry import tex_coords, cube_vertices
+from mk.render.geometry import tex_coords, cube_vertices
 
 
 class Block(object):
@@ -24,8 +24,8 @@ class Block(object):
 
     texture_states = []
 
+    # Whether player collides with this block.
     collision = True
-
 
     """
     Transparency works in a quite awkward way yet. If you define this variable to true, the block will be transparent.
@@ -52,19 +52,12 @@ class Block(object):
 
 
     @classmethod
-    def get_vertices(self, x, y, z):
+    def get_vertices(cls, x, y, z):
         return cube_vertices(x, y, z, 0.5)
 
     @property
     def random_textures(self):
         return len(self.texture_states)
-
-
-
-    # Whether player collides with this block.
-    collision = True
-
-
 
 
 class BRICK(Block):

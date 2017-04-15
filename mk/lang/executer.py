@@ -1,7 +1,3 @@
-from ..utils import str2cls
-
-
-
 class Executer(object):
 
     def __init__(self, master):
@@ -30,7 +26,7 @@ class BlockRemoverCommand(Command):
 
     def exec(self, args):
         target_block = self.master.get_targeted_block()
-        from ..blocks import Block
+        from mk.data.blocks import Block
         assert isinstance(target_block, Block)
         self.master.model.remove_block(self.master.get_targeted_pos())
 
@@ -40,7 +36,7 @@ class BlockSetterCommand(Command):
     def exec(self, args):
         print(args)
         target_block = self.master.get_targeted_block()
-        from ..blocks import Block
+        from mk.data.blocks import Block
         assert isinstance(target_block, Block)
         self.master.model.add_block(self.master.get_targeted_pos(), args[0])
 

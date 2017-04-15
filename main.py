@@ -2,9 +2,8 @@ import pyglet
 
 from mk.controller import GameController
 from mk.images import image_process
-
-from mk.io.save import GameSaver
 from mk.io.load import GameLoader
+from mk.io.save import GameSaver
 
 VERSION = "0.5.3"
 

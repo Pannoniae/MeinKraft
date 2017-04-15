@@ -2,8 +2,8 @@ import os.path
 
 from PIL import Image
 
-from .config import BLOCK_TEXTURE_SIZE, TEXTURE_PATH
-from .utils import *
+from mk.config import BLOCK_TEXTURE_SIZE, TEXTURE_PATH
+from mk.utils import *
 
 
 def import_coords(x, y):
@@ -23,7 +23,7 @@ def image_process():
     Yes, I know that this is a very ugly and slow loop, but no need to optimize, as it is called only once. """
 
     texture = Image.new('RGBA', import_coords(4, 4), (0, 0, 0, 0))
-    imgdir = sorted(os.listdir('blockdata'), key=get_block_id)
+    imgdir = sorted(os.listdir('textures'), key=get_block_id)
     files = len(imgdir)
     x = 0
     y = 0

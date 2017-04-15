@@ -1,5 +1,6 @@
-import os.path
 import hashlib
+import os.path
+
 
 def str2cls(module, string):
     """ Returns a class object from a class name. """
