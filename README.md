@@ -17,7 +17,7 @@ https://github.com/fogleman/
 * Install Git
 *  Just google for it :)
 * type these commands:
-*    git clone https://bitbucket.org/Pannoniae/meinkraft
+*    git clone https://github.com/Pannoniae/MeinKraft.git
 *    cd meinkraft
 *    python main.py
 
