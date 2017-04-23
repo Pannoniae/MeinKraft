@@ -43,7 +43,6 @@ class InputHandler(object):
             elif symbol == key.Z:
                 self.master.zoom_state = 'in'
 
-
         elif symbol == key.BACKSPACE:
             self.master.console.del_char(1)
         elif symbol == key.ENTER:
@@ -127,8 +126,6 @@ class InputHandler(object):
 
         # the world has changed for the player
         self.master.world_changed()
-
-
 
     def on_mouse_motion(self, x, y, dx, dy):
         """ Called when the player moves the mouse.

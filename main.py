@@ -1,5 +1,3 @@
-import pyglet
-
 from mk.controller import GameController
 from mk.images import image_process
 from mk.io.load import GameLoader
@@ -18,7 +16,8 @@ def main():
     ctrl.renderer.setup()
     print("App started.")
     GameLoader(ctrl).load_game()
-    pyglet.app.run()
+    ctrl.update()
+    #pyglet.app.run()
     print("App stopped.")
     GameSaver(ctrl).save_game()
 

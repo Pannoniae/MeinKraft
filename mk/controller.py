@@ -77,13 +77,27 @@ class GameController(pyglet.window.Window):
 
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
+        self.max_fps = 5
+        self.fps = 60
+        self.skip_ticks = 1.0 / self.fps
+
+        self.interpolation = 0.0
+
+        self.GetTickCount = pyglet.clock.tick()
+        self.next_game_tick = self.GetTickCount
+        self.fps_display = pyglet.clock.ClockDisplay()
+        self.reticle.create(self.width / 2, self.height / 2)
+
+        self.prev_pos = 0, 0, 0
+        self.decr = 0
 
 
     def schedule_updates(self):
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
-        pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
+        #pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
+        pyglet.clock.schedule_interval(self.speed, 1.0)
 
     def world_changed(self):
         """
@@ -108,7 +122,7 @@ class GameController(pyglet.window.Window):
         super(GameController, self).set_exclusive_mouse(exclusive)
         self.exclusive = exclusive
 
-    def update(self, dt):
+    def update(self):
         """ This method is scheduled to be called repeatedly by the pyglet clock.
 
         Parameters
@@ -117,11 +131,32 @@ class GameController(pyglet.window.Window):
             The change in time since the last call.
 
         """
+        while not self.has_exit: # never, controller doesn't have has_exit property
+            dt = pyglet.clock.tick()
+            self.GetTickCount += dt
 
+            loops = 0
+            #print(self.GetTickCount, self.next_game_tick, loops, self.max_fps)
+            while self.GetTickCount > self.next_game_tick and loops < self.max_fps:
+                self.player.update(dt)
+                self.player_changed_world()
+                self.bullet.update(self.player)
+                # update stuff
+                self.next_game_tick += self.skip_ticks
+                loops += 1
+                if not self.decr:
+                    print(self.player.position)
+                    self.decr = 60
+                self.decr -= 1
+                self.reticle.shift = self.player.dy * 10
+                self.reticle.create(self.width / 2, self.height / 2)
+                self.prev_pos = self.player.position
 
-        self.player.update(dt)
-        self.player_changed_world()
-        self.bullet.update(self.player)
+            self.interpolation = float(self.GetTickCount + self.skip_ticks - self.next_game_tick) / float(self.skip_ticks)
+
+            self.draw()
+            self.dispatch_events()
+
 
 
     def update_game(self, dt):
@@ -138,6 +173,10 @@ class GameController(pyglet.window.Window):
         self.prep_focused_block()
 
         self.model.process_queue()
+
+
+    def speed(self, dt):
+        pass
 
 
     def change_player_block(self, key_symbol):
@@ -167,9 +206,10 @@ class GameController(pyglet.window.Window):
 
     # Drawing.
 
-    def on_draw(self):
+    def draw(self):
         """ Pass drawing to the renderer. """
         self.renderer.on_draw()
+        self.flip()
 
     def get_targeted_block(self):
         self.vector = self.player.get_sight_vector()

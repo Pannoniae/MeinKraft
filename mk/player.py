@@ -29,7 +29,7 @@ class Player(object):
 
         # Current (x, y, z) position in the world, specified with floats. Note
         # that, perhaps unlike in math class, the y-axis is the vertical axis.
-        self.position = (0, 5, 0)
+        self.position = (0, 20, 0)
 
         # First element is rotation of the player in the x-z plane (ground
         # plane) measured from the z-axis down. The second is the rotation
@@ -166,7 +166,8 @@ class Player(object):
         self.update_sector()
 
         dt = min(dt, 0.2)
-        self._update(dt)
+        for _ in range(8):
+            self._update(dt / 8)
 
     def _update(self, dt):
         """ Private implementation of the `update()` method. This is where most

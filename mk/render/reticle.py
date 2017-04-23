@@ -18,7 +18,7 @@ class Reticle(object):
 
 
     def create(self, x, y):
-        n = 10
+        n = self.shift + 10
         s = self.shift # a shift from the middle
         if self.vertexlist:
             self.vertexlist.delete()

@@ -57,7 +57,7 @@ class Renderer(object):
         """ Called by pyglet to show the canvas.
         """
         self.master.clear()
-        pyglet.clock.tick()
+        #pyglet.clock.tick()
         self.set_3d()
         glColor3d(1, 1, 1)
         self.master.model.batch.draw()
