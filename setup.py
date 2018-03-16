@@ -8,5 +8,5 @@ setup(
         license='',
         author='Zsombor',
         author_email='',
-        description='', install_requires=['library', 'cffi']
+        description='', install_requires=['library', 'cffi', 'pyglet']
 )

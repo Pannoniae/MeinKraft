@@ -1,14 +1,12 @@
 import shelve
 
+from config import DATASTORE
 from controller import GameController
-
-DATASTORE = "laststate"
 
 class GameLoader(object):
 
     def __init__(self, master):
-        assert isinstance(master, GameController)
-        self.master = master
+        self.master: GameController = master
 
     def load_game(self):
         self.load_world()

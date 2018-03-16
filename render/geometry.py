@@ -2,8 +2,13 @@
 
 from config import SECTOR_SIZE
 
+class MODE:
 
-def cube_vertices(x, y, z, n, fill=8, mode="block"):
+    mode_block = 0
+    mode_x = 1
+
+
+def cube_vertices(x, y, z, n, fill=8, mode=0):
     """
         Return the vertices of the cube at position x, y, z with size 2*n.
 
@@ -11,24 +16,16 @@ def cube_vertices(x, y, z, n, fill=8, mode="block"):
         Exactly, (n = n/16 proportion of the block) fill = n - 8
         It should be noted that fill is computed at every pixel (1/16 block) but n is half a block, so we have to divide by 8.
     """
-    if mode == "block":
-        qn = n / 8 * fill
+    from library import ffi, lib
 
-        return [
-            x - n, y + qn, z - n, x - n, y + qn, z + n, x + n, y + qn, z + n, x + n, y + qn, z - n,  # top
-            x - n, y - n, z - n, x + n, y - n, z - n, x + n, y - n, z + n, x - n, y - n, z + n,  # bottom
-            x - n, y - n, z - n, x - n, y - n, z + n, x - n, y + n, z + n, x - n, y + n, z - n,  # left
-            x + n, y - n, z + n, x + n, y - n, z - n, x + n, y + n, z - n, x + n, y + n, z + n,  # right
-            x - n, y - n, z + n, x + n, y - n, z + n, x + n, y + n, z + n, x - n, y + n, z + n,  # front
-            x + n, y - n, z - n, x - n, y - n, z - n, x - n, y + n, z - n, x + n, y + n, z - n,  # back
-        ]
-    elif mode == "x":
-        return [
-            x, y - n, z - n, x, y - n, z + n, x, y + n, z + n, x, y + n, z - n,
-            x, y - n, z + n, x, y - n, z - n, x, y + n, z - n, x, y + n, z + n,
-            x - n, y - n, z, x + n, y - n, z, x + n, y + n, z, x - n, y + n, z,
-            x + n, y - n, z, x - n, y - n, z, x - n, y + n, z, x + n, y + n, z,
-        ]
+    if mode == MODE.mode_block:
+        array = ffi.new('float[72]')
+        lib.cube_vertices(array, x, y, z, n, fill)
+        return list(array)
+    elif mode == MODE.mode_x:
+        array = ffi.new('float[72]')
+        lib.cube_vertices_x(array, x, y, z, n)
+        return list(array)
 
 
 def tex_coord(x, y, n=4):

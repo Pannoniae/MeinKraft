@@ -256,8 +256,6 @@ class Model(object):
                                                     ('v3f/static', vertex_data),
                                                     ('t2f/static', texture_data))
         if simple:
-            print(texture, block.get_texture(), tex_coords_single(block.texture_states[0]))
-            print("simple", texture_data, "\n", block.get_texture())
             self._shown[position] = self.batch.add(16, GL_QUADS, self.group,
                                                     ('v3f/static', vertex_data),
                                                     ('t2f/static', texture_data))

@@ -8,8 +8,7 @@ class InputHandler(object):
 
     def __init__(self, master):
         from controller import GameController
-        assert isinstance(master, GameController)
-        self.master = master
+        self.master: GameController = master
 
     def on_key_press(self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
@@ -26,6 +25,9 @@ class InputHandler(object):
         print(symbol, ascii(symbol))
         if symbol == key.ESCAPE:
             self.master.set_exclusive_mouse(False)
+        if symbol == key.Q:
+            print('Shutting down...')
+            exit(0)
         if not self.master.is_typing:
             if symbol == key.W:
                 self.master.player.move_forward()
@@ -43,20 +45,20 @@ class InputHandler(object):
                 self.master.change_player_block(symbol)
             elif symbol == key.Z:
                 self.master.zoom_state = 'in'
-
-        elif symbol == key.BACKSPACE:
-            self.master.console.del_char(1)
-        elif symbol == key.ENTER:
-            self.master.console.execute()
+        else:
+            if symbol == key.BACKSPACE:
+                self.master.console.del_char(1)
+            if symbol == key.ENTER:
+                self.master.console.execute()
 
 
     def on_text(self, text):
         """ Called when the player types into the console.
         """
         if self.master.is_typing:
-            if text != 'T':
+            if text != 'T':  # shift-T
                 self.master.console.add_char(text)
-                print("console content: %s" % self.master.console.read())
+                print(f"console content: {self.master.console.read()}")
             else:
                 print("console mode ended")
                 self.master.is_typing = False
@@ -117,16 +119,11 @@ class InputHandler(object):
                 # ON OSX, control + left click = right click.
                 if previous:
                     self.master.model.add_block(previous, self.master.player.block)
-                else:
-                    self.master.bullet.fire(self.master.player.position)
 
             elif button == pyglet.window.mouse.LEFT and block:
                 self.master.mine_block(block)
         else:
             self.master.set_exclusive_mouse(True)
-
-        # the world has changed for the player
-        self.master.world_changed()
 
     def on_mouse_motion(self, x, y, dx, dy):
         """ Called when the player moves the mouse.

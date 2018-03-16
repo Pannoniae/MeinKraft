@@ -8,11 +8,11 @@ class Player(object):
     information related to the player
 
     """
-    def __init__(self):
+    def __init__(self, model):
 
 
         # the world around us
-        self.model = None
+        self.model = model
 
         # When flying gravity has no effect and speed is increased.
         self.flying = False
@@ -49,9 +49,6 @@ class Player(object):
         # The current block the user can place. Hit num keys to cycle.
         self.block = self.inventory[0]
 
-        # Velocity in the y (upward) direction.
-        self.dy = 0
-
 
     def move_forward(self):
         self.strafe[0] -= 1
@@ -69,8 +66,6 @@ class Player(object):
         self.strafe[0] = 0
         self.strafe[1] = 0
 
-    def world_changed(self, model):
-        self.model = model
 
 
     def update_sector(self):
@@ -80,7 +75,6 @@ class Player(object):
         if sector != self.sector:
             self.model.change_sectors(self.sector, sector)
 
-            # XXX Zsombor
             # this is what causes the long delay at startup
             #if self.sector is None:
             #    self.model.process_entire_queue()
@@ -190,9 +184,10 @@ class Player(object):
             # Update your vertical speed: if you are falling, speed up until you
             # hit terminal velocity; if you are jumping, slow down until you
             # start falling.
-            self.dy -= dt * GRAVITY
-            self.dy = max(self.dy, -TERMINAL_VELOCITY)
-            dy += self.dy * dt
+            #self.dy -= dt * GRAVITY
+            #self.dy = max(self.dy, -TERMINAL_VELOCITY)
+            #dy += self.dy * dt
+            ...
         # collisions
         x, y, z = self.position
         x, y, z = self.collide((x + dx, y + dy, z + dz), PLAYER_HEIGHT)

@@ -3,15 +3,14 @@ from lang.executer import Executer
 
 class Console(Label):
 
-    def __init__(self, master, msg, x, y, font_name="Arial", font_size=18, anchor_x="left", anchor_y="top",
+    def __init__(self, master, x, y, font_name="Source Code Pro", font_size=18, anchor_x="left", anchor_y="top",
                  color=(0, 0, 0, 255)):
 
-        super().__init__(msg, x, y, font_name=font_name, font_size=font_size, anchor_x=anchor_x, anchor_y=anchor_y,
+        super().__init__(x, y, font_name=font_name, font_size=font_size, anchor_x=anchor_x, anchor_y=anchor_y,
                             color=color)
         self.content = []
         from controller import GameController
-        assert isinstance(master, GameController)
-        self.master = master
+        self.master: GameController = master
         self.command_executor = Executer(self.master)
 
     def read(self):
@@ -32,8 +31,7 @@ class Console(Label):
 
     def del_char(self, num):
         if self.content:
-            for i in range(num):
-                del self.content[-1]
+            del self.content[len(self.content)-num : -1]
 
     def clear(self):
         """

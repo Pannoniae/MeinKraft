@@ -1,6 +1,6 @@
 # define MC blocks
 
-from render.geometry import tex_coords, tex_coords_single, cube_vertices
+from render.geometry import tex_coords, tex_coords_single, cube_vertices, MODE
 
 
 class Block(object):
@@ -105,13 +105,13 @@ class GRASS(Block):
 
 class TALL_GRASS(Block):
 
-    texture_states = [((2, 2))]
+    texture_states = [(2, 2)]
 
     collision = False
 
     @classmethod
     def get_vertices(cls, x, y, z):
-        return cube_vertices(x, y, z, 0.5, mode="x")
+        return cube_vertices(x, y, z, 0.5, mode=MODE.mode_x)
 
     def get_texture(self):
         return tex_coords_single(self.texture_states[0])
@@ -120,7 +120,6 @@ class TALL_GRASS(Block):
 class SAND(Block):
 
     texture_states = [((3, 1), (3, 1), (3, 1))]
-
     collision = False
 
 

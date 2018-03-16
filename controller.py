@@ -18,7 +18,6 @@ from model import Model
 from player import Player
 from render.reticle import Reticle
 from gui.label import Label
-from bullet import Bullet
 
 
 
@@ -47,17 +46,14 @@ class GameController(pyglet.window.Window):
         self.model = Model()
 
         # Instance of Player object
-        self.player = Player()
-        self.world_changed()
+        self.player = Player(self.model)
 
-        # Instance of the bullet physics that handles the weapons.
-        self.bullet = Bullet()
 
         # The label that is displayed in the top left of the canvas.
-        self.label = Label("", x=20, y=self.height - 20)
+        self.label = Label(x=20, y=self.height - 20)
 
         # The label that is displayed in the bottom left of the canvas.
-        self.label_bottom = Label("", x=20, y=20)
+        self.label_bottom = Label(x=20, y=20)
 
         # The command console where you can input things.
         self.console = Console(self, "", 100, 100)
@@ -77,19 +73,11 @@ class GameController(pyglet.window.Window):
 
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
-        self.max_fps = 5
-        self.fps = 60
-        self.skip_ticks = 1.0 / self.fps
 
-        self.interpolation = 0.0
-
-        self.GetTickCount = pyglet.clock.tick()
-        self.next_game_tick = self.GetTickCount
         self.fps_display = pyglet.clock.ClockDisplay()
         self.reticle.create(self.width / 2, self.height / 2)
 
         self.prev_pos = 0, 0, 0
-        self.decr = 0
 
 
     def schedule_updates(self):
@@ -99,19 +87,8 @@ class GameController(pyglet.window.Window):
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.speed, 1.0)
 
-    def world_changed(self):
-        """
-        notify the player that the world has changed
-        """
-        self.player.world_changed(self.model)
 
-    def player_changed_world(self):
-        """
-        synchronize world info
-        """
-        self.model = self.player.model
-
-    def logevents(self):
+    def log_events(self):
         self.push_handlers(pyglet.window.event.WindowEventLogger())
 
     def set_exclusive_mouse(self, exclusive):
@@ -119,7 +96,7 @@ class GameController(pyglet.window.Window):
         the game will ignore the mouse.
 
         """
-        super(GameController, self).set_exclusive_mouse(exclusive)
+        super().set_exclusive_mouse(exclusive)
         self.exclusive = exclusive
 
     def update(self):
@@ -133,26 +110,11 @@ class GameController(pyglet.window.Window):
         """
         while not self.has_exit: # never, controller doesn't have has_exit property
             dt = pyglet.clock.tick()
-            self.GetTickCount += dt
-
-            loops = 0
-            #print(self.GetTickCount, self.next_game_tick, loops, self.max_fps)
-            while self.GetTickCount > self.next_game_tick and loops < self.max_fps:
-                self.player.update(dt)
-                self.player_changed_world()
-                self.bullet.update(self.player)
-                # update stuff
-                self.next_game_tick += self.skip_ticks
-                loops += 1
-                if not self.decr:
-                    print(self.player.position)
-                    self.decr = 60
-                self.decr -= 1
-                self.reticle.shift = self.player.dy * 10
-                self.reticle.create(self.width / 2, self.height / 2)
-                self.prev_pos = self.player.position
-
-            self.interpolation = float(self.GetTickCount + self.skip_ticks - self.next_game_tick) / float(self.skip_ticks)
+            self.player.update(dt)
+            # update stuff
+            self.reticle.shift =  10
+            self.reticle.create(self.width / 2, self.height / 2)
+            self.prev_pos = self.player.position
 
             self.draw()
             self.dispatch_events()
@@ -170,7 +132,7 @@ class GameController(pyglet.window.Window):
 
         Update game tick which is slower than update() for performance reasons.
         """
-        self.prep_focused_block()
+        self.prepare_focused_block()
 
         self.model.process_queue()
 
@@ -216,13 +178,13 @@ class GameController(pyglet.window.Window):
         position = self.model.hit_test(self.player.position, self.vector)[0]
         return self.model.get_block(position)
 
-    def get_targeted_pos(self):
+    def get_targeted_position(self):
         self.vector = self.player.get_sight_vector()
         position = self.model.hit_test(self.player.position, self.vector)[0]
         return position
 
 
-    def prep_focused_block(self):
+    def prepare_focused_block(self):
         """ Computes focused block target in game tick to speed up game.
 
         """
@@ -232,7 +194,6 @@ class GameController(pyglet.window.Window):
     def mine_block(self, block_position):
         """
         mine targeted block
-        :return:
         """
         block = self.model.world[block_position]
         if type(block) != STONE:
@@ -244,8 +205,6 @@ class GameController(pyglet.window.Window):
         Deprecated method, use model.add_block.
 
         Add a new block at this position. Use the current block in the player's inventory.
-        :param block_position:  3-tuple of coordinates
-        :return:
         """
         self.model.add_block(block_position, self.player.block)
 
