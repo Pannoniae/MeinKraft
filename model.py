@@ -13,11 +13,11 @@ from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
 # project module imports
-from mk.render.geometry import tex_coords_single
-from mk.render.geometry import normalize, sectorize, FACES
-from mk.data.blocks import *
-from mk.config import TICKS_PER_SEC
-from mk.images import TEXTURE_PATH
+from render.geometry import tex_coords_single
+from render.geometry import normalize, sectorize, FACES
+from data.blocks import *
+from config import TICKS_PER_SEC
+from images import TEXTURE_PATH
 
 class Model(object):
 

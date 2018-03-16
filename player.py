@@ -1,6 +1,6 @@
-from mk.data.blocks import *
-from mk.config import *
-from mk.render.geometry import normalize, FACES, sectorize
+from data.blocks import *
+from config import *
+from render.geometry import normalize, FACES, sectorize
 
 
 class Player(object):
@@ -9,6 +9,7 @@ class Player(object):
 
     """
     def __init__(self):
+
 
         # the world around us
         self.model = None

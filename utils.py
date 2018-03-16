@@ -1,5 +1,5 @@
 import hashlib
-import os.path
+import os
 
 
 def str2cls(module, string):
@@ -10,15 +10,15 @@ def str2cls(module, string):
 def imgpath(filename):
 
     """ Returns the path for that image. """
-    from .config import BLOCKDATA_FOLDER
-    return os.path.join(os.path.dirname(os.path.dirname(__file__)), BLOCKDATA_FOLDER, filename)
+    from config import BLOCKDATA_FOLDER
+    return os.path.join(os.path.dirname(__file__), BLOCKDATA_FOLDER, filename)
 
 
 def base_path(filename):
 
     """ Returns the game folder """
 
-    return os.path.join(os.path.dirname(os.path.dirname(__file__)), filename)
+    return os.path.join(os.path.dirname(__file__), filename)
 
 def get_block_id(filename):
 

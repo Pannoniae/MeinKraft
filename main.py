@@ -1,15 +1,18 @@
-from mk.controller import GameController
-from mk.images import image_process
-from mk.io.load import GameLoader
-from mk.io.save import GameSaver
+from controller import GameController
+from images import image_process
+from myio.load import GameLoader
+from myio.save import GameSaver
+
 
 VERSION = "0.5.3"
 
 
 def main():
+
+
     image_process()
-    ctrl = GameController(width=800, height=600, caption='My own cute Pyglet v%s' % VERSION,
-                          resizable=True, vsync=True)
+    ctrl = GameController(width=1920, height=1080, caption='My own cute Pyglet v%s' % VERSION,
+                          resizable=True, vsync=True, fullscreen=True)
     # ctrl.logevents()
     # Hide the mouse cursor and prevent the mouse from leaving the window.
     ctrl.set_exclusive_mouse(True)

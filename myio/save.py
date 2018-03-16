@@ -1,6 +1,6 @@
 import shelve
 
-from mk.controller import GameController
+from controller import GameController
 
 DATASTORE = "laststate"
 

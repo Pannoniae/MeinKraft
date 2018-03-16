@@ -7,7 +7,7 @@ from pyglet.window import key, mouse
 class InputHandler(object):
 
     def __init__(self, master):
-        from ..controller import GameController
+        from controller import GameController
         assert isinstance(master, GameController)
         self.master = master
 
@@ -23,6 +23,7 @@ class InputHandler(object):
                 Number representing any modifying keys that were pressed.
 
             """
+        print(symbol, ascii(symbol))
         if symbol == key.ESCAPE:
             self.master.set_exclusive_mouse(False)
         if not self.master.is_typing:

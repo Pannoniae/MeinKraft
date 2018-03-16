@@ -8,17 +8,17 @@ from pyglet.gl import *
 from pyglet.window import key
 
 # project module imports
-from mk.render.renderer import Renderer
-from mk.io.console import Console
-from mk.io.inputhandler import InputHandler
-from mk.render.zoomer import Zoomer
-from mk.config import *
-from mk.data.blocks import *
-from mk.model import Model
-from mk.player import Player
-from mk.render.reticle import Reticle
-from mk.gui.label import Label
-from mk.bullet import Bullet
+from render.renderer import Renderer
+from myio.console import Console
+from myio.inputhandler import InputHandler
+from render.zoomer import Zoomer
+from config import *
+from data.blocks import *
+from model import Model
+from player import Player
+from render.reticle import Reticle
+from gui.label import Label
+from bullet import Bullet
 
 
 

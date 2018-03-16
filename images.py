@@ -1,9 +1,9 @@
-import os.path
+import os
 
 from PIL import Image
 
-from mk.config import BLOCK_TEXTURE_SIZE, TEXTURE_PATH
-from mk.utils import *
+from config import BLOCK_TEXTURE_SIZE, TEXTURE_PATH
+from utils import *
 
 
 def import_coords(x, y):
@@ -70,7 +70,8 @@ def image_process():
     try:
         newhash = md5_file('texture.png')
     except IOError:
-        print("Couldn't open texture.png, check if it is properly saved, or maybe it isn't exists now?")
+        print("Couldn't open texture.png, check if it is properly saved, or maybe it doesn't exist now?")
+        newhash = 0
     else:
         print("Checksum for texture.png is: " + newhash)
 

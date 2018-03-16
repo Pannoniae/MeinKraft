@@ -1,6 +1,6 @@
 import pyglet
 
-from mk.config import MAX_FOV, TICKS_PER_SEC, MIN_FOV, ZOOM_STATES
+from config import MAX_FOV, TICKS_PER_SEC, MIN_FOV, ZOOM_STATES
 
 
 class Zoomer(object):
@@ -17,7 +17,7 @@ class Zoomer(object):
         # schedule zoom checking
         pyglet.clock.schedule_interval(self.check_zoom, 1.0 / TICKS_PER_SEC)
 
-        from ..controller import GameController
+        from controller import GameController
         assert isinstance(master, GameController)
         self.master = master
 

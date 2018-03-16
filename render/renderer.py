@@ -3,13 +3,13 @@ import math
 import pyglet
 from pyglet.gl import *
 
-from mk.render.geometry import cube_vertices
+from render.geometry import cube_vertices
 
 
 class Renderer(object):
 
     def __init__(self, master):
-        from ..controller import GameController
+        from controller import GameController
         assert isinstance(master, GameController)
         self.master = master
 
@@ -33,7 +33,7 @@ class Renderer(object):
             self.master.label_bottom.set_text(msg)
 
     def setup(self):
-        from mk.render.gl_setup import setup
+        from render.gl_setup import setup
         setup()
 
     def draw_focused_block(self):

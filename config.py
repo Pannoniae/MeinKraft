@@ -2,7 +2,7 @@
 
 import math
 
-from .utils import base_path
+from utils import base_path
 
 # Limit FPS to this number
 TICKS_PER_SEC = 60

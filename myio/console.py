@@ -1,5 +1,5 @@
-from ..gui.label import Label
-from ..lang.executer import Executer
+from gui.label import Label
+from lang.executer import Executer
 
 class Console(Label):
 
@@ -9,7 +9,7 @@ class Console(Label):
         super().__init__(msg, x, y, font_name=font_name, font_size=font_size, anchor_x=anchor_x, anchor_y=anchor_y,
                             color=color)
         self.content = []
-        from ..controller import GameController
+        from controller import GameController
         assert isinstance(master, GameController)
         self.master = master
         self.command_executor = Executer(self.master)
