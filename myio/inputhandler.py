@@ -22,7 +22,6 @@ class InputHandler(object):
                 Number representing any modifying keys that were pressed.
 
             """
-        print(symbol, ascii(symbol))
         if symbol == key.ESCAPE:
             self.master.set_exclusive_mouse(False)
         if symbol == key.Q:
@@ -47,7 +46,7 @@ class InputHandler(object):
                 self.master.zoom_state = 'in'
         else:
             if symbol == key.BACKSPACE:
-                self.master.console.del_char(1)
+                self.master.console.delchar(1)
             if symbol == key.ENTER:
                 self.master.console.execute()
 
@@ -57,8 +56,7 @@ class InputHandler(object):
         """
         if self.master.is_typing:
             if text != 'T':  # shift-T
-                self.master.console.add_char(text)
-                print(f"console content: {self.master.console.read()}")
+                self.master.console.addchar(text)
             else:
                 print("console mode ended")
                 self.master.is_typing = False

@@ -20,17 +20,20 @@ class Player(object):
         # Strafing is moving lateral to the direction you are facing,
         # e.g. moving to the left or right while continuing to face forward.
         #
-        # First element is -1 when moving forward, 1 when moving back, and 0
+        # First element is 1 when moving forward, -1 when moving back, and 0
         # otherwise. The second element is -1 when moving left, 1 when moving
         # right, and 0 otherwise.
         self.strafe = [0, 0]
+
+        self._velocity = [0, 0, 0]
+
 
         # When jumping
         self.jumping = False
 
         # Current (x, y, z) position in the world, specified with floats. Note
         # that, perhaps unlike in math class, the y-axis is the vertical axis.
-        self.position = (0, 20, 0)
+        self.position = (0, 5, 0)
 
         # First element is rotation of the player in the x-z plane (ground
         # plane) measured from the z-axis down. The second is the rotation
@@ -49,12 +52,18 @@ class Player(object):
         # The current block the user can place. Hit num keys to cycle.
         self.block = self.inventory[0]
 
+    @property
+    def velocity(self):
+        x_modifiers, y_modifiers, z_modifiers = self._velocity
+        vector = self.get_motion_vector()
+        return vector[0] + x_modifiers, vector[1] + y_modifiers, vector[2] + z_modifiers
+
 
     def move_forward(self):
-        self.strafe[0] -= 1
+        self.strafe[0] += 1
 
     def move_backward(self):
-        self.strafe[0] += 1
+        self.strafe[0] -= 1
 
     def move_left(self):
         self.strafe[1] -= 1
@@ -83,8 +92,8 @@ class Player(object):
 
     def jump(self):
         self.jumping = True
-        if self.dy == 0:
-            self.dy = JUMP_SPEED
+        if self.velocity[1] == 0:
+            self._velocity[1] = JUMP_SPEED
 
     def toggle_flying(self):
         self.flying = not self.flying
@@ -107,7 +116,7 @@ class Player(object):
         dy = math.sin(math.radians(y))
         dx = math.cos(math.radians(x - 90)) * m
         dz = math.sin(math.radians(x - 90)) * m
-        return (dx, dy, dz)
+        return dx, dy, dz
 
     def get_motion_vector(self):
         """ Returns the current motion vector indicating the velocity of the
@@ -119,12 +128,15 @@ class Player(object):
             Tuple containing the velocity in x, y, and z respectively.
 
         """
-        if any(self.strafe):
+        if any(self.strafe) or any(self._velocity):
 
             x, y = self.rotation
-            strafe = math.degrees(math.atan2(*self.strafe))
+
+            # ugly hack; reverse strafe[0]
+            strafe = self.strafe[0] * -1, self.strafe[1]
+            velocity = math.degrees(math.atan2(*strafe))
             y_angle = math.radians(y)
-            x_angle = math.radians(x + strafe)
+            x_angle = math.radians(x + velocity)
 
             if self.flying:
                 m = math.cos(y_angle)
@@ -133,7 +145,7 @@ class Player(object):
                     # Moving left or right.
                     dy = 0.0
                     m = 1
-                if self.strafe[0] > 0:
+                if self.strafe[0] < 0:
                     # Moving backwards.
                     dy *= -1
                 # When you are flying up or down, you have less left and right
@@ -148,7 +160,7 @@ class Player(object):
             dy = 0.0
             dx = 0.0
             dz = 0.0
-        return (dx, dy, dz)
+        return dx, dy, dz
 
 
     def update(self, dt):
@@ -174,6 +186,7 @@ class Player(object):
             The change in time since the last call.
         """
         # walking
+        print(self.velocity)
         speed = FLYING_SPEED if self.flying else WALKING_SPEED
         d = dt * speed  # distance covered this tick.
         dx, dy, dz = self.get_motion_vector()
@@ -184,9 +197,9 @@ class Player(object):
             # Update your vertical speed: if you are falling, speed up until you
             # hit terminal velocity; if you are jumping, slow down until you
             # start falling.
-            #self.dy -= dt * GRAVITY
-            #self.dy = max(self.dy, -TERMINAL_VELOCITY)
-            #dy += self.dy * dt
+            self._velocity[1] -= dt * GRAVITY
+            self._velocity[1] = max(self._velocity[1], -TERMINAL_VELOCITY)
+            dy += self._velocity[1] * dt
             ...
         # collisions
         x, y, z = self.position
@@ -235,13 +248,13 @@ class Player(object):
                     if face == (0, -1, 0):
                         # You are colliding with the ground, so stop falling.
                         if self.jumping:
-                            self.dy = JUMP_SPEED
+                            self._velocity[1] += 1
                         else:
-                            self.dy = 0
+                            self._velocity[1] = 0
                     if face == (0, 1, 0):
                         # You are colliding with the ceiling, so stop rising.
                         if self.jumping:
-                            self.dy = -1
+                            self._velocity[1] -= 1
                     break
         return tuple(p)
 

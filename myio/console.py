@@ -26,10 +26,10 @@ class Console(Label):
         """
         self.set_text(self.read())
 
-    def add_char(self, char):
+    def addchar(self, char):
         self.content.append(char)
 
-    def del_char(self, num):
+    def delchar(self, num):
         if self.content:
             del self.content[len(self.content)-num : -1]
 

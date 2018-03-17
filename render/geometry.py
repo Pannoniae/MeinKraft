@@ -32,10 +32,16 @@ def tex_coord(x, y, n=4):
     """ Return the bounding vertices of the texture square.
 
     """
-    m = 1.0 / n
-    dx = x * m
-    dy = y * m
-    return dx, dy, dx + m, dy, dx + m, dy + m, dx, dy + m
+    #m = 1.0 / n
+    #dx = x * m
+    #dy = y * m
+    #print([dx, dy, dx + m, dy, dx + m, dy + m, dx, dy + m])
+    #return dx, dy, dx + m, dy, dx + m, dy + m, dx, dy + m
+    from library import ffi, lib
+
+    array = ffi.new('float[8]')
+    lib.tex_coord(array, x, y, n)
+    return list(array)
 
 
 def tex_coords(top, bottom, side):
@@ -72,15 +78,6 @@ FACES = [
 def normalize(position):
     """ Accepts `position` of arbitrary precision and returns the block
     containing that position.
-
-    Parameters
-    ----------
-    position : tuple of len 3
-
-    Returns
-    -------
-    block_position : tuple of ints of len 3
-
     """
     x, y, z = position
     x, y, z = (int(round(x)), int(round(y)), int(round(z)))
@@ -89,15 +86,6 @@ def normalize(position):
 
 def sectorize(position):
     """ Returns a tuple representing the sector for the given `position`.
-
-    Parameters
-    ----------
-    position : tuple of len 3
-
-    Returns
-    -------
-    sector : tuple of len 3
-
     """
     x, y, z = normalize(position)
     x, y, z = x // SECTOR_SIZE, y // SECTOR_SIZE, z // SECTOR_SIZE

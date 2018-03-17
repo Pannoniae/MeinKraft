@@ -112,7 +112,7 @@ class GameController(pyglet.window.Window):
             dt = pyglet.clock.tick()
             self.player.update(dt)
             # update stuff
-            self.reticle.shift =  10
+            self.reticle.shift =  max(5, abs(self.player.velocity[1] * 10))
             self.reticle.create(self.width / 2, self.height / 2)
             self.prev_pos = self.player.position
 

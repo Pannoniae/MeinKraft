@@ -10,8 +10,7 @@ class Renderer(object):
 
     def __init__(self, master):
         from controller import GameController
-        assert isinstance(master, GameController)
-        self.master = master
+        self.master: GameController = master
 
     def draw_label(self):
         """ Draw the label in the top left of the screen.
@@ -57,7 +56,6 @@ class Renderer(object):
         """ Called by pyglet to show the canvas.
         """
         self.master.clear()
-        #pyglet.clock.tick()
         self.set_3d()
         glColor3d(1, 1, 1)
         self.master.model.batch.draw()
