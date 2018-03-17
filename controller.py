@@ -52,10 +52,10 @@ class GameController(pyglet.window.Window):
 
 
         # The label that is displayed in the top left of the canvas.
-        self.label = Label(x=20, y=self.height - 20)
+        self.label = Label(x = 20, y = self.height - 20)
 
         # The label that is displayed in the bottom left of the canvas.
-        self.label_bottom = Label(x=20, y=20)
+        self.label_bottom = Label(x = 20, y = 20)
 
         # The command console where you can input things.
         self.console = Console(self, "", 100, 100)
@@ -65,8 +65,6 @@ class GameController(pyglet.window.Window):
 
         self.FOV = MAX_FOV
 
-        self.zoomer = Zoomer(self)
-
         self.input = InputHandler(self)
 
         self.renderer = Renderer(self)
@@ -75,7 +73,6 @@ class GameController(pyglet.window.Window):
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
 
-        self.fps_display = pyglet.clock.ClockDisplay()
         self.reticle.create(self.width / 2, self.height / 2)
 
         self.prev_pos = 0, 0, 0

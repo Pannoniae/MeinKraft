@@ -17,7 +17,7 @@ class Renderer(object):
 
         """
         x, y, z = self.master.player.position
-        msg = '%02d/%02d (%.2f, %.2f, %.2f) %d / %d' % (
+        msg = '%04d/%02d (%.2f, %.2f, %.2f) %d / %d' % (
             pyglet.clock.get_fps(), pyglet.clock.get_fps_limit(), x, y, z,
             len(self.master.model._shown), len(self.master.model.world))
         self.master.label.set_text(msg)
@@ -28,7 +28,7 @@ class Renderer(object):
         """
         block = self.master.get_targeted_block()
         if block:
-            msg = '%s block, zoom %s, flying=%s' % (block.get_block_type(), self.master.zoomer.zoom_state, self.master.player.flying)
+            msg = '%s block, flying=%s' % (block.get_block_type(), self.master.player.flying)
             self.master.label_bottom.set_text(msg)
 
     def setup(self):
@@ -89,7 +89,7 @@ class Renderer(object):
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(self.master.zoomer.FOV, width / float(height), 0.1, 60.0)
+        gluPerspective(self.master.FOV, width / float(height), 0.1, 60.0)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         x, y = self.master.player.rotation

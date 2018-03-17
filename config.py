@@ -7,7 +7,7 @@ from utils import basepath
 # Limit FPS to this number
 TICKS_PER_SEC = 60
 # updates for various game logic
-GAME_TICKS_PER_SEC = 30
+GAME_TICKS_PER_SEC = 20
 
 # info update ticks
 INFO_TICKS_PER_SEC = 2

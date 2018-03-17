@@ -13,10 +13,9 @@ from pyglet.graphics import TextureGroup
 from pyglet.gl import *
 
 # project module imports
-from render.geometry import tex_coords_single
 from render.geometry import normalize, sectorize, FACES
 from data.blocks import *
-from config import TICKS_PER_SEC
+from config import GAME_TICKS_PER_SEC, TICKS_PER_SEC
 from images import TEXTURE_PATH
 
 class Model(object):
@@ -354,8 +353,8 @@ class Model(object):
         add_block() or remove_block() was called with immediate=False
 
         """
-        start = time.clock()
-        while self.queue and time.clock() - start < 1.0 / TICKS_PER_SEC:
+        finish = time.process_time() +  (1.0 / TICKS_PER_SEC)
+        while (time.process_time()  < finish) and self.queue:
             self._dequeue()
 
     def process_entire_queue(self):

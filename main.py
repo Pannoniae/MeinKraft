@@ -13,7 +13,7 @@ def main():
 
     image_process()
     ctrl = GameController(width=1920, height=1080, caption='My own cute Pyglet v%s' % VERSION,
-                          resizable=True, vsync=True, fullscreen=True)
+                          resizable=True, vsync=False, fullscreen=True)
     # ctrl.log_events()
     # Hide the mouse cursor and prevent the mouse from leaving the window.
     ctrl.set_exclusive_mouse(True)
