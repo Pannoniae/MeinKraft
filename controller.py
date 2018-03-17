@@ -3,6 +3,8 @@
 from __future__ import absolute_import
 
 # third party imports
+import time
+
 import pyglet
 from pyglet.gl import *
 from pyglet.window import key
@@ -34,7 +36,7 @@ class GameController(pyglet.window.Window):
 
     def __init__(self, *args, **kwargs):
 
-        super(GameController, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # Whether or not the window exclusively captures the mouse.
         self.exclusive = False
@@ -58,7 +60,7 @@ class GameController(pyglet.window.Window):
         # The command console where you can input things.
         self.console = Console(self, "", 100, 100)
 
-        # Whether you are typing in the console, or not.
+        # Whether are you typing in the console, or not.
         self.is_typing = False
 
         self.FOV = MAX_FOV
@@ -69,7 +71,6 @@ class GameController(pyglet.window.Window):
 
         self.renderer = Renderer(self)
 
-        self.schedule_updates()
 
         self.vector = self.player.get_sight_vector()
         self.target_block = self.model.hit_test(self.player.position, self.vector)[0]
@@ -79,13 +80,14 @@ class GameController(pyglet.window.Window):
 
         self.prev_pos = 0, 0, 0
 
+        self.schedule_updates()
+
 
     def schedule_updates(self):
         # This call schedules the `update()` method to be called
         # TICKS_PER_SEC. This is the main game event loop.
-        #pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
+        pyglet.clock.schedule_interval(self.update, 1.0 / TICKS_PER_SEC)
         pyglet.clock.schedule_interval(self.update_game, 1.0 / GAME_TICKS_PER_SEC)
-        pyglet.clock.schedule_interval(self.speed, 1.0)
 
 
     def log_events(self):
@@ -99,7 +101,7 @@ class GameController(pyglet.window.Window):
         super().set_exclusive_mouse(exclusive)
         self.exclusive = exclusive
 
-    def update(self):
+    def update(self, dt):
         """ This method is scheduled to be called repeatedly by the pyglet clock.
 
         Parameters
@@ -108,16 +110,12 @@ class GameController(pyglet.window.Window):
             The change in time since the last call.
 
         """
-        while not self.has_exit: # never, controller doesn't have has_exit property
-            dt = pyglet.clock.tick()
-            self.player.update(dt)
-            # update stuff
-            self.reticle.shift =  max(5, abs(self.player.velocity[1] * 10))
-            self.reticle.create(self.width / 2, self.height / 2)
-            self.prev_pos = self.player.position
-
-            self.draw()
-            self.dispatch_events()
+        self.player.update(dt)
+        # update stuff
+        self.reticle.shift =  max(5, abs(self.player.velocity[1] * 10))
+        self.reticle.create(self.width / 2, self.height / 2)
+        self.prev_pos = self.player.position
+        self.dispatch_events()
 
 
 
@@ -133,12 +131,7 @@ class GameController(pyglet.window.Window):
         Update game tick which is slower than update() for performance reasons.
         """
         self.prepare_focused_block()
-
         self.model.process_queue()
-
-
-    def speed(self, dt):
-        pass
 
 
     def change_player_block(self, key_symbol):
@@ -166,12 +159,9 @@ class GameController(pyglet.window.Window):
     def on_text(self, text):
         self.input.on_text(text)
 
-    # Drawing.
-
-    def draw(self):
+    def on_draw(self):
         """ Pass drawing to the renderer. """
         self.renderer.on_draw()
-        self.flip()
 
     def get_targeted_block(self):
         self.vector = self.player.get_sight_vector()

@@ -186,7 +186,7 @@ class Player(object):
             The change in time since the last call.
         """
         # walking
-        print(self.velocity)
+        #print(self.velocity)
         speed = FLYING_SPEED if self.flying else WALKING_SPEED
         d = dt * speed  # distance covered this tick.
         dx, dy, dz = self.get_motion_vector()

@@ -14,7 +14,7 @@ def imgpath(filename):
     return os.path.join(os.path.dirname(__file__), BLOCKDATA_FOLDER, filename)
 
 
-def base_path(filename):
+def basepath(filename):
 
     """ Returns the game folder """
 
@@ -30,7 +30,7 @@ def md5_file(file):
 
     """ md5 function for files.
 
-        Takes a file argument, outputs a string. """
+        Takes a filename argument, outputs a string. """
 
     try:
         with open(file, 'rb') as file:
@@ -42,7 +42,6 @@ def md5_file(file):
 def md5(data):
 
     """ md5 function for string. """
-
     md5_lib = hashlib.md5()
     md5_lib.update(data)
     return md5_lib.hexdigest()

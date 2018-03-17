@@ -50,7 +50,7 @@ def image_process():
     # Save texture internally
 
     try:
-        texture.save(base_path('_texture.png'))
+        texture.save(basepath('_texture.png'))
     except IOError:
         print("Couldn't save temponary texture file. Check write-access?")
     else:
@@ -59,7 +59,7 @@ def image_process():
     # Compute hash texture in memory (that we created above)
 
     try:
-        hash = md5_file(base_path('_texture.png'))
+        hash = md5_file(basepath('_texture.png'))
     except:
         print("Couldn't hash texture. md5 not installed?")
     else:

@@ -29,7 +29,7 @@ class GameSaver(object):
                         strafe=player.strafe,
                         rotation=player.rotation,
                         block=player.block,
-                        dy=player.dy)
+                        dy=player.velocity[1])
         with shelve.open(DATASTORE) as db:
             db['player'] = status
         print("player saved")
