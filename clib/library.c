@@ -32,7 +32,7 @@ void tex_coord(float* buffer, int x, int y, int n) {
 
     float m = 1.0 / n;
     float dx = x * m;
-    float dy = y * m;w
+    float dy = y * m;
     float array[8] = {dx, dy, dx + m, dy, dx + m, dy + m, dx, dy + m};
 
     for (int i = 0; i < 8; ++i) {
